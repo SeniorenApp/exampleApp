@@ -1,5 +1,15 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android" package="SeniorenApp.SeniorenApp" android:versionCode="1" android:versionName="1.0">
+  <uses-feature android:name="Android.Hardware.Usb.UsbAccessory" />
   <uses-sdk android:minSdkVersion="16" />
-  <application android:label="SeniorenApp"></application>
+  <application android:label="SeniorenApp">
+    <activity android:name=".SeniorenApp" android:label="SeniorenApp" android:launchMode="singleTop">
+      <intent-filter>
+        <action android:name="Android.Hardware.Usb.UsbManager.ActionUsbAccessoryAttached"/>
+      </intent-filter>
+      <meta-data android:name="Android.Hardware.Usb.UsbManager.ActionUsbAccessoryAttached" 
+        android:resource="@xml/accessory_filter"/>
+    </activity>
+  </application>
+  
 </manifest>

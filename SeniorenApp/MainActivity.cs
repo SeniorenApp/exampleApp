@@ -5,6 +5,9 @@ using System.Linq;
 using Android.Hardware.Usb;
 using Android.Content;
 using System;
+using Java.IO;
+using Android.Net;
+using Java.Lang;
 
 namespace SeniorenApp
 {
@@ -13,7 +16,11 @@ namespace SeniorenApp
     public class MainActivity : Activity
     {
         int count = 0;
-        public static UsbAccessory mAccessory = null;
+        UsbAccessory mAccessory;
+        ParcelFileDescriptor mFileDescriptor;
+        FileInputStream mInputStream;
+        FileOutputStream mOutputStream;
+        UsbManager mUsbManager;
 
         protected override void OnCreate(Bundle bundle)
         {
@@ -37,45 +44,63 @@ namespace SeniorenApp
                 count--;
                 tex.Text = count.ToString();
             };
-            //UsbAccessory accessory;// = UsbManager.ActionUsbAccessoryAttached;
-
-
+            mUsbManager = (UsbManager)GetSystemService(UsbService);
 
             IntentFilter i = new IntentFilter();
             i.AddAction(UsbManager.ActionUsbAccessoryAttached);
             i.AddAction(UsbManager.ActionUsbAccessoryDetached);
             i.AddAction("USBPERMISSION");
+
             RegisterReceiver(new BR(), i);
-
-            UsbManager manager = (UsbManager)GetSystemService(UsbService);
-
-            var devices = manager.GetAccessoryList();
-
-
-
-
-
         }
+
+
+
         public class BR : BroadcastReceiver
         {
             public override void OnReceive(Context context, Intent intent)
             {
-                String action = intent.Action;
+                Android.Resource.String action = (Android.Resource.String) intent.Action;
                 if (UsbManager.ActionUsbAccessoryAttached.Equals(action))
                 {
                     UsbAccessory accessory = (UsbAccessory)intent.GetParcelableExtra(UsbManager.ExtraAccessory);
                     if (intent.GetBooleanExtra(UsbManager.ExtraPermissionGranted, false))
                     {
-                        mAccessory = accessory;
-                        ParcelFileDescriptor fd = null;
-
-                    }
+                        if(accessory != null)
+                        {
+                            //call method to set up accessory communication
+                            //openAccessory(accessory);
+                        }
+                    }                    
                 }
+                else if (UsbManager.ActionUsbAccessoryDetached.Equals(action))
+                {
+                    UsbAccessory accessory = (UsbAccessory)intent.GetParcelableExtra(UsbManager.ExtraAccessory);
+                    if (accessory != null)
+                    {
+                        //call method to clean up accessory communication
+                        //closeAccessory(accessory);
+                    }
+                }                
             }
         }
+        private void openAccessory()
+        {
+            mFileDescriptor = mUsbManager.OpenAccessory(mAccessory);
+            if(mFileDescriptor != null)
+            {
+                ParcelFileDescriptor fd = mFileDescriptor;
+                //mInputStream = new FileInputStream(fd);
+                //mOutputStream = new FileOutputStream(fd);
+                Thread thread = new Thread(null, openAccessory, "AccessoryThread");
+                thread.Start();
+            }
+        }
+
     }
+}
 
     
 
-}
+
 
