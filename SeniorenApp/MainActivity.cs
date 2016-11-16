@@ -31,15 +31,25 @@ namespace SeniorenApp
             if (UsbManager.ActionUsbAccessoryAttached.Equals(Intent.Action))
             {
                 UsbManager manager = (UsbManager)GetSystemService(Context.UsbService);
-                UsbAccessory[] accessoryList = manager.GetAccessoryList();
-                if (accessoryList.Any())
+
+                if (manager != null)
                 {
-                    textView.Text = "accessory attached - Manufacturer: " + accessoryList[0].Manufacturer;
-                }
-                else
-                {
-                    textView.Text = "accessory attached - No accessory found";
-                }
+                    UsbAccessory[] accessoryList = manager.GetAccessoryList();
+
+                    if (accessoryList != null)
+                    {
+                        if (accessoryList.Any())
+                        {
+                            textView.Text = "accessory attached - accessory found";
+                        }
+                        else
+                        {
+                            textView.Text = "accessory attached - No accessory found";
+                        }
+                    }
+
+                    textView.Text = "accessory attached - accessory list is null";
+                }                
             }
             else
             {
@@ -49,31 +59,31 @@ namespace SeniorenApp
             // RegisterReceiver(new Receiver((UsbManager)GetSystemService(UsbService), OnAccessoryOpened), i);
         }
 
-        protected override void OnNewIntent(Intent intent)
-        {
-            SetContentView(Resource.Layout.Main);
+        //protected override void OnNewIntent(Intent intent)
+        //{
+        //    SetContentView(Resource.Layout.Main);
 
-            var textView = FindViewById<TextView>(Resource.Id.textView1);
-            textView.Text = "bla";
+        //    var textView = FindViewById<TextView>(Resource.Id.textView1);
+        //    textView.Text = "bla";
 
-            if (UsbManager.ActionUsbAccessoryAttached.Equals(intent.Action))
-            {
-                UsbManager manager = (UsbManager)GetSystemService(Context.UsbService);
-                UsbAccessory[] accessoryList = manager.GetAccessoryList();
-                if (accessoryList.Any())
-                {
-                    textView.Text = "accessory attached - Manufacturer: " + accessoryList[0].Manufacturer + " in onnewintent";
-                }
-                else
-                {
-                    textView.Text = "accessory attached - No accessory found in onnewintent";
-                }
-            }
-            else
-            {
-                textView.Text = "Accessory not attached - Action was:" + intent.Action + " in onnewintent";
-            }
-        }
+        //    if (UsbManager.ActionUsbAccessoryAttached.Equals(intent.Action))
+        //    {
+        //        UsbManager manager = (UsbManager)GetSystemService(Context.UsbService);
+        //        UsbAccessory[] accessoryList = manager.GetAccessoryList();
+        //        if (accessoryList.Any())
+        //        {
+        //            textView.Text = "accessory attached - Manufacturer: " + accessoryList[0].Manufacturer + " in onnewintent";
+        //        }
+        //        else
+        //        {
+        //            textView.Text = "accessory attached - No accessory found in onnewintent";
+        //        }
+        //    }
+        //    else
+        //    {
+        //        textView.Text = "Accessory not attached - Action was:" + intent.Action + " in onnewintent";
+        //    }
+        //}
 
         public void OnAccessoryOpened(FileInputStream stream)
         {
