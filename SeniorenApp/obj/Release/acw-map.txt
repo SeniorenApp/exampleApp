@@ -1,0 +1,8 @@
+SeniorenApp.MainActivity, SeniorenApp;md54259e6513023dd8c68a5505c80f1ae41.MainActivity
+SeniorenApp.MainActivity, SeniorenApp, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null;md54259e6513023dd8c68a5505c80f1ae41.MainActivity
+SeniorenApp.MainActivity;md54259e6513023dd8c68a5505c80f1ae41.MainActivity
+seniorenapp.MainActivity;md54259e6513023dd8c68a5505c80f1ae41.MainActivity
+SeniorenApp.USB.Receiver, SeniorenApp;md58c97c81a243b85338327767ca7289695.Receiver
+SeniorenApp.USB.Receiver, SeniorenApp, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null;md58c97c81a243b85338327767ca7289695.Receiver
+SeniorenApp.USB.Receiver;md58c97c81a243b85338327767ca7289695.Receiver
+seniorenapp.usb.Receiver;md58c97c81a243b85338327767ca7289695.Receiver
