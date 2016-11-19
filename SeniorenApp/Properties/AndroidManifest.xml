@@ -1,16 +1,4 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android" package="SeniorenApp.SeniorenApp" android:versionCode="1" android:versionName="1.0">
-	<uses-feature android:name="Android.Hardware.Usb.UsbAccessory" />
-	<uses-sdk android:minSdkVersion="12" />
-	<application android:label="SeniorenApp">
-		<activity android:name=".SeniorenApp" android:label="SeniorenApp" android:launchMode="singleTop">
-			<intent-filter>
-				<action android:name="android.hardware.usb.action.USB_ACCESSORY_ATTACHED" />
-			</intent-filter>
-      <meta-data android:name="android.hardware.usb.action.USB_ACCESSORY_ATTACHED" android:resource="@xml/accessory_filter" />
-			<intent-filter>
-				<action android:name="android.hardware.usb.action.USB_DEVICE_DETACHED" />
-			</intent-filter>
-		</activity>
-	</application>
+	<uses-sdk android:minSdkVersion="12" />	
 </manifest>
