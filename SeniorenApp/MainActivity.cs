@@ -4,7 +4,7 @@ using Android.Hardware.Usb;
 using Android.OS;
 using Android.Util;
 using Android.Widget;
-using SeniorenApp.USBCommunication;
+using SeniorenApp.Helper;
 using System.Text;
 
 namespace SeniorenApp
@@ -17,11 +17,9 @@ namespace SeniorenApp
     [MetaData("android.hardware.usb.action.USB_ACCESSORY_DETACHED", Resource = "@xml/accessory_filter")]    
     public class MainActivity : Activity
     {
-        Connection UsbConnection;
-
         TextView textView;
 
-        Button sendData;
+        static bool isActive = false;
 
         protected override void OnCreate(Bundle bundle)
         {
@@ -33,37 +31,77 @@ namespace SeniorenApp
             textView = FindViewById<TextView>(Resource.Id.textView1);
             textView.Text = "Hallo";
 
-            sendData = FindViewById<Button>(Resource.Id.button1);
-            sendData.Click += (sender, e) => UsbConnection.SendData(Encoding.ASCII.GetBytes(textView.Text));
+            Log.Info("Accessory", "textbox initialized");
+
+            var test = FindViewById<Button>(Resource.Id.button2);
+            test.Click += (sender, e) => { StartActivity(typeof(ManualPhoneCall)); };
+
+            Button button = FindViewById<Button>(Resource.Id.button1);
+            button.Click += (sender, e) => USBHelper.USBConnection.SendData(Encoding.ASCII.GetBytes("HALLO"));
+
+            isActive = true;
 
             switch (Intent.Action)
             {
                 case UsbManager.ActionUsbAccessoryAttached:
+                    Log.Info("Accessory", "accessory attached");
                     UsbAccessory accessory = (UsbAccessory)Intent.GetParcelableExtra(UsbManager.ExtraAccessory);
                     UsbManager manager = (UsbManager)GetSystemService(UsbService);
-                    UsbConnection = new Connection(accessory, manager, OnUsbDataReceived);
-                    UsbConnection.OpenConnection();
-                    UsbConnection.SendData(Encoding.ASCII.GetBytes("hallo"));
+                    USBHelper.CreateUSBConnection(accessory, manager, OnUsbDataReceived);
+                    USBHelper.USBConnection.SendData(Encoding.ASCII.GetBytes("hallo"));                    
                     break;
             }            
         }
 
+        public void onStart()
+        {
+            base.OnStart();
+
+            isActive = true;
+        }
+
+        public void onStop()
+        {
+            base.OnStop();
+
+            isActive = false;
+        }
+
+        public void onRestart()
+        {
+            base.OnRestart();
+
+            isActive = true;
+        }
+
+        public void onDestroy()
+        {
+            base.OnDestroy();
+
+            isActive = false;
+
+            USBHelper.USBConnection.RemoveFromDataReceivedEvent(OnUsbDataReceived);
+        }
+
         public void OnUsbDataReceived(byte[] data)
         {
-            try
+            if (isActive)
             {
-                Log.Info("Accessory", nameof(OnUsbDataReceived) + " : " + "called.");
+                try
+                {
+                    Log.Info("Accessory", nameof(OnUsbDataReceived) + " : " + "called.");
 
-                string text = Encoding.ASCII.GetString(data);
+                    string text = Encoding.ASCII.GetString(data);
 
-                Log.Info("Accessory", nameof(OnUsbDataReceived) + " : " + data.Length + " bytes read. Tanslated to: " + text);
+                    Log.Info("Accessory", nameof(OnUsbDataReceived) + " : " + data.Length + " bytes read. Tanslated to: " + text);
 
-                textView.Text = text;
-            }
-            catch (Java.Lang.Exception ex)
-            {
-                Log.Error("Accessory", ex.GetType().Name + System.Environment.NewLine + ex.ToString() + System.Environment.NewLine + ex.StackTrace);
-            }
+                    RunOnUiThread(() => textView.Text = text);
+                }
+                catch (Java.Lang.Exception ex)
+                {
+                    Log.Error("Accessory", ex.GetType().Name + System.Environment.NewLine + ex.ToString() + System.Environment.NewLine + ex.StackTrace);
+                }
+            }            
         }
     }
 }

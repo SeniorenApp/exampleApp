@@ -2,6 +2,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android" package="SeniorenApp.SeniorenApp" android:versionCode="1" android:versionName="1.0">
   <!--suppress UsesMinSdkAttributes-->
   <uses-sdk android:minSdkVersion="12" />
+  <uses-permission android:name="android.permission.CALL_PHONE" />
   <application android:name="android.app.Application" android:allowBackup="true" android:label="SeniorenApp.SeniorenApp" android:icon="@drawable/icon">
     <activity android:icon="@drawable/icon" android:label="Accessory" android:name="md54259e6513023dd8c68a5505c80f1ae41.MainActivity">
       <intent-filter>
@@ -15,6 +16,7 @@
         <action android:name="android.hardware.usb.action.USB_ACCESSORY_DETACHED" />
       </intent-filter>
     </activity>
+    <activity android:icon="@drawable/icon" android:label="Accessory" android:name="md54259e6513023dd8c68a5505c80f1ae41.ManualPhoneCall" />
     <provider android:name="mono.MonoRuntimeProvider" android:exported="false" android:initOrder="2147483647" android:authorities="SeniorenApp.SeniorenApp.mono.MonoRuntimeProvider.__mono_init__" />
   </application>
 </manifest>

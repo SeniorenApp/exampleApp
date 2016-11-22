@@ -2,3 +2,7 @@ SeniorenApp.MainActivity, SeniorenApp;md54259e6513023dd8c68a5505c80f1ae41.MainAc
 SeniorenApp.MainActivity, SeniorenApp, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null;md54259e6513023dd8c68a5505c80f1ae41.MainActivity
 SeniorenApp.MainActivity;md54259e6513023dd8c68a5505c80f1ae41.MainActivity
 seniorenapp.MainActivity;md54259e6513023dd8c68a5505c80f1ae41.MainActivity
+SeniorenApp.ManualPhoneCall, SeniorenApp;md54259e6513023dd8c68a5505c80f1ae41.ManualPhoneCall
+SeniorenApp.ManualPhoneCall, SeniorenApp, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null;md54259e6513023dd8c68a5505c80f1ae41.ManualPhoneCall
+SeniorenApp.ManualPhoneCall;md54259e6513023dd8c68a5505c80f1ae41.ManualPhoneCall
+seniorenapp.ManualPhoneCall;md54259e6513023dd8c68a5505c80f1ae41.ManualPhoneCall

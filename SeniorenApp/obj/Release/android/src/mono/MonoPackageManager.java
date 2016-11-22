@@ -99,6 +99,7 @@ class MonoPackageManager_Resources {
 	public static final String[] Assemblies = new String[]{
 		/* We need to ensure that "SeniorenApp.dll" comes first in this list. */
 		"SeniorenApp.dll",
+		"Mono.Android.Export.dll",
 	};
 	public static final String[] Dependencies = new String[]{
 	};

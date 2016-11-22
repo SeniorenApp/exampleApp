@@ -14,12 +14,27 @@ public final class R {
         public static final int icon=0x7f020000;
     }
     public static final class id {
+        public static final int ButtonClear=0x7f06000e;
+        public static final int ButtonEight=0x7f06000c;
+        public static final int ButtonFive=0x7f060009;
+        public static final int ButtonFour=0x7f060006;
+        public static final int ButtonNine=0x7f06000d;
+        public static final int ButtonOne=0x7f060004;
+        public static final int ButtonRemove=0x7f060010;
+        public static final int ButtonSeven=0x7f06000b;
+        public static final int ButtonSix=0x7f06000a;
+        public static final int ButtonThree=0x7f060007;
+        public static final int ButtonTwo=0x7f060005;
+        public static final int ButtonZero=0x7f06000f;
+        public static final int MakeCall=0x7f060008;
+        public static final int PhoneNumber=0x7f060003;
         public static final int button1=0x7f060001;
         public static final int button2=0x7f060002;
         public static final int textView1=0x7f060000;
     }
     public static final class layout {
         public static final int main=0x7f030000;
+        public static final int manualcall=0x7f030001;
     }
     public static final class string {
         public static final int ApplicationName=0x7f050001;

@@ -5,6 +5,7 @@ C:\Users\Nicoali\Documents\Visual Studio 2015\Projects\Sernioren\SeniorenApp\bin
 C:\Users\Nicoali\Documents\Visual Studio 2015\Projects\Sernioren\SeniorenApp\obj\Release\SeniorenApp.dll
 C:\Users\Nicoali\Documents\Visual Studio 2015\Projects\Sernioren\SeniorenApp\obj\Release\SeniorenApp.pdb
 C:\Users\Nicoali\Documents\Visual Studio 2015\Projects\Sernioren\SeniorenApp\obj\Release\android\bin\SeniorenApp.SeniorenApp.apk
+C:\Users\Nicoali\Documents\Visual Studio 2015\Projects\Sernioren\SeniorenApp\obj\Release\res\layout\manualcall.xml
 C:\Users\Nicoali\Documents\Visual Studio 2015\Projects\Sernioren\SeniorenApp\obj\Release\res\layout\main.xml
 C:\Users\Nicoali\Documents\Visual Studio 2015\Projects\Sernioren\SeniorenApp\obj\Release\res\values\strings.xml
 C:\Users\Nicoali\Documents\Visual Studio 2015\Projects\Sernioren\SeniorenApp\obj\Release\res\drawable\icon.png
@@ -13,6 +14,7 @@ C:\Users\Nicoali\Documents\Visual Studio 2015\Projects\Sernioren\SeniorenApp\obj
 C:\Users\Nicoali\Documents\Visual Studio 2015\Projects\Sernioren\SeniorenApp\obj\Release\uploadflags.txt
 C:\Users\Nicoali\Documents\Visual Studio 2015\Projects\Sernioren\SeniorenApp\bin\Release\Java.Interop.dll.mdb
 C:\Users\Nicoali\Documents\Visual Studio 2015\Projects\Sernioren\SeniorenApp\bin\Release\Mono.Android.dll.mdb
+C:\Users\Nicoali\Documents\Visual Studio 2015\Projects\Sernioren\SeniorenApp\bin\Release\Mono.Android.Export.dll.mdb
 C:\Users\Nicoali\Documents\Visual Studio 2015\Projects\Sernioren\SeniorenApp\bin\Release\mscorlib.dll.mdb
 C:\Users\Nicoali\Documents\Visual Studio 2015\Projects\Sernioren\SeniorenApp\bin\Release\SeniorenApp.dll.mdb
 C:\Users\Nicoali\Documents\Visual Studio 2015\Projects\Sernioren\SeniorenApp\bin\Release\System.ComponentModel.Composition.dll.mdb
@@ -25,6 +27,7 @@ C:\Users\Nicoali\Documents\Visual Studio 2015\Projects\Sernioren\SeniorenApp\bin
 C:\Users\Nicoali\Documents\Visual Studio 2015\Projects\Sernioren\SeniorenApp\bin\Release\System.Xml.Linq.dll.mdb
 C:\Users\Nicoali\Documents\Visual Studio 2015\Projects\Sernioren\SeniorenApp\obj\Release\android\assets\Java.Interop.dll.mdb
 C:\Users\Nicoali\Documents\Visual Studio 2015\Projects\Sernioren\SeniorenApp\obj\Release\android\assets\Mono.Android.dll.mdb
+C:\Users\Nicoali\Documents\Visual Studio 2015\Projects\Sernioren\SeniorenApp\obj\Release\android\assets\Mono.Android.Export.dll.mdb
 C:\Users\Nicoali\Documents\Visual Studio 2015\Projects\Sernioren\SeniorenApp\obj\Release\android\assets\mscorlib.dll.mdb
 C:\Users\Nicoali\Documents\Visual Studio 2015\Projects\Sernioren\SeniorenApp\obj\Release\android\assets\SeniorenApp.dll.mdb
 C:\Users\Nicoali\Documents\Visual Studio 2015\Projects\Sernioren\SeniorenApp\obj\Release\android\assets\System.Core.dll.mdb
