@@ -3,21 +3,54 @@
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
-    <TextView
-        android:text="Large Text"
-        android:textAppearance="?android:attr/textAppearanceLarge"
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/textView1" />
-    <Button
-        android:text="Button"
+        android:layout_height="0dip"
+        android:orientation="horizontal"
+        android:layout_weight="1">
+        <ImageButton
+            android:layout_width="0dip"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:src="@drawable/phonereceiver128"
+            android:onClick="StartPhoneCallActivity"
+            android:id="@+id/CallActivity"
+            android:nextFocusRight="@+id/Temp1"
+            android:nextFocusLeft="@+id/Temp1"
+            android:nextFocusDown="@+id/Temp2"
+            android:nextFocusUp="@+id/Temp2" />
+        <ImageButton
+            android:layout_width="0dip"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:id="@+id/Temp1"
+            android:nextFocusRight="@+id/CallActivity"
+            android:nextFocusLeft="@+id/CallActivity"
+            android:nextFocusDown="@+id/tmp2"
+            android:nextFocusUp="@+id/tmp2" />
+    </LinearLayout>
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/button1"
-        android:clickable="true" />
-    <Button
-        android:text="Button"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/button2" />
+        android:layout_height="0dip"
+        android:orientation="horizontal"
+        android:layout_weight="1">
+        <ImageButton
+            android:layout_width="0dip"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:id="@+id/Temp2"
+            android:nextFocusRight="@+id/tmp3"
+            android:nextFocusLeft="@+id/tmp3"
+            android:nextFocusDown="@+id/CallActivity"
+            android:nextFocusUp="@+id/CallActivity" />
+        <ImageButton
+            android:layout_width="0dip"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:id="@+id/Temp3"
+            android:nextFocusRight="@+id/tmp2"
+            android:nextFocusLeft="@+id/tmp2"
+            android:nextFocusDown="@+id/tmp1"
+            android:nextFocusUp="@+id/tmp1" />
+    </LinearLayout>
 </LinearLayout>

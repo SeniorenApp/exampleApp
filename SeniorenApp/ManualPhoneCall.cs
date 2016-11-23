@@ -2,7 +2,6 @@ using Android.App;
 using Android.Content;
 using Android.Net;
 using Android.OS;
-using Android.Util;
 using Android.Views;
 using Android.Widget;
 using Java.Interop;
@@ -10,110 +9,108 @@ using Java.Lang;
 using SeniorenApp.Helper;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 
 namespace SeniorenApp
 {
     [Activity(Label = "Accessory", MainLauncher = false, Icon = "@drawable/icon")]
     public class ManualPhoneCall : Activity
     {
-        TextView phoneNumber;
+        private static bool _IsActive = false;
 
-        List<Button> Buttons;
+        private static bool IsActive
+        {
+            get
+            {
+                Logger.LogInfo(nameof(ManualPhoneCall) + " - " + nameof(IsActive), "Get called. Value was: " + _IsActive.ToString());
 
-        Button button0;
-        Button button1;
-        Button button2;
-        Button button3;
-        Button button4;
-        Button button5;
-        Button button6;
-        Button button7;
-        Button button8;
-        Button button9;
-        Button buttonClear;
-        Button buttonRemove;
-        Button buttonCall;
+                return _IsActive;
+            }
+            set
+            {
+                _IsActive = value;
 
-        static bool isActive = false;
+                Logger.LogInfo(nameof(ManualPhoneCall) + " - " + nameof(IsActive), "Set called. Value is now: " + _IsActive.ToString());
+            }
+        }
+            
+        private TextView phoneNumber;
+
+        private List<Button> Buttons;
 
         protected override void OnCreate(Bundle bundle)
         {
+            Logger.LogInfo(nameof(ManualPhoneCall) + " - " + nameof(OnCreate), " called");
+            Logger.LogInfo(nameof(ManualPhoneCall) + " - " + nameof(OnCreate), " Intent is: " + Intent.ToString());
+
             try
-            {
+            {               
                 base.OnCreate(bundle);
 
                 SetContentView(Resource.Layout.ManualCall);
 
                 USBHelper.USBConnection.AddToDataReceivedEvent(OnUsbDataReceived);
 
-                Buttons = new List<Button>();
+                Buttons = new List<Button>()
+                {
+                    { FindViewById<Button>(Resource.Id.ButtonOne) },
+                    { FindViewById<Button>(Resource.Id.ButtonTwo) },
+                    { FindViewById<Button>(Resource.Id.ButtonThree) },
+                    { FindViewById<Button>(Resource.Id.ButtonFour) },
+                    { FindViewById<Button>(Resource.Id.ButtonFive) },
+                    { FindViewById<Button>(Resource.Id.ButtonSix) },
+                    { FindViewById<Button>(Resource.Id.ButtonSeven) },
+                    { FindViewById<Button>(Resource.Id.ButtonEight) },
+                    { FindViewById<Button>(Resource.Id.ButtonNine) },
+                    { FindViewById<Button>(Resource.Id.ButtonZero) },
+                    { FindViewById<Button>(Resource.Id.ButtonClear) },
+                    { FindViewById<Button>(Resource.Id.ButtonRemove) },
+                    { FindViewById<Button>(Resource.Id.MakeCall) },
+                };
 
                 phoneNumber = FindViewById<TextView>(Resource.Id.PhoneNumber);
-                button0 = FindViewById<Button>(Resource.Id.ButtonZero);
-                button1 = FindViewById<Button>(Resource.Id.ButtonOne);
-                button2 = FindViewById<Button>(Resource.Id.ButtonTwo);
-                button3 = FindViewById<Button>(Resource.Id.ButtonThree);
-                button4 = FindViewById<Button>(Resource.Id.ButtonFour);
-                button5 = FindViewById<Button>(Resource.Id.ButtonFive);
-                button6 = FindViewById<Button>(Resource.Id.ButtonSix);
-                button7 = FindViewById<Button>(Resource.Id.ButtonSeven);
-                button8 = FindViewById<Button>(Resource.Id.ButtonEight);
-                button9 = FindViewById<Button>(Resource.Id.ButtonNine);
-                buttonClear = FindViewById<Button>(Resource.Id.ButtonClear);
-                buttonRemove = FindViewById<Button>(Resource.Id.ButtonRemove);
-                buttonCall = FindViewById<Button>(Resource.Id.MakeCall);
 
-                Buttons.Add(button0);
-                Buttons.Add(button1);
-                Buttons.Add(button2);
-                Buttons.Add(button3);
-                Buttons.Add(button4);
-                Buttons.Add(button5);
-                Buttons.Add(button6);
-                Buttons.Add(button7);
-                Buttons.Add(button8);
-                Buttons.Add(button9);
-                Buttons.Add(buttonClear);
-                Buttons.Add(buttonRemove);
-                Buttons.Add(buttonCall);
-
-                isActive = true;
-
-                Log.Info("Accessory", nameof(ManualPhoneCall) + " : " + "called.");
+                IsActive = true;
             }
             catch (Exception ex)
             {
-                Log.Error("Accessory", ex.GetType().Name + System.Environment.NewLine + ex.ToString() + System.Environment.NewLine + ex.StackTrace);
+                Logger.LogError(ex);
             }            
         }
 
-        public void onStart()
+        protected override void OnStart()
         {
+            Logger.LogInfo(nameof(ManualPhoneCall) + " - " + nameof(OnStart), "called.");
+
             base.OnStart();
 
-            isActive = true;
+            IsActive = true;
         }
 
-        public void onStop()
+        protected override void OnStop()
         {
+            Logger.LogInfo(nameof(ManualPhoneCall) + " - " + nameof(OnStop), "called.");
+
             base.OnStop();
 
-            isActive = false;
+            IsActive = false;
         }
 
-        public void onRestart()
+        protected override void OnRestart()
         {
+            Logger.LogInfo(nameof(ManualPhoneCall) + " - " + nameof(OnRestart), "called.");
+
             base.OnRestart();
 
-            isActive = true;
+            IsActive = true;
         }
 
-        public void onDestroy()
+        protected override void OnDestroy()
         {
+            Logger.LogInfo(nameof(ManualPhoneCall) + " - " + nameof(OnDestroy), "called.");
+
             base.OnDestroy();
 
-            isActive = false;
+            IsActive = false;
 
             USBHelper.USBConnection.RemoveFromDataReceivedEvent(OnUsbDataReceived);
         }
@@ -121,99 +118,103 @@ namespace SeniorenApp
         [Export("EnterChar")]
         public void EnterChar(View view)
         {
-            string character = view.Tag.ToString();
+            Logger.LogInfo(nameof(ManualPhoneCall) + " - " + nameof(EnterChar), "called.");
 
-            Log.Info("Accessory", nameof(EnterChar) + " : " + "called.");
+            try
+            {                
+                string character = view.Tag.ToString();
 
-            Log.Info("Accessory", nameof(EnterChar) + " : " + character + " entered.");
+                Logger.LogInfo(nameof(ManualPhoneCall) + " - " + nameof(EnterChar), "Entered character was: " + character);
 
-            switch (character)
-            {
-                case "<":
-                    phoneNumber.Text = phoneNumber.Text == string.Empty ? string.Empty : phoneNumber.Text.Remove(phoneNumber.Text.Length - 1, 1);
-                    break;
-                case "CLR":
-                    phoneNumber.Text = string.Empty;
-                    break;
-                default:
-                    phoneNumber.Text += character;
-                    break;
+                switch (character)
+                {
+                    case "<":
+                        phoneNumber.Text = phoneNumber.Text == string.Empty ? string.Empty : phoneNumber.Text.Remove(phoneNumber.Text.Length - 1, 1);
+                        break;
+                    case "CLR":
+                        phoneNumber.Text = string.Empty;
+                        break;
+                    default:
+                        phoneNumber.Text += character;
+                        break;
+                }
             }
+            catch (Exception ex)
+            {
+                Logger.LogError(ex);
+            }            
         }
 
         [Export("Call")]
         public void Call(View view)
         {
-            try
-            {
-                Log.Info("Accessory", nameof(Call) + " : " + "called.");
+            Logger.LogInfo(nameof(ManualPhoneCall) + " - " + nameof(Call), "called.");
 
+            try
+            {                
                 var call = new Intent(Intent.ActionCall);
 
                 call.SetData(Uri.Parse("tel:" + phoneNumber.Text));
 
                 StartActivity(call);
+
+                Logger.LogInfo(nameof(ManualPhoneCall) + " - " + nameof(Call), "Activity: " + nameof(call) + " started.");
             }
             catch (Exception ex)
             {
-                Log.Error("Accessory", ex.GetType().Name + System.Environment.NewLine + ex.ToString() + System.Environment.NewLine + ex.StackTrace);
+                Logger.LogError(ex);
             }            
         }
 
         public void OnUsbDataReceived(byte[] data)
         {
-            if (isActive)
+            Logger.LogInfo(nameof(ManualPhoneCall) + " - " + nameof(OnUsbDataReceived), "called.");
+
+            if (IsActive)
             {
+                Logger.LogInfo(nameof(ManualPhoneCall) + " - " + nameof(OnUsbDataReceived), "activity is active.");
+
                 try
                 {
-                    Log.Info("Accessory", nameof(OnUsbDataReceived) + " : " + "called.");
+                    Logger.LogInfo(nameof(MainActivity) + " - " + nameof(OnUsbDataReceived), data.Length + " bytes received. Message: " + System.BitConverter.ToString(data));
 
-                    string text = Encoding.ASCII.GetString(data);
-
-                    Log.Info("Accessory", nameof(OnUsbDataReceived) + " : " + data.Length + " bytes read. Tanslated to: " + text);
-
-                    switch (text)
-                    {
-                        case "up":
-                            RunOnUiThread(() => HandleUsbData(FocusSearchDirection.Up));
-                            break;
-                        case "down":
-                            RunOnUiThread(() => HandleUsbData(FocusSearchDirection.Down));
-                            break;
-                        case "left":
-                            RunOnUiThread(() => HandleUsbData(FocusSearchDirection.Left));
-                            break;
-                        case "right":
-                            RunOnUiThread(() => HandleUsbData(FocusSearchDirection.Right));
-                            break;
-                        default:
-                            RunOnUiThread(() => HandleUsbData(FocusSearchDirection.Forward));
-                            break;
-                    }
+                    USBHelper.InterpretUSBData(data, this, HandleUsbData);
                 }
                 catch (Exception ex)
                 {
-                    Log.Error("Accessory", ex.GetType().Name + System.Environment.NewLine + ex.ToString() + System.Environment.NewLine + ex.StackTrace);
+                    Logger.LogError(ex);
                 }
             }
         }
 
         private void HandleUsbData(FocusSearchDirection direction)
         {
-            var currentlyFocusedButton = Buttons.Where(x => x.IsFocused).FirstOrDefault();
+            Logger.LogInfo(nameof(ManualPhoneCall) + " - " + nameof(HandleUsbData), "called.");
+            Logger.LogInfo(nameof(ManualPhoneCall) + " - " + nameof(HandleUsbData), nameof(FocusSearchDirection) + " is: " + direction.ToString());
 
-            if (currentlyFocusedButton == null)
+            try
             {
-                button1.RequestFocus();
+                var currentlyFocusedButton = Buttons.Where(x => x.IsFocused).FirstOrDefault();
+
+                if (currentlyFocusedButton == null)
+                {
+                    Logger.LogInfo(nameof(ManualPhoneCall) + " - " + nameof(HandleUsbData), nameof(currentlyFocusedButton) + " was null.");
+
+                    Buttons.First(x => x.Tag.ToString() == "1").RequestFocus();
+                }
+                else if (direction == FocusSearchDirection.Forward)
+                {
+                    currentlyFocusedButton.CallOnClick();
+                }
+                else
+                {
+                    currentlyFocusedButton.RequestFocus(direction);
+                }
             }
-            else if (direction == FocusSearchDirection.Forward)
+            catch (Exception ex)
             {
-                currentlyFocusedButton.CallOnClick();
-            }
-            else
-            {
-                currentlyFocusedButton.RequestFocus(direction);
-            }
+                Logger.LogError(ex);
+            }            
         }
     }
 }

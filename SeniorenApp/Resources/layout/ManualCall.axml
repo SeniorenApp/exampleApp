@@ -1,14 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <GridLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:layout_gravity="center"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
     android:columnCount="3"
+    android:rowCount="5"
     android:orientation="horizontal">
     <TextView
         android:id="@+id/PhoneNumber"
         android:layout_columnSpan="3"
-        android:layout_gravity="fill_horizontal" />
+        android:layout_gravity="fill"
+        android:layout_columnWeight="1"
+        android:layout_rowWeight="1" />
     <Button
         android:text="1"
         android:tag="1"
@@ -17,7 +19,10 @@
         android:nextFocusRight="@+id/ButtonTwo"
         android:nextFocusDown="@+id/ButtonFour"
         android:nextFocusLeft="@+id/ButtonThree"
-        android:nextFocusUp="@+id/MakeCall" />
+        android:nextFocusUp="@+id/MakeCall"
+        android:layout_gravity="fill"
+        android:layout_columnWeight="1"
+        android:layout_rowWeight="1" />
     <Button
         android:text="2"
         android:tag="2"
@@ -26,7 +31,10 @@
         android:nextFocusRight="@+id/ButtonThree"
         android:nextFocusDown="@+id/ButtonFive"
         android:nextFocusLeft="@+id/ButtonOne"
-        android:nextFocusUp="@+id/MakeCall" />
+        android:nextFocusUp="@+id/MakeCall"
+        android:layout_gravity="fill"
+        android:layout_columnWeight="1"
+        android:layout_rowWeight="1" />
     <Button
         android:text="3"
         android:tag="3"
@@ -35,7 +43,10 @@
         android:nextFocusRight="@+id/ButtonOne"
         android:nextFocusDown="@+id/ButtonSix"
         android:nextFocusLeft="@+id/ButtonTwo"
-        android:nextFocusUp="@+id/MakeCall" />
+        android:nextFocusUp="@+id/MakeCall"
+        android:layout_gravity="fill"
+        android:layout_columnWeight="1"
+        android:layout_rowWeight="1" />
     <Button
         android:text="4"
         android:tag="4"
@@ -44,7 +55,10 @@
         android:nextFocusRight="@+id/ButtonFive"
         android:nextFocusDown="@+id/ButtonSeven"
         android:nextFocusLeft="@+id/ButtonSix"
-        android:nextFocusUp="@+id/ButtonOne" />
+        android:nextFocusUp="@+id/ButtonOne"
+        android:layout_gravity="fill"
+        android:layout_columnWeight="1"
+        android:layout_rowWeight="1" />
     <Button
         android:text="5"
         android:tag="5"
@@ -53,7 +67,10 @@
         android:nextFocusRight="@+id/ButtonSix"
         android:nextFocusDown="@+id/ButtonEight"
         android:nextFocusLeft="@+id/ButtonFour"
-        android:nextFocusUp="@+id/ButtonTwo" />
+        android:nextFocusUp="@+id/ButtonTwo"
+        android:layout_gravity="fill"
+        android:layout_columnWeight="1"
+        android:layout_rowWeight="1" />
     <Button
         android:text="6"
         android:tag="6"
@@ -62,7 +79,10 @@
         android:nextFocusRight="@+id/ButtonFour"
         android:nextFocusDown="@+id/ButtonNine"
         android:nextFocusLeft="@+id/ButtonFive"
-        android:nextFocusUp="@+id/ButtonThree" />
+        android:nextFocusUp="@+id/ButtonThree"
+        android:layout_gravity="fill"
+        android:layout_columnWeight="1"
+        android:layout_rowWeight="1" />
     <Button
         android:text="7"
         android:tag="7"
@@ -71,7 +91,10 @@
         android:nextFocusRight="@+id/ButtonEight"
         android:nextFocusDown="@+id/ButtonClear"
         android:nextFocusLeft="@+id/ButtonNine"
-        android:nextFocusUp="@+id/ButtonFour" />
+        android:nextFocusUp="@+id/ButtonFour"
+        android:layout_gravity="fill"
+        android:layout_columnWeight="1"
+        android:layout_rowWeight="1" />
     <Button
         android:text="8"
         android:tag="8"
@@ -80,7 +103,10 @@
         android:nextFocusRight="@+id/ButtonNine"
         android:nextFocusDown="@+id/ButtonZero"
         android:nextFocusLeft="@+id/ButtonSeven"
-        android:nextFocusUp="@+id/ButtonFive" />
+        android:nextFocusUp="@+id/ButtonFive"
+        android:layout_gravity="fill"
+        android:layout_columnWeight="1"
+        android:layout_rowWeight="1" />
     <Button
         android:text="9"
         android:tag="9"
@@ -89,7 +115,10 @@
         android:nextFocusRight="@+id/ButtonSeven"
         android:nextFocusDown="@+id/ButtonRemove"
         android:nextFocusLeft="@+id/ButtonEight"
-        android:nextFocusUp="@+id/ButtonSix" />
+        android:nextFocusUp="@+id/ButtonSix"
+        android:layout_gravity="fill"
+        android:layout_columnWeight="1"
+        android:layout_rowWeight="1" />
     <Button
         android:text="CLR"
         android:tag="CLR"
@@ -98,7 +127,10 @@
         android:nextFocusRight="@+id/ButtonZero"
         android:nextFocusDown="@+id/MakeCall"
         android:nextFocusLeft="@+id/ButtonRemove"
-        android:nextFocusUp="@+id/ButtonSeven" />
+        android:nextFocusUp="@+id/ButtonSeven"
+        android:layout_gravity="fill"
+        android:layout_columnWeight="1"
+        android:layout_rowWeight="1" />
     <Button
         android:text="0"
         android:tag="0"
@@ -107,7 +139,10 @@
         android:nextFocusRight="@+id/ButtonRemove"
         android:nextFocusDown="@+id/MakeCall"
         android:nextFocusLeft="@+id/ButtonClear"
-        android:nextFocusUp="@+id/ButtonEight" />
+        android:nextFocusUp="@+id/ButtonEight"
+        android:layout_gravity="fill"
+        android:layout_columnWeight="1"
+        android:layout_rowWeight="1" />
     <Button
         android:text="&lt;"
         android:tag="&lt;"
@@ -116,15 +151,20 @@
         android:nextFocusRight="@+id/ButtonClear"
         android:nextFocusDown="@+id/MakeCall"
         android:nextFocusLeft="@+id/ButtonZero"
-        android:nextFocusUp="@+id/ButtonNine" />
+        android:nextFocusUp="@+id/ButtonNine"
+        android:layout_gravity="fill"
+        android:layout_columnWeight="1"
+        android:layout_rowWeight="1" />
     <Button
         android:text="Call"
         android:id="@+id/MakeCall"
         android:layout_columnSpan="3"
         android:onClick="Call"
-        android:layout_gravity="fill_horizontal"
         android:nextFocusRight="@+id/MakeCall"
         android:nextFocusDown="@+id/ButtonOne"
         android:nextFocusLeft="@+id/MakeCall"
-        android:nextFocusUp="@+id/ButtonZero" />
+        android:nextFocusUp="@+id/ButtonZero"
+        android:layout_gravity="fill"
+        android:layout_columnWeight="1"
+        android:layout_rowWeight="1" />
 </GridLayout>
