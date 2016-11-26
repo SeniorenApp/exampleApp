@@ -24,6 +24,7 @@
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:id="@+id/Temp1"
+            android:onClick="StartContactListActivity"
             android:nextFocusRight="@+id/CallActivity"
             android:nextFocusLeft="@+id/CallActivity"
             android:nextFocusDown="@+id/tmp2"

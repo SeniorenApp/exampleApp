@@ -1,5 +1,6 @@
 using Android.App;
 using Android.Content;
+using Android.Hardware.Usb;
 using Android.Net;
 using Android.OS;
 using Android.Views;
@@ -16,12 +17,14 @@ namespace SeniorenApp
     public class ManualPhoneCall : Activity
     {
         private static bool _IsActive = false;
+        private TextView _PhoneNumber;
+        private List<Button> _Buttons;
 
         private static bool IsActive
         {
             get
             {
-                Logger.LogInfo(nameof(ManualPhoneCall) + " - " + nameof(IsActive), "Get called. Value was: " + _IsActive.ToString());
+                Logger.LogInfo(nameof(ManualPhoneCall), nameof(IsActive), "Get called. Value was: " + _IsActive.ToString());
 
                 return _IsActive;
             }
@@ -29,28 +32,22 @@ namespace SeniorenApp
             {
                 _IsActive = value;
 
-                Logger.LogInfo(nameof(ManualPhoneCall) + " - " + nameof(IsActive), "Set called. Value is now: " + _IsActive.ToString());
+                Logger.LogInfo(nameof(ManualPhoneCall), nameof(IsActive), "Set called. Value is now: " + _IsActive.ToString());
             }
-        }
-            
-        private TextView phoneNumber;
-
-        private List<Button> Buttons;
+        }                    
 
         protected override void OnCreate(Bundle bundle)
         {
-            Logger.LogInfo(nameof(ManualPhoneCall) + " - " + nameof(OnCreate), " called");
-            Logger.LogInfo(nameof(ManualPhoneCall) + " - " + nameof(OnCreate), " Intent is: " + Intent.ToString());
+            Logger.LogInfo(nameof(ManualPhoneCall), nameof(OnCreate), " called");
+            Logger.LogInfo(nameof(ManualPhoneCall), nameof(OnCreate), " Intent is: " + Intent.ToString());
 
             try
             {               
                 base.OnCreate(bundle);
 
-                SetContentView(Resource.Layout.ManualCall);
+                SetContentView(Resource.Layout.ManualCall);                               
 
-                USBHelper.USBConnection.AddToDataReceivedEvent(OnUsbDataReceived);
-
-                Buttons = new List<Button>()
+                _Buttons = new List<Button>()
                 {
                     { FindViewById<Button>(Resource.Id.ButtonOne) },
                     { FindViewById<Button>(Resource.Id.ButtonTwo) },
@@ -67,7 +64,7 @@ namespace SeniorenApp
                     { FindViewById<Button>(Resource.Id.MakeCall) },
                 };
 
-                phoneNumber = FindViewById<TextView>(Resource.Id.PhoneNumber);
+                _PhoneNumber = FindViewById<TextView>(Resource.Id.PhoneNumber);
 
                 IsActive = true;
             }
@@ -77,65 +74,99 @@ namespace SeniorenApp
             }            
         }
 
+        protected override void OnNewIntent(Intent intent)
+        {
+            Logger.LogInfo(nameof(ManualPhoneCall), nameof(OnNewIntent), " called");
+            Logger.LogInfo(nameof(ManualPhoneCall), nameof(OnNewIntent), " Intent is: " + intent.ToString());
+
+            base.OnNewIntent(intent);
+
+            switch (Intent.Action)
+            {
+                case UsbManager.ActionUsbAccessoryAttached:
+                    Logger.LogInfo(nameof(ManualPhoneCall), nameof(OnNewIntent), "Accessory attached.");
+                    USBHelper.CreateUSBConnection(this, OnUsbDataReceived);
+                    break;
+            }
+        }
+
         protected override void OnStart()
         {
-            Logger.LogInfo(nameof(ManualPhoneCall) + " - " + nameof(OnStart), "called.");
+            Logger.LogInfo(nameof(ManualPhoneCall), nameof(OnStart), "called.");
 
             base.OnStart();
+
+            if (USBHelper.USBConnection != null)
+            {
+                USBHelper.USBConnection.AddToDataReceivedEvent(OnUsbDataReceived);
+            }
 
             IsActive = true;
         }
 
         protected override void OnStop()
         {
-            Logger.LogInfo(nameof(ManualPhoneCall) + " - " + nameof(OnStop), "called.");
+            Logger.LogInfo(nameof(ManualPhoneCall), nameof(OnStop), "called.");
 
             base.OnStop();
+
+            if (USBHelper.USBConnection != null)
+            {
+                USBHelper.USBConnection.RemoveFromDataReceivedEvent(OnUsbDataReceived);
+            }
 
             IsActive = false;
         }
 
         protected override void OnRestart()
         {
-            Logger.LogInfo(nameof(ManualPhoneCall) + " - " + nameof(OnRestart), "called.");
+            Logger.LogInfo(nameof(ManualPhoneCall), nameof(OnRestart), "called.");
 
             base.OnRestart();
+
+            if (USBHelper.USBConnection != null)
+            {
+                USBHelper.USBConnection.AddToDataReceivedEvent(OnUsbDataReceived);
+            }
 
             IsActive = true;
         }
 
         protected override void OnDestroy()
         {
-            Logger.LogInfo(nameof(ManualPhoneCall) + " - " + nameof(OnDestroy), "called.");
+            Logger.LogInfo(nameof(ManualPhoneCall), nameof(OnDestroy), "called.");
 
             base.OnDestroy();
 
-            IsActive = false;
+            if (USBHelper.USBConnection != null)
+            {
+                USBHelper.USBConnection.RemoveFromDataReceivedEvent(OnUsbDataReceived);
+            }
 
-            USBHelper.USBConnection.RemoveFromDataReceivedEvent(OnUsbDataReceived);
+            IsActive = false;                    
         }
 
         [Export("EnterChar")]
         public void EnterChar(View view)
         {
-            Logger.LogInfo(nameof(ManualPhoneCall) + " - " + nameof(EnterChar), "called.");
+            Logger.LogInfo(nameof(ManualPhoneCall), nameof(EnterChar), "called.");
 
             try
             {                
                 string character = view.Tag.ToString();
 
-                Logger.LogInfo(nameof(ManualPhoneCall) + " - " + nameof(EnterChar), "Entered character was: " + character);
+                Logger.LogInfo(nameof(ManualPhoneCall), nameof(EnterChar), "Entered character was: " + character);
 
                 switch (character)
                 {
                     case "<":
-                        phoneNumber.Text = phoneNumber.Text == string.Empty ? string.Empty : phoneNumber.Text.Remove(phoneNumber.Text.Length - 1, 1);
+                        _PhoneNumber.Text = _PhoneNumber.Text == string.Empty ? string.Empty : _PhoneNumber.Text.Remove(_PhoneNumber.Text.Length - 1, 1);
                         break;
                     case "CLR":
-                        phoneNumber.Text = string.Empty;
+                        _PhoneNumber.Text = string.Empty;
                         break;
                     default:
-                        phoneNumber.Text += character;
+                        _PhoneNumber.Text += character;
                         break;
                 }
             }
@@ -148,17 +179,17 @@ namespace SeniorenApp
         [Export("Call")]
         public void Call(View view)
         {
-            Logger.LogInfo(nameof(ManualPhoneCall) + " - " + nameof(Call), "called.");
+            Logger.LogInfo(nameof(ManualPhoneCall), nameof(Call), "called.");
 
             try
             {                
                 var call = new Intent(Intent.ActionCall);
 
-                call.SetData(Uri.Parse("tel:" + phoneNumber.Text));
+                call.SetData(Uri.Parse("tel:" + _PhoneNumber.Text));
 
                 StartActivity(call);
 
-                Logger.LogInfo(nameof(ManualPhoneCall) + " - " + nameof(Call), "Activity: " + nameof(call) + " started.");
+                Logger.LogInfo(nameof(ManualPhoneCall), nameof(Call), "Activity: " + nameof(call) + " started.");
             }
             catch (Exception ex)
             {
@@ -168,15 +199,15 @@ namespace SeniorenApp
 
         public void OnUsbDataReceived(byte[] data)
         {
-            Logger.LogInfo(nameof(ManualPhoneCall) + " - " + nameof(OnUsbDataReceived), "called.");
+            Logger.LogInfo(nameof(ManualPhoneCall), nameof(OnUsbDataReceived), "called.");
 
             if (IsActive)
             {
-                Logger.LogInfo(nameof(ManualPhoneCall) + " - " + nameof(OnUsbDataReceived), "activity is active.");
+                Logger.LogInfo(nameof(ManualPhoneCall), nameof(OnUsbDataReceived), "activity is active.");
 
                 try
                 {
-                    Logger.LogInfo(nameof(MainActivity) + " - " + nameof(OnUsbDataReceived), data.Length + " bytes received. Message: " + System.BitConverter.ToString(data));
+                    Logger.LogInfo(nameof(MainActivity), nameof(OnUsbDataReceived), data.Length + " bytes received. Message: " + System.BitConverter.ToString(data));
 
                     USBHelper.InterpretUSBData(data, this, HandleUsbData);
                 }
@@ -189,18 +220,18 @@ namespace SeniorenApp
 
         private void HandleUsbData(FocusSearchDirection direction)
         {
-            Logger.LogInfo(nameof(ManualPhoneCall) + " - " + nameof(HandleUsbData), "called.");
-            Logger.LogInfo(nameof(ManualPhoneCall) + " - " + nameof(HandleUsbData), nameof(FocusSearchDirection) + " is: " + direction.ToString());
+            Logger.LogInfo(nameof(ManualPhoneCall), nameof(HandleUsbData), "called.");
+            Logger.LogInfo(nameof(ManualPhoneCall), nameof(HandleUsbData), nameof(FocusSearchDirection) + " is: " + direction.ToString());
 
             try
             {
-                var currentlyFocusedButton = Buttons.Where(x => x.IsFocused).FirstOrDefault();
+                var currentlyFocusedButton = _Buttons.Where(x => x.IsFocused).FirstOrDefault();
 
                 if (currentlyFocusedButton == null)
                 {
-                    Logger.LogInfo(nameof(ManualPhoneCall) + " - " + nameof(HandleUsbData), nameof(currentlyFocusedButton) + " was null.");
+                    Logger.LogInfo(nameof(ManualPhoneCall), nameof(HandleUsbData), nameof(currentlyFocusedButton) + " was null.");
 
-                    Buttons.First(x => x.Tag.ToString() == "1").RequestFocus();
+                    _Buttons.First(x => x.Tag.ToString() == "1").RequestFocus();
                 }
                 else if (direction == FocusSearchDirection.Forward)
                 {
