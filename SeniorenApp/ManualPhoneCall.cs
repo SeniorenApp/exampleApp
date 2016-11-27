@@ -1,6 +1,5 @@
 using Android.App;
 using Android.Content;
-using Android.Hardware.Usb;
 using Android.Net;
 using Android.OS;
 using Android.Views;
@@ -14,27 +13,15 @@ using System.Linq;
 namespace SeniorenApp
 {
     [Activity(Label = "Accessory", MainLauncher = false, Icon = "@drawable/icon")]
-    public class ManualPhoneCall : Activity
+    public class ManualPhoneCall : ActivityBase
     {
-        private static bool _IsActive = false;
         private TextView _PhoneNumber;
         private List<Button> _Buttons;
 
-        private static bool IsActive
+        public ManualPhoneCall()
         {
-            get
-            {
-                Logger.LogInfo(nameof(ManualPhoneCall), nameof(IsActive), "Get called. Value was: " + _IsActive.ToString());
-
-                return _IsActive;
-            }
-            set
-            {
-                _IsActive = value;
-
-                Logger.LogInfo(nameof(ManualPhoneCall), nameof(IsActive), "Set called. Value is now: " + _IsActive.ToString());
-            }
-        }                    
+            _HandleUSBData = HandleUsbData;
+        }
 
         protected override void OnCreate(Bundle bundle)
         {
@@ -62,6 +49,7 @@ namespace SeniorenApp
                     { FindViewById<Button>(Resource.Id.ButtonClear) },
                     { FindViewById<Button>(Resource.Id.ButtonRemove) },
                     { FindViewById<Button>(Resource.Id.MakeCall) },
+                    { FindViewById<Button>(Resource.Id.GoBack) },
                 };
 
                 _PhoneNumber = FindViewById<TextView>(Resource.Id.PhoneNumber);
@@ -72,78 +60,6 @@ namespace SeniorenApp
             {
                 Logger.LogError(ex);
             }            
-        }
-
-        protected override void OnNewIntent(Intent intent)
-        {
-            Logger.LogInfo(nameof(ManualPhoneCall), nameof(OnNewIntent), " called");
-            Logger.LogInfo(nameof(ManualPhoneCall), nameof(OnNewIntent), " Intent is: " + intent.ToString());
-
-            base.OnNewIntent(intent);
-
-            switch (Intent.Action)
-            {
-                case UsbManager.ActionUsbAccessoryAttached:
-                    Logger.LogInfo(nameof(ManualPhoneCall), nameof(OnNewIntent), "Accessory attached.");
-                    USBHelper.CreateUSBConnection(this, OnUsbDataReceived);
-                    break;
-            }
-        }
-
-        protected override void OnStart()
-        {
-            Logger.LogInfo(nameof(ManualPhoneCall), nameof(OnStart), "called.");
-
-            base.OnStart();
-
-            if (USBHelper.USBConnection != null)
-            {
-                USBHelper.USBConnection.AddToDataReceivedEvent(OnUsbDataReceived);
-            }
-
-            IsActive = true;
-        }
-
-        protected override void OnStop()
-        {
-            Logger.LogInfo(nameof(ManualPhoneCall), nameof(OnStop), "called.");
-
-            base.OnStop();
-
-            if (USBHelper.USBConnection != null)
-            {
-                USBHelper.USBConnection.RemoveFromDataReceivedEvent(OnUsbDataReceived);
-            }
-
-            IsActive = false;
-        }
-
-        protected override void OnRestart()
-        {
-            Logger.LogInfo(nameof(ManualPhoneCall), nameof(OnRestart), "called.");
-
-            base.OnRestart();
-
-            if (USBHelper.USBConnection != null)
-            {
-                USBHelper.USBConnection.AddToDataReceivedEvent(OnUsbDataReceived);
-            }
-
-            IsActive = true;
-        }
-
-        protected override void OnDestroy()
-        {
-            Logger.LogInfo(nameof(ManualPhoneCall), nameof(OnDestroy), "called.");
-
-            base.OnDestroy();
-
-            if (USBHelper.USBConnection != null)
-            {
-                USBHelper.USBConnection.RemoveFromDataReceivedEvent(OnUsbDataReceived);
-            }
-
-            IsActive = false;                    
         }
 
         [Export("EnterChar")]
@@ -197,25 +113,12 @@ namespace SeniorenApp
             }            
         }
 
-        public void OnUsbDataReceived(byte[] data)
+        [Export("GoToPreviousActivity")]
+        public void GoToPreviousActivity(View view)
         {
-            Logger.LogInfo(nameof(ManualPhoneCall), nameof(OnUsbDataReceived), "called.");
+            Logger.LogInfo(nameof(ManualPhoneCall), nameof(GoToPreviousActivity), "called.");
 
-            if (IsActive)
-            {
-                Logger.LogInfo(nameof(ManualPhoneCall), nameof(OnUsbDataReceived), "activity is active.");
-
-                try
-                {
-                    Logger.LogInfo(nameof(MainActivity), nameof(OnUsbDataReceived), data.Length + " bytes received. Message: " + System.BitConverter.ToString(data));
-
-                    USBHelper.InterpretUSBData(data, this, HandleUsbData);
-                }
-                catch (Exception ex)
-                {
-                    Logger.LogError(ex);
-                }
-            }
+            Finish();
         }
 
         private void HandleUsbData(FocusSearchDirection direction)

@@ -1,7 +1,6 @@
 using Android.App;
 using Android.Content;
 using Android.Database;
-using Android.Hardware.Usb;
 using Android.OS;
 using Android.Provider;
 using Android.Views;
@@ -15,25 +14,13 @@ using static Android.Widget.AdapterView;
 namespace SeniorenApp
 {
     [Activity(Label = "Accessory", MainLauncher = false, Icon = "@drawable/icon")]
-    public class ContactList : Activity
+    public class ContactList : ActivityBase
     {
         ListView _Contacts;
-        private static bool _IsActive = false;
 
-        private static bool IsActive
+        public ContactList()
         {
-            get
-            {
-                Logger.LogInfo(nameof(ContactList), nameof(IsActive), "Get called. Value was: " + _IsActive.ToString());
-
-                return _IsActive;
-            }
-            set
-            {
-                _IsActive = value;
-
-                Logger.LogInfo(nameof(ContactList), nameof(IsActive), "Set called. Value is now: " + _IsActive.ToString());
-            }
+            _HandleUSBData = HandleUSBData;
         }
 
         protected override void OnCreate(Bundle savedInstanceState)
@@ -59,79 +46,7 @@ namespace SeniorenApp
             {
                 Logger.LogError(ex);
             }            
-        }
-
-        protected override void OnNewIntent(Intent intent)
-        {
-            Logger.LogInfo(nameof(ContactList), nameof(OnNewIntent), " called");
-            Logger.LogInfo(nameof(ContactList), nameof(OnNewIntent), " Intent is: " + intent.ToString());
-
-            base.OnNewIntent(intent);
-
-            switch (Intent.Action)
-            {
-                case UsbManager.ActionUsbAccessoryAttached:
-                    Logger.LogInfo(nameof(ContactList), nameof(OnNewIntent), "Accessory attached.");
-                    USBHelper.CreateUSBConnection(this, OnUsbDataReceived);
-                    break;
-            }
-        }
-
-        protected override void OnStart()
-        {
-            Logger.LogInfo(nameof(ContactList), nameof(OnStart), "called.");
-
-            base.OnStart();
-
-            if (USBHelper.USBConnection != null)
-            {
-                USBHelper.USBConnection.AddToDataReceivedEvent(OnUsbDataReceived);
-            }
-
-            IsActive = true;
-        }
-
-        protected override void OnStop()
-        {
-            Logger.LogInfo(nameof(ContactList), nameof(OnStop), "called.");
-
-            base.OnStop();
-
-            if (USBHelper.USBConnection != null)
-            {
-                USBHelper.USBConnection.RemoveFromDataReceivedEvent(OnUsbDataReceived);
-            }
-
-            IsActive = false;
-        }
-
-        protected override void OnRestart()
-        {
-            Logger.LogInfo(nameof(ContactList), nameof(OnRestart), "called.");
-
-            base.OnRestart();
-
-            if (USBHelper.USBConnection != null)
-            {
-                USBHelper.USBConnection.AddToDataReceivedEvent(OnUsbDataReceived);
-            }
-
-            IsActive = true;
-        }
-
-        protected override void OnDestroy()
-        {
-            Logger.LogInfo(nameof(ContactList), nameof(OnDestroy), "called.");
-
-            base.OnDestroy();
-
-            if (USBHelper.USBConnection != null)
-            {
-                USBHelper.USBConnection.RemoveFromDataReceivedEvent(OnUsbDataReceived);
-            }
-
-            IsActive = false;
-        }
+        }  
 
         private List<string> FindContacts()
         {
@@ -181,27 +96,6 @@ namespace SeniorenApp
             StartActivity(call);
 
             Logger.LogInfo(nameof(ContactList), nameof(OnItemClicked), " started activity: " + nameof(call));
-        }
-
-        private void OnUsbDataReceived(byte[] data)
-        {
-            Logger.LogInfo(nameof(ContactList), nameof(OnUsbDataReceived), "called.");
-
-            if (IsActive)
-            {
-                Logger.LogInfo(nameof(ContactList), nameof(OnUsbDataReceived), "activity is active.");
-
-                try
-                {
-                    Logger.LogInfo(nameof(ContactList), nameof(OnUsbDataReceived), data.Length + " bytes received. Message: " + System.BitConverter.ToString(data));
-
-                    USBHelper.InterpretUSBData(data, this, HandleUSBData);
-                }
-                catch (Exception ex)
-                {
-                    Logger.LogError(ex);
-                }
-            }
         }
 
         private void HandleUSBData(FocusSearchDirection direction)

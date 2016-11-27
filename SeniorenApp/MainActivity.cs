@@ -5,7 +5,6 @@ using Android.OS;
 using Android.Views;
 using Android.Widget;
 using Java.Interop;
-using Java.Lang;
 using SeniorenApp.Helper;
 using System.Collections.Generic;
 using System.Linq;
@@ -18,25 +17,13 @@ namespace SeniorenApp
     [IntentFilter(new string[] { "android.hardware.usb.action.USB_ACCESSORY_ATTACHED", "android.hardware.usb.action.USB_ACCESSORY_DETACHED" })]
     [MetaData("android.hardware.usb.action.USB_ACCESSORY_ATTACHED", Resource = "@xml/accessory_filter")]
     [MetaData("android.hardware.usb.action.USB_ACCESSORY_DETACHED", Resource = "@xml/accessory_filter")]    
-    public class MainActivity : Activity
+    public class MainActivity : ActivityBase
     {
-        private List<ImageButton> _Buttons;
-        private static bool _IsActive = false;
+        private List<Button> _Buttons;
 
-        private static bool IsActive
+        public MainActivity()
         {
-            get
-            {
-                Logger.LogInfo(nameof(MainActivity), nameof(IsActive), "Get called. Value was: " + _IsActive.ToString());
-
-                return _IsActive;
-            }
-            set
-            {
-                _IsActive = value;
-
-                Logger.LogInfo(nameof(MainActivity), nameof(IsActive), "Set called. Value is now: " + _IsActive.ToString());
-            }
+            _HandleUSBData = HandleUSBData;
         }
 
         protected override void OnCreate(Bundle bundle)
@@ -50,44 +37,24 @@ namespace SeniorenApp
 
                 SetContentView(Resource.Layout.Main);
 
-                _Buttons = new List<ImageButton>
+                _Buttons = new List<Button>
                 {
-                    { FindViewById<ImageButton>(Resource.Id.CallActivity) },
-                    { FindViewById<ImageButton>(Resource.Id.Temp1) },
-                    { FindViewById<ImageButton>(Resource.Id.Temp2) },
-                    { FindViewById<ImageButton>(Resource.Id.Temp3) },
+                    { FindViewById<Button>(Resource.Id.CallActivity) },
+                    { FindViewById<Button>(Resource.Id.ContactListActivity) },
+                    { FindViewById<Button>(Resource.Id.Temp2) },
+                    { FindViewById<Button>(Resource.Id.AboutActivity) },
                 };
 
                 IsActive = true;                
             }
-            catch (Exception ex)
+            catch (Java.Lang.Exception ex)
             {
                 Logger.LogError(ex);
             }                        
         }
 
-        protected override void OnNewIntent(Intent intent)
-        {
-            Logger.LogInfo(nameof(MainActivity), nameof(OnNewIntent), " called");
-            Logger.LogInfo(nameof(MainActivity), nameof(OnNewIntent), " Intent is: " + intent.ToString());
-
-            base.OnNewIntent(intent);
-
-            switch (Intent.Action)
-            {
-                case UsbManager.ActionUsbAccessoryAttached:
-                    Logger.LogInfo(nameof(MainActivity), nameof(OnNewIntent), "Accessory attached.");
-                    USBHelper.CreateUSBConnection(this, OnUsbDataReceived);
-                    break;
-            }
-        }
-
         protected override void OnStart()
         {
-            Logger.LogInfo(nameof(MainActivity), nameof(OnStart), "called.");
-
-            base.OnStart();
-
             switch (Intent.Action)
             {
                 case UsbManager.ActionUsbAccessoryAttached:
@@ -96,55 +63,8 @@ namespace SeniorenApp
                     break;
             }
 
-            if (USBHelper.USBConnection != null)
-            {
-                USBHelper.USBConnection.AddToDataReceivedEvent(OnUsbDataReceived);
-            }
-
-            IsActive = true;
-        }
-
-        protected override void OnStop()
-        {
-            Logger.LogInfo(nameof(MainActivity), nameof(OnStop), "called.");
-
-            base.OnStop();
-
-            if (USBHelper.USBConnection != null)
-            {
-                USBHelper.USBConnection.RemoveFromDataReceivedEvent(OnUsbDataReceived);
-            }
-
-            IsActive = false;
-        }
-
-        protected override void OnRestart()
-        {
-            Logger.LogInfo(nameof(MainActivity), nameof(OnRestart), "called.");
-
-            base.OnRestart();
-
-            if (USBHelper.USBConnection != null)
-            {
-                USBHelper.USBConnection.AddToDataReceivedEvent(OnUsbDataReceived);
-            }
-
-            IsActive = true;
-        }
-
-        protected override void OnDestroy()
-        {
-            Logger.LogInfo(nameof(MainActivity), nameof(OnDestroy), "called.");
-
-            base.OnDestroy();
-
-            if (USBHelper.USBConnection != null)
-            {
-                USBHelper.USBConnection.RemoveFromDataReceivedEvent(OnUsbDataReceived);
-            }
-
-            IsActive = false;
-        }
+            base.OnStart();           
+        }       
 
         [Export("StartPhoneCallActivity")]
         public void StartPhoneCallActivity(View view)
@@ -162,32 +82,16 @@ namespace SeniorenApp
             StartActivity(typeof(ContactList));
         }
 
-        public void OnUsbDataReceived(byte[] data)
+        [Export("StartAboutActivity")]
+        public void StartAboutActivity(View view)
         {
-            Logger.LogInfo(nameof(MainActivity), nameof(OnUsbDataReceived), "called.");
+            Logger.LogInfo(nameof(MainActivity), nameof(StartAboutActivity), "called.");
 
-            if (IsActive)
-            {
-                Logger.LogInfo(nameof(MainActivity), nameof(OnUsbDataReceived), "activity is active.");
-
-                try
-                {
-                    Logger.LogInfo(nameof(MainActivity), nameof(OnUsbDataReceived), data.Length + " bytes received. Message: " + System.BitConverter.ToString(data));
-
-                    USBHelper.InterpretUSBData(data, this, HandleUSBData);
-                }
-                catch (Exception ex)
-                {
-                    Logger.LogError(ex);
-                }
-            }            
+            StartActivity(typeof(About));
         }
 
         private void HandleUSBData(FocusSearchDirection direction)
         {
-            Logger.LogInfo(nameof(MainActivity), nameof(HandleUSBData), "called.");
-            Logger.LogInfo(nameof(MainActivity), nameof(HandleUSBData), nameof(FocusSearchDirection) + " is: " + direction.ToString());
-
             try
             {
                 var currentlyFocusedButton = _Buttons.Where(x => x.IsFocused).FirstOrDefault();
@@ -207,7 +111,7 @@ namespace SeniorenApp
                     currentlyFocusedButton.RequestFocus(direction);
                 }
             }
-            catch (Exception ex)
+            catch (Java.Lang.Exception ex)
             {
                 Logger.LogError(ex);
             }
