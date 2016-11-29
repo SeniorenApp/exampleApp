@@ -12,6 +12,8 @@ namespace SeniorenApp.USBCommunication
 {
     internal class Connection
     {
+        private const int HEADER_LENGTH = 2;
+
         private UsbAccessory _Accessory;
         private UsbManager _Manager;
         private FileInputStream _InputStream;
@@ -135,22 +137,44 @@ namespace SeniorenApp.USBCommunication
                 {
                     Logger.LogInfo(nameof(Connection), nameof(ReceiveData), nameof(_InputStream) + " was not null.");
 
-                    try
+                    if (_InputStream.FD != null)
                     {
-                        var data = new byte[_InputStream.Available()];
+                        Logger.LogInfo(nameof(Connection), nameof(ReceiveData), nameof(_InputStream.FD) + " was not null.");
 
-                        _InputStream.Read(data);
+                        try
+                        {
+                            var header = new byte[HEADER_LENGTH];
 
-                        Logger.LogInfo(nameof(Connection), nameof(ReceiveData), data.Length + " bytes received. Message: " + BitConverter.ToString(data));                        
+                            _InputStream.Read(header, 0, header.Length);
 
-                        _OnDataReceived(data);
+                            int bytesRead = 0;
+                            int bytesToReceive = BitConverter.ToInt32(header, 0);
 
-                        Logger.LogInfo(nameof(Connection), nameof(ReceiveData), nameof(_OnDataReceived) + " called.");
-                    }
-                    catch (Java.Lang.Exception ex)
-                    {
-                        Logger.LogError(ex);
-                    }
+                            Logger.LogInfo(nameof(Connection), nameof(ReceiveData), "Header with: " + header.Length + " bytes received. Message: " + bytesToReceive.ToString() + " bytes will be received.");
+
+                            var data = new byte[bytesToReceive];
+
+                            do
+                            {
+                                var tmp =  Convert.ToByte(_InputStream.Read());
+
+                                data[bytesRead] = tmp;
+
+                                bytesRead++;
+
+                            } while (bytesRead != bytesToReceive);
+
+                            Logger.LogInfo(nameof(Connection), nameof(ReceiveData), data.Length + " bytes received. Message: " + BitConverter.ToString(data));
+
+                            _OnDataReceived(data);
+
+                            Logger.LogInfo(nameof(Connection), nameof(ReceiveData), nameof(_OnDataReceived) + " called.");
+                        }
+                        catch (Java.Lang.Exception ex)
+                        {
+                            Logger.LogError(ex);
+                        }
+                    }                    
                 }
                 else if (_TaskCancelToken.IsCancellationRequested)
                 {
