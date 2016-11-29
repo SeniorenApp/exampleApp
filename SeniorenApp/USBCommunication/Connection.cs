@@ -1,9 +1,11 @@
+using Android.Content;
 using Android.Hardware.Usb;
 using Android.OS;
 using Java.IO;
 using SeniorenApp.Helper;
 using System;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace SeniorenApp.USBCommunication
@@ -14,6 +16,7 @@ namespace SeniorenApp.USBCommunication
         private UsbManager _Manager;
         private FileInputStream _InputStream;
         private FileOutputStream _OutputStream;
+        private CancellationTokenSource _TaskCancelToken;
 
         private Action<byte[]> _OnDataReceived;
 
@@ -21,17 +24,27 @@ namespace SeniorenApp.USBCommunication
         {
             Logger.LogInfo(nameof(Connection), "Constructor", "called.");
 
-            _Accessory = accessory;
-            _Manager = manager;
+            try
+            {
+                _Accessory = accessory;
+                _Manager = manager;
 
-            _OnDataReceived += onDataReceived;
+                _OnDataReceived += onDataReceived;
 
-            OpenConnection();
+                OpenConnection();
 
-            Task.Factory.StartNew(() => ReceiveData());
+                _TaskCancelToken = new CancellationTokenSource();
+                var cancelToken = _TaskCancelToken.Token;
 
-            Logger.LogInfo(nameof(Connection), "Constructor", nameof(ReceiveData) + " task : " + "created.");
-        }
+                Task.Factory.StartNew(() => ReceiveData(), cancelToken);
+
+                Logger.LogInfo(nameof(Connection), "Constructor", nameof(ReceiveData) + " task : " + "created.");
+            }
+            catch (Exception ex)
+            {
+                Logger.LogError(ex);
+            }            
+        }        
 
         public void AddToDataReceivedEvent(Action<byte[]> onDataReceived)
         {
@@ -76,6 +89,21 @@ namespace SeniorenApp.USBCommunication
             }
         }
 
+        public void CloseConnection()
+        {
+            Logger.LogInfo(nameof(Connection), nameof(CloseConnection), "called.");
+
+            _InputStream = null;
+            _OutputStream = null;
+
+            _Accessory = null;
+            _Manager = null;
+
+            _OnDataReceived = null;
+
+            _TaskCancelToken.Cancel();
+        }
+
         public void SendData(byte[] data)
         {
             Logger.LogInfo(nameof(Connection), nameof(SendData), "called."); 
@@ -109,7 +137,7 @@ namespace SeniorenApp.USBCommunication
 
                     try
                     {
-                        var data = new byte[16384];
+                        var data = new byte[_InputStream.Available()];
 
                         _InputStream.Read(data);
 
@@ -123,6 +151,10 @@ namespace SeniorenApp.USBCommunication
                     {
                         Logger.LogError(ex);
                     }
+                }
+                else if (_TaskCancelToken.IsCancellationRequested)
+                {
+                    return;
                 }
             }
         }

@@ -49,22 +49,6 @@ namespace SeniorenApp
             }
         }
 
-        protected override void OnNewIntent(Intent intent)
-        {
-            Logger.LogInfo(GetType().Name, nameof(OnNewIntent), " called");
-            Logger.LogInfo(GetType().Name, nameof(OnNewIntent), " Intent is: " + intent.ToString());
-
-            base.OnNewIntent(intent);
-
-            switch (Intent.Action)
-            {
-                case UsbManager.ActionUsbAccessoryAttached:
-                    Logger.LogInfo(GetType().Name, nameof(OnNewIntent), "Accessory attached.");
-                    USBHelper.CreateUSBConnection(this, OnUsbDataReceived);
-                    break;
-            }
-        }
-
         protected override void OnStart()
         {
             Logger.LogInfo(GetType().Name, nameof(OnStart), "called.");
