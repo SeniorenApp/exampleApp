@@ -5,6 +5,7 @@ using Java.IO;
 using SeniorenApp.Helper;
 using System;
 using System.Linq;
+using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -148,7 +149,7 @@ namespace SeniorenApp.USBCommunication
                             _InputStream.Read(header, 0, header.Length);
 
                             int bytesRead = 0;
-                            int bytesToReceive = BitConverter.ToInt32(header, 0);
+                            int bytesToReceive = Convert.ToInt32(Encoding.ASCII.GetString(header));
 
                             Logger.LogInfo(nameof(Connection), nameof(ReceiveData), "Header with: " + header.Length + " bytes received. Message: " + bytesToReceive.ToString() + " bytes will be received.");
 
