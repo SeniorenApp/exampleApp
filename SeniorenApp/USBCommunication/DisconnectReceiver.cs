@@ -6,9 +6,9 @@ using SeniorenApp.Helper;
 namespace SeniorenApp.USBCommunication
 {
     [BroadcastReceiver]
-    [IntentFilter(new[] { UsbManager.ActionUsbDeviceAttached, UsbManager.ActionUsbDeviceDetached })]
-    [MetaData(UsbManager.ActionUsbDeviceAttached, Resource = "@xml/accessory_filter")]
-    [MetaData(UsbManager.ActionUsbDeviceDetached, Resource = "@xml/accessory_filter")]
+    [IntentFilter(new[] { UsbManager.ActionUsbAccessoryAttached, UsbManager.ActionUsbAccessoryDetached })]
+    [MetaData(UsbManager.ActionUsbAccessoryAttached, Resource = "@xml/accessory_filter")]
+    [MetaData(UsbManager.ActionUsbAccessoryDetached, Resource = "@xml/accessory_filter")]
     internal class DisconnectReceiver : BroadcastReceiver
     {
         public override void OnReceive(Context context, Intent intent)
