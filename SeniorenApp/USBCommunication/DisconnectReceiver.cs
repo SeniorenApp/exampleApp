@@ -1,3 +1,4 @@
+using Android.App;
 using Android.Content;
 using Android.Hardware.Usb;
 using SeniorenApp.Helper;
@@ -5,6 +6,9 @@ using SeniorenApp.Helper;
 namespace SeniorenApp.USBCommunication
 {
     [BroadcastReceiver]
+    [IntentFilter(new[] { UsbManager.ActionUsbDeviceAttached, UsbManager.ActionUsbDeviceDetached })]
+    [MetaData(UsbManager.ActionUsbDeviceAttached, Resource = "@xml/accessory_filter")]
+    [MetaData(UsbManager.ActionUsbDeviceDetached, Resource = "@xml/accessory_filter")]
     internal class DisconnectReceiver : BroadcastReceiver
     {
         public override void OnReceive(Context context, Intent intent)
