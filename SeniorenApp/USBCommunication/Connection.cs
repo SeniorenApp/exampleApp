@@ -166,7 +166,11 @@ namespace SeniorenApp.USBCommunication
 
                             Logger.LogInfo(nameof(Connection), nameof(ReceiveData), data.Length + " bytes received. Message: " + BitConverter.ToString(data));
 
-                            _OnDataReceived(data);
+                            byte[] dataWithoutEOSBytes = new byte[data.Length - 1];
+
+                            Array.Copy(data, dataWithoutEOSBytes, data.Length - 1);
+
+                            _OnDataReceived(dataWithoutEOSBytes);
 
                             Logger.LogInfo(nameof(Connection), nameof(ReceiveData), nameof(_OnDataReceived) + " called.");
                         }
