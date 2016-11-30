@@ -11,6 +11,11 @@ namespace SeniorenApp.USBCommunication
     [MetaData(UsbManager.ActionUsbAccessoryDetached, Resource = "@xml/accessory_filter")]
     internal class DisconnectReceiver : BroadcastReceiver
     {
+        public DisconnectReceiver()
+        {
+            Logger.LogInfo(nameof(DisconnectReceiver), "Constructor", "DisconnectReceiver created.");
+        }
+
         public override void OnReceive(Context context, Intent intent)
         {
             Logger.LogInfo(nameof(DisconnectReceiver), nameof(OnReceive), "called.");

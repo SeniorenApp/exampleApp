@@ -1,11 +1,9 @@
-using Android.Content;
 using Android.Hardware.Usb;
 using Android.OS;
 using Java.IO;
 using SeniorenApp.Helper;
 using System;
 using System.Linq;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -19,7 +17,9 @@ namespace SeniorenApp.USBCommunication
         private UsbManager _Manager;
         private FileInputStream _InputStream;
         private FileOutputStream _OutputStream;
-        private CancellationTokenSource _TaskCancelToken;
+
+        private CancellationTokenSource _TaskCancelTokenSource;
+        private CancellationToken _TaskCancelToken;
 
         private Action<byte[]> _OnDataReceived;
 
@@ -36,10 +36,10 @@ namespace SeniorenApp.USBCommunication
 
                 OpenConnection();
 
-                _TaskCancelToken = new CancellationTokenSource();
-                var cancelToken = _TaskCancelToken.Token;
+                _TaskCancelTokenSource = new CancellationTokenSource();
+                _TaskCancelToken = _TaskCancelTokenSource.Token;
 
-                Task.Factory.StartNew(() => ReceiveData(), cancelToken);
+                Task.Factory.StartNew(() => ReceiveData(), _TaskCancelToken);
 
                 Logger.LogInfo(nameof(Connection), "Constructor", nameof(ReceiveData) + " task : " + "created.");
             }
@@ -104,7 +104,7 @@ namespace SeniorenApp.USBCommunication
 
             _OnDataReceived = null;
 
-            _TaskCancelToken.Cancel();
+            _TaskCancelTokenSource.Cancel();
         }
 
         public void SendData(byte[] data)
@@ -144,6 +144,11 @@ namespace SeniorenApp.USBCommunication
 
                         try
                         {
+                            if (_TaskCancelToken.IsCancellationRequested)
+                            {
+                                return;
+                            }
+
                             int bytesRead = 0;
                             byte[] data = new byte[1];
 
@@ -179,10 +184,6 @@ namespace SeniorenApp.USBCommunication
                             Logger.LogError(ex);
                         }
                     }                    
-                }
-                else if (_TaskCancelToken.IsCancellationRequested)
-                {
-                    return;
                 }
             }
         }
