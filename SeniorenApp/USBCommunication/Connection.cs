@@ -13,7 +13,7 @@ namespace SeniorenApp.USBCommunication
 {
     internal class Connection
     {
-        private const int HEADER_LENGTH = 2;
+        private const byte ENDOFSTREAMBYTE = 0x04;
 
         private UsbAccessory _Accessory;
         private UsbManager _Manager;
@@ -144,26 +144,25 @@ namespace SeniorenApp.USBCommunication
 
                         try
                         {
-                            var header = new byte[HEADER_LENGTH];
-
-                            _InputStream.Read(header, 0, header.Length);
-
                             int bytesRead = 0;
-                            int bytesToReceive = Convert.ToInt32(Encoding.ASCII.GetString(header));
-
-                            Logger.LogInfo(nameof(Connection), nameof(ReceiveData), "Header with: " + header.Length + " bytes received. Message: " + bytesToReceive.ToString() + " bytes will be received.");
-
-                            var data = new byte[bytesToReceive];
+                            byte[] data = new byte[1];
 
                             do
                             {
-                                var tmp =  Convert.ToByte(_InputStream.Read());
+                                byte byteRead =  Convert.ToByte(_InputStream.Read());
 
-                                data[bytesRead] = tmp;
+                                Logger.LogInfo(nameof(Connection), nameof(ReceiveData), byteRead.ToString() + " byte received. Complete message: " + BitConverter.ToString(data));
+
+                                if (data.Length <= bytesRead)
+                                {
+                                    Array.Resize(ref data, bytesRead + 1);
+                                }
+
+                                data[bytesRead] = byteRead;                                
 
                                 bytesRead++;
 
-                            } while (bytesRead != bytesToReceive);
+                            } while (data[bytesRead - 1] != ENDOFSTREAMBYTE);
 
                             Logger.LogInfo(nameof(Connection), nameof(ReceiveData), data.Length + " bytes received. Message: " + BitConverter.ToString(data));
 
