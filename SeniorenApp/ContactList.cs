@@ -36,7 +36,7 @@ namespace SeniorenApp
 
                 _Contacts = FindViewById<ListView>(Resource.Id.ContactsList);
                 _Contacts.Clickable = true;
-                _Contacts.ItemClick += OnItemClicked;
+                _Contacts.ItemClick += OnItemClicked;                
 
                 ArrayAdapter<string> adapter = new ArrayAdapter<string>(ApplicationContext, Resource.Layout.ContactsListItem, FindContacts());
 

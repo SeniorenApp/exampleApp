@@ -45,6 +45,8 @@ namespace SeniorenApp
                     { FindViewById<Button>(Resource.Id.AboutActivity) },
                 };
 
+                _Buttons.ForEach(x => EnableFocusable(x));
+
                 IsActive = true;                
             }
             catch (Java.Lang.Exception ex)
@@ -92,6 +94,8 @@ namespace SeniorenApp
 
         private void HandleUSBData(FocusSearchDirection direction)
         {
+            Logger.LogInfo(nameof(MainActivity), nameof(HandleUSBData), "called.");
+
             try
             {
                 var currentlyFocusedButton = _Buttons.Where(x => x.IsFocused).FirstOrDefault();

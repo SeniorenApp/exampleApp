@@ -22,9 +22,7 @@
         android:nextFocusUp="@+id/MakeCall"
         android:layout_gravity="fill"
         android:layout_columnWeight="1"
-        android:layout_rowWeight="1"
-        android:focusable="true"
-        android:focusableInTouchMode="true"/>
+        android:layout_rowWeight="1" />
     <Button
         android:text="2"
         android:tag="2"
@@ -36,9 +34,7 @@
         android:nextFocusUp="@+id/MakeCall"
         android:layout_gravity="fill"
         android:layout_columnWeight="1"
-        android:layout_rowWeight="1" 
-        android:focusable="true"
-        android:focusableInTouchMode="true"/>
+        android:layout_rowWeight="1" />
     <Button
         android:text="3"
         android:tag="3"
@@ -51,8 +47,7 @@
         android:layout_gravity="fill"
         android:layout_columnWeight="1"
         android:layout_rowWeight="1"
-        android:focusable="true"
-        android:focusableInTouchMode="true"/>
+         />
     <Button
         android:text="4"
         android:tag="4"
@@ -64,9 +59,7 @@
         android:nextFocusUp="@+id/ButtonOne"
         android:layout_gravity="fill"
         android:layout_columnWeight="1"
-        android:layout_rowWeight="1"
-        android:focusable="true"
-        android:focusableInTouchMode="true"/>
+        android:layout_rowWeight="1" />
     <Button
         android:text="5"
         android:tag="5"
@@ -78,9 +71,7 @@
         android:nextFocusUp="@+id/ButtonTwo"
         android:layout_gravity="fill"
         android:layout_columnWeight="1"
-        android:layout_rowWeight="1" 
-        android:focusable="true"
-        android:focusableInTouchMode="true"/>
+        android:layout_rowWeight="1" />
     <Button
         android:text="6"
         android:tag="6"
@@ -92,9 +83,7 @@
         android:nextFocusUp="@+id/ButtonThree"
         android:layout_gravity="fill"
         android:layout_columnWeight="1"
-        android:layout_rowWeight="1" 
-        android:focusable="true"
-        android:focusableInTouchMode="true"/>
+        android:layout_rowWeight="1" />
     <Button
         android:text="7"
         android:tag="7"
@@ -106,9 +95,7 @@
         android:nextFocusUp="@+id/ButtonFour"
         android:layout_gravity="fill"
         android:layout_columnWeight="1"
-        android:layout_rowWeight="1" 
-        android:focusable="true"
-        android:focusableInTouchMode="true"/>
+        android:layout_rowWeight="1" />
     <Button
         android:text="8"
         android:tag="8"
@@ -120,9 +107,7 @@
         android:nextFocusUp="@+id/ButtonFive"
         android:layout_gravity="fill"
         android:layout_columnWeight="1"
-        android:layout_rowWeight="1" 
-        android:focusable="true"
-        android:focusableInTouchMode="true"/>
+        android:layout_rowWeight="1" />
     <Button
         android:text="9"
         android:tag="9"
@@ -134,9 +119,7 @@
         android:nextFocusUp="@+id/ButtonSix"
         android:layout_gravity="fill"
         android:layout_columnWeight="1"
-        android:layout_rowWeight="1" 
-        android:focusable="true"
-        android:focusableInTouchMode="true"/>
+        android:layout_rowWeight="1" />
     <Button
         android:text="CLR"
         android:tag="CLR"
@@ -148,9 +131,7 @@
         android:nextFocusUp="@+id/ButtonSeven"
         android:layout_gravity="fill"
         android:layout_columnWeight="1"
-        android:layout_rowWeight="1" 
-        android:focusable="true"
-        android:focusableInTouchMode="true"/>
+        android:layout_rowWeight="1" />
     <Button
         android:text="0"
         android:tag="0"
@@ -162,9 +143,7 @@
         android:nextFocusUp="@+id/ButtonEight"
         android:layout_gravity="fill"
         android:layout_columnWeight="1"
-        android:layout_rowWeight="1" 
-        android:focusable="true"
-        android:focusableInTouchMode="true"/>
+        android:layout_rowWeight="1" />
     <Button
         android:text="&lt;"
         android:tag="&lt;"
@@ -176,9 +155,7 @@
         android:nextFocusUp="@+id/ButtonNine"
         android:layout_gravity="fill"
         android:layout_columnWeight="1"
-        android:layout_rowWeight="1" 
-        android:focusable="true"
-        android:focusableInTouchMode="true"/>
+        android:layout_rowWeight="1" />
     <Button
         android:text="Call"
         android:id="@+id/MakeCall"
@@ -190,9 +167,7 @@
         android:nextFocusUp="@+id/ButtonZero"
         android:layout_gravity="fill"
         android:layout_columnWeight="1"
-        android:layout_rowWeight="1" 
-        android:focusable="true"
-        android:focusableInTouchMode="true"/>
+        android:layout_rowWeight="1" />
     <Button
         android:text="Back"
         android:id="@+id/GoBack"
@@ -204,7 +179,5 @@
         android:nextFocusUp="@+id/MakeCall"
         android:layout_gravity="fill"
         android:layout_columnWeight="1"
-        android:layout_rowWeight="1" 
-        android:focusable="true"
-        android:focusableInTouchMode="true"/>
+        android:layout_rowWeight="1" />
 </GridLayout>

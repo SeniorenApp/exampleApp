@@ -52,7 +52,9 @@ namespace SeniorenApp
                     { FindViewById<Button>(Resource.Id.GoBack) },
                 };
 
-                _PhoneNumber = FindViewById<TextView>(Resource.Id.PhoneNumber);
+                _Buttons.ForEach(x => EnableFocusable(x));
+
+                _PhoneNumber = FindViewById<TextView>(Resource.Id.PhoneNumber);               
 
                 IsActive = true;
             }
@@ -124,7 +126,7 @@ namespace SeniorenApp
         private void HandleUsbData(FocusSearchDirection direction)
         {
             Logger.LogInfo(nameof(ManualPhoneCall), nameof(HandleUsbData), "called.");
-            Logger.LogInfo(nameof(ManualPhoneCall), nameof(HandleUsbData), nameof(FocusSearchDirection) + " is: " + direction.ToString());
+            Logger.LogInfo(nameof(ManualPhoneCall), nameof(HandleUsbData), nameof(FocusSearchDirection) + " is: " + direction.ToString());           
 
             try
             {
@@ -134,15 +136,19 @@ namespace SeniorenApp
                 {
                     Logger.LogInfo(nameof(ManualPhoneCall), nameof(HandleUsbData), nameof(currentlyFocusedButton) + " was null.");
 
-                    _Buttons.First(x => x.Tag.ToString() == "1").RequestFocus();
+                    _Buttons.First(x => x.Tag.ToString() == "1").RequestFocus();                    
                 }
                 else if (direction == FocusSearchDirection.Forward)
                 {
+                    Logger.LogInfo(nameof(ManualPhoneCall), nameof(HandleUsbData), currentlyFocusedButton.Id + " called on click.");
+
                     currentlyFocusedButton.CallOnClick();
                 }
                 else
-                {
-                    currentlyFocusedButton.RequestFocus(direction);
+                {                    
+                    Logger.LogInfo(nameof(ManualPhoneCall), nameof(HandleUsbData), currentlyFocusedButton.RequestFocus(direction).ToString() + " focused.");
+
+                    Logger.LogInfo(nameof(ManualPhoneCall), nameof(HandleUsbData), _Buttons.Where(x => x.IsFocused).FirstOrDefault().Id + " focused.");
                 }
             }
             catch (Exception ex)

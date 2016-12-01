@@ -3,6 +3,7 @@ using Android.OS;
 using Java.IO;
 using SeniorenApp.Helper;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
@@ -96,11 +97,11 @@ namespace SeniorenApp.USBCommunication
         {
             Logger.LogInfo(nameof(Connection), nameof(CloseConnection), "called.");
 
-            _InputStream = null;
-            _OutputStream = null;
+            _InputStream.Dispose();
+            _OutputStream.Dispose();
 
-            _Accessory = null;
-            _Manager = null;
+            _Accessory.Dispose();
+            _Manager.Dispose();
 
             _OnDataReceived = null;
 
@@ -146,38 +147,37 @@ namespace SeniorenApp.USBCommunication
                         {
                             if (_TaskCancelToken.IsCancellationRequested)
                             {
+                                Logger.LogInfo(nameof(Connection), nameof(ReceiveData), "cancelled.");
                                 return;
                             }
-
-                            int bytesRead = 0;
-                            byte[] data = new byte[1];
-
+                                                        
+                            var data = new List<byte>();
+                           
                             do
                             {
-                                byte byteRead =  Convert.ToByte(_InputStream.Read());
+                                var buffer = new byte[4096];
 
-                                Logger.LogInfo(nameof(Connection), nameof(ReceiveData), byteRead.ToString() + " byte received. Complete message: " + BitConverter.ToString(data));
+                                _InputStream.Read(buffer);
 
-                                if (data.Length <= bytesRead)
-                                {
-                                    Array.Resize(ref data, bytesRead + 1);
-                                }
+                                data.AddRange(buffer);                                                                                                
 
-                                data[bytesRead] = byteRead;                                
+                                Logger.LogInfo(nameof(Connection), nameof(ReceiveData), "Complete message: " + BitConverter.ToString(data.ToArray()));
 
-                                bytesRead++;
+                            } while (!data.Any(x => x == ENDOFSTREAMBYTE));
 
-                            } while (data[bytesRead - 1] != ENDOFSTREAMBYTE);
+                            Logger.LogInfo(nameof(Connection), nameof(ReceiveData), data.Count + " bytes received. Message: " + BitConverter.ToString(data.ToArray()));
 
-                            Logger.LogInfo(nameof(Connection), nameof(ReceiveData), data.Length + " bytes received. Message: " + BitConverter.ToString(data));
+                            Logger.LogInfo(nameof(Connection), nameof(ReceiveData), "Index of ENDOFSTREAMBYTE: " + data.IndexOf(ENDOFSTREAMBYTE) + " Index of Last Item: " + (data.Count - 1).ToString());
 
-                            byte[] dataWithoutEOSBytes = new byte[data.Length - 1];
+                            data.RemoveRange(data.IndexOf(ENDOFSTREAMBYTE), data.Count - data.IndexOf(ENDOFSTREAMBYTE));
 
-                            Array.Copy(data, dataWithoutEOSBytes, data.Length - 1);
-
-                            _OnDataReceived(dataWithoutEOSBytes);
+                            _OnDataReceived(data.ToArray());
 
                             Logger.LogInfo(nameof(Connection), nameof(ReceiveData), nameof(_OnDataReceived) + " called.");
+                        }
+                        catch (IOException ex)
+                        {
+                            USBHelper.CloseUSBConnection();
                         }
                         catch (Java.Lang.Exception ex)
                         {

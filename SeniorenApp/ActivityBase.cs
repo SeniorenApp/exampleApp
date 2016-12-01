@@ -117,5 +117,11 @@ namespace SeniorenApp
 
             IsActive = false;
         }
+
+        protected void EnableFocusable(View element)
+        {
+            element.Focusable = true;
+            element.FocusableInTouchMode = true;            
+        }
     }
 }
