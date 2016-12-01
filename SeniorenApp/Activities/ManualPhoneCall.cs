@@ -10,7 +10,7 @@ using SeniorenApp.Helper;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace SeniorenApp
+namespace SeniorenApp.Activities
 {
     [Activity(Label = "Accessory", MainLauncher = false, Icon = "@drawable/icon")]
     public class ManualPhoneCall : ActivityBase
@@ -136,7 +136,7 @@ namespace SeniorenApp
                 {
                     Logger.LogInfo(nameof(ManualPhoneCall), nameof(HandleUsbData), nameof(currentlyFocusedButton) + " was null.");
 
-                    _Buttons.First(x => x.Tag.ToString() == "1").RequestFocus();                    
+                    SetFocus(_Buttons.First(x => x.Tag.ToString() == "1"));
                 }
                 else if (direction == FocusSearchDirection.Forward)
                 {
@@ -145,10 +145,8 @@ namespace SeniorenApp
                     currentlyFocusedButton.CallOnClick();
                 }
                 else
-                {                    
-                    Logger.LogInfo(nameof(ManualPhoneCall), nameof(HandleUsbData), currentlyFocusedButton.RequestFocus(direction).ToString() + " focused.");
-
-                    Logger.LogInfo(nameof(ManualPhoneCall), nameof(HandleUsbData), _Buttons.Where(x => x.IsFocused).FirstOrDefault().Id + " focused.");
+                {                                        
+                    SetFocus(currentlyFocusedButton, direction);
                 }
             }
             catch (Exception ex)

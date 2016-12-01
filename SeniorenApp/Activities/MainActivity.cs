@@ -9,7 +9,7 @@ using SeniorenApp.Helper;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace SeniorenApp
+namespace SeniorenApp.Activities
 {
 
     [Activity(Label = "Accessory", MainLauncher = true, Icon = "@drawable/icon")]
@@ -104,7 +104,7 @@ namespace SeniorenApp
                 {
                     Logger.LogInfo(nameof(MainActivity), nameof(HandleUSBData), nameof(currentlyFocusedButton) + " was null.");
 
-                    _Buttons.First().RequestFocus();
+                    SetFocus(_Buttons.First());
                 }
                 else if (direction == FocusSearchDirection.Forward)
                 {
@@ -112,7 +112,7 @@ namespace SeniorenApp
                 }
                 else
                 {
-                    currentlyFocusedButton.RequestFocus(direction);
+                    SetFocus(currentlyFocusedButton, direction);
                 }
             }
             catch (Java.Lang.Exception ex)

@@ -10,7 +10,7 @@ using Java.IO;
 using SeniorenApp.Helper;
 using System.Text;
 
-namespace SeniorenApp
+namespace SeniorenApp.Activities
 {
     [Activity(Label = "Accessory", MainLauncher = false, Icon = "@drawable/icon")]
     public class About : ActivityBase

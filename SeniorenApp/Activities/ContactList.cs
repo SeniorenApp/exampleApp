@@ -11,7 +11,7 @@ using System.Collections.Generic;
 using System.Linq;
 using static Android.Widget.AdapterView;
 
-namespace SeniorenApp
+namespace SeniorenApp.Activities
 {
     [Activity(Label = "Accessory", MainLauncher = false, Icon = "@drawable/icon")]
     public class ContactList : ActivityBase
@@ -36,11 +36,14 @@ namespace SeniorenApp
 
                 _Contacts = FindViewById<ListView>(Resource.Id.ContactsList);
                 _Contacts.Clickable = true;
-                _Contacts.ItemClick += OnItemClicked;                
+                _Contacts.ItemClick += OnItemClicked;
 
-                ArrayAdapter<string> adapter = new ArrayAdapter<string>(ApplicationContext, Resource.Layout.ContactsListItem, FindContacts());
+                ContactListAdapter adapter = new ContactListAdapter(this, FindContacts().ToArray());
 
                 _Contacts.Adapter = adapter;
+
+                _Contacts.ChoiceMode = ChoiceMode.Single;
+                _Contacts.SetSelection(0);
             }
             catch (Java.Lang.Exception ex)
             {
@@ -54,7 +57,7 @@ namespace SeniorenApp
 
             try
             {
-                var contacts = new Dictionary<string, string>();
+                var contacts = new List<string>();
 
                 ICursor c = ContentResolver.Query(ContactsContract.CommonDataKinds.Phone.ContentUri, null, null, null, null, null);
 
@@ -64,13 +67,13 @@ namespace SeniorenApp
 
                     string number = c.GetString(c.GetColumnIndex(ContactsContract.CommonDataKinds.Phone.Number));
 
-                    if (!contacts.ContainsKey(name))
+                    if (!contacts.Any(x => x.Split(';').First() == name))
                     {
-                        contacts.Add(name, number);
+                        contacts.Add(name + ";" + number);
                     }
                 }
 
-                return contacts.OrderBy(x => x.Key).Select(x => x.Key + System.Environment.NewLine + x.Value).ToList();
+                return contacts.OrderBy(x => x).ToList();
             }
             catch (Java.Lang.Exception ex)
             {
@@ -85,9 +88,9 @@ namespace SeniorenApp
             Logger.LogInfo(nameof(ContactList), nameof(OnItemClicked), " called");
 
             var call = new Intent(Intent.ActionCall);
-            var child = (TextView)e.View;
+            var child = _Contacts.GetItemAtPosition(((ListView)sender).CheckedItemPosition);
 
-            var number = Android.Net.Uri.Parse(child.Text.Split(new[] { System.Environment.NewLine }, StringSplitOptions.None).Last());
+            var number = Android.Net.Uri.Parse(child.ToString().Split(';').Last());
 
             Logger.LogInfo(nameof(ContactList), nameof(OnItemClicked), " number is: " + number.ToString());
 
@@ -105,13 +108,16 @@ namespace SeniorenApp
 
             try
             {
-                int nextItemToFocusID = GetNextItemToSelect(direction);
+                int nextItemToSelectPosition = GetNextItemToSelect(direction);
 
-                Logger.LogInfo(nameof(ContactList), nameof(HandleUSBData), "next item to select is: " + nextItemToFocusID.ToString());
+                Logger.LogInfo(nameof(ContactList), nameof(HandleUSBData), "next item to select is: " + nextItemToSelectPosition.ToString());
 
-                _Contacts.SetSelection(nextItemToFocusID);
+                _Contacts.SetSelection(nextItemToSelectPosition);
 
-                ((TextView)_Contacts.SelectedItem).CallOnClick();
+                if (direction == FocusSearchDirection.Forward)
+                {
+                    ((TextView)_Contacts.SelectedItem).CallOnClick();
+                }
 
                 Logger.LogInfo(nameof(ContactList), nameof(HandleUSBData), "click called on: " + _Contacts.SelectedItemId.ToString());
             }
@@ -125,39 +131,40 @@ namespace SeniorenApp
         {
             Logger.LogInfo(nameof(ContactList), nameof(GetNextItemToSelect), "called.");
 
-            var currentlyFocusedItem = Convert.ToInt32(_Contacts.SelectedItemId);
-            int nextItemToFocusID;
+            var currentlyFocusedItem = _Contacts.CheckedItemPosition;
 
             Logger.LogInfo(nameof(ContactList), nameof(GetNextItemToSelect), "currently selected item is: " + currentlyFocusedItem.ToString());
 
             if (currentlyFocusedItem == -1)
             {
-                nextItemToFocusID = 0;
+                return 0;
             }
             else if (direction == FocusSearchDirection.Up)
             {
                 if (currentlyFocusedItem == 0)
                 {
-                    nextItemToFocusID = _Contacts.ChildCount - 1;
+                    return _Contacts.ChildCount - 1;
                 }
                 else
                 {
-                    nextItemToFocusID = currentlyFocusedItem - 1;
+                    return currentlyFocusedItem - 1;
                 }
             }
-            else
+            else if (direction == FocusSearchDirection.Down)
             {
                 if (currentlyFocusedItem == (_Contacts.ChildCount - 1))
                 {
-                    nextItemToFocusID = 0;
+                    return 0;
                 }
                 else
                 {
-                    nextItemToFocusID = currentlyFocusedItem + 1;
+                    return currentlyFocusedItem + 1;
                 }
-            }
-
-            return nextItemToFocusID;
+            }     
+            else
+            {
+                return currentlyFocusedItem;
+            }                               
         }
     }
 }

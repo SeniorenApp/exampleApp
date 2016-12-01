@@ -5,7 +5,7 @@ using Android.Views;
 using SeniorenApp.Helper;
 using System;
 
-namespace SeniorenApp
+namespace SeniorenApp.Activities
 {
     public class ActivityBase : Activity
     {
@@ -123,5 +123,15 @@ namespace SeniorenApp
             element.Focusable = true;
             element.FocusableInTouchMode = true;            
         }
+
+        protected void SetFocus(View element)
+        {
+            element.Post(() => element.RequestFocus());
+        }
+
+        protected void SetFocus(View element, FocusSearchDirection direction)
+        {
+            element.Post(() => element.RequestFocus());
+        }            
     }
 }

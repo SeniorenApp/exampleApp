@@ -53,13 +53,14 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="About.cs" />
-    <Compile Include="ActivityBase.cs" />
-    <Compile Include="ContactList.cs" />
+    <Compile Include="Activities\About.cs" />
+    <Compile Include="Activities\ActivityBase.cs" />
+    <Compile Include="Activities\ContactList.cs" />
+    <Compile Include="Data\ContactListAdapter.cs" />
     <Compile Include="Helper\Logger.cs" />
     <Compile Include="Helper\USBHelper.cs" />
-    <Compile Include="MainActivity.cs" />
-    <Compile Include="ManualPhoneCall.cs" />
+    <Compile Include="Activities\MainActivity.cs" />
+    <Compile Include="Activities\ManualPhoneCall.cs" />
     <Compile Include="Resources\Resource.Designer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="USBCommunication\Connection.cs" />
