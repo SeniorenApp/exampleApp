@@ -5,6 +5,7 @@ using Android.OS;
 using Android.Provider;
 using Android.Views;
 using Android.Widget;
+using Java.Interop;
 using SeniorenApp.Helper;
 using System;
 using System.Collections.Generic;
@@ -16,7 +17,8 @@ namespace SeniorenApp.Activities
     [Activity(Label = "Accessory", MainLauncher = false, Icon = "@drawable/icon")]
     public class ContactList : ActivityBase
     {
-        ListView _Contacts;
+        private ListView _Contacts;
+        private Button _GoToPreviousActivity;
 
         public ContactList()
         {
@@ -35,12 +37,14 @@ namespace SeniorenApp.Activities
                 SetContentView(Resource.Layout.ContactsListView);
 
                 _Contacts = FindViewById<ListView>(Resource.Id.ContactsList);
+                _GoToPreviousActivity = FindViewById<Button>(Resource.Id.GoBack);
+
+                EnableFocusable(_GoToPreviousActivity);
+
                 _Contacts.Clickable = true;
                 _Contacts.ItemClick += OnItemClicked;
 
-                ContactListAdapter adapter = new ContactListAdapter(this, FindContacts().ToArray());
-
-                _Contacts.Adapter = adapter;
+                _Contacts.Adapter = new ContactListAdapter(this, FindContacts().ToArray());
 
                 _Contacts.ChoiceMode = ChoiceMode.Single;
                 _Contacts.SetSelection(0);
@@ -101,6 +105,14 @@ namespace SeniorenApp.Activities
             Logger.LogInfo(nameof(ContactList), nameof(OnItemClicked), " started activity: " + nameof(call));
         }
 
+        [Export("GoToPreviousActivity")]
+        public void GoToPreviousActivity(View view)
+        {
+            Logger.LogInfo(nameof(ContactList), nameof(GoToPreviousActivity), "called.");
+
+            Finish();
+        }
+
         private void HandleUSBData(FocusSearchDirection direction)
         {
             Logger.LogInfo(nameof(ContactList), nameof(HandleUSBData), "called.");
@@ -108,17 +120,54 @@ namespace SeniorenApp.Activities
 
             try
             {
-                int nextItemToSelectPosition = GetNextItemToSelect(direction);
+                int nextItemToSelectPosition = 0;
 
-                Logger.LogInfo(nameof(ContactList), nameof(HandleUSBData), "next item to select is: " + nextItemToSelectPosition.ToString());
-
-                _Contacts.SetSelection(nextItemToSelectPosition);
-
-                if (direction == FocusSearchDirection.Forward)
+                if (_GoToPreviousActivity.IsFocused)
                 {
-                    ((TextView)_Contacts.SelectedItem).CallOnClick();
-                }
+                    if (direction == FocusSearchDirection.Up)
+                    {
+                        nextItemToSelectPosition = _Contacts.ChildCount - 1;
+                    }
+                    else if (direction == FocusSearchDirection.Down)
+                    {
+                        nextItemToSelectPosition = 0;
+                    }
+                    else if (direction == FocusSearchDirection.Forward)
+                    {
+                        _GoToPreviousActivity.CallOnClick();
+                        return;
+                    }
 
+                    _Contacts.SetSelection(nextItemToSelectPosition);
+                }
+                else
+                {
+                    nextItemToSelectPosition = GetNextItemToSelect(direction);
+
+                    Logger.LogInfo(nameof(ContactList), nameof(HandleUSBData), "next item to select is: " + nextItemToSelectPosition.ToString());
+
+                    if (direction != FocusSearchDirection.Forward)
+                    {
+                        if (nextItemToSelectPosition == (_Contacts.ChildCount - 1))
+                        {
+                            SetFocus(_GoToPreviousActivity);
+                            return;
+                        }
+                        else if (nextItemToSelectPosition == 0)
+                        {
+                            SetFocus(_GoToPreviousActivity);
+                            return;
+                        }
+                    }
+                    
+                    _Contacts.SetSelection(nextItemToSelectPosition);
+
+                    if (direction == FocusSearchDirection.Forward)
+                    {
+                        ((TextView)_Contacts.SelectedItem).CallOnClick();
+                    }
+                }
+                                             
                 Logger.LogInfo(nameof(ContactList), nameof(HandleUSBData), "click called on: " + _Contacts.SelectedItemId.ToString());
             }
             catch (Exception ex)
@@ -131,7 +180,7 @@ namespace SeniorenApp.Activities
         {
             Logger.LogInfo(nameof(ContactList), nameof(GetNextItemToSelect), "called.");
 
-            var currentlyFocusedItem = _Contacts.CheckedItemPosition;
+            var currentlyFocusedItem = _Contacts.SelectedItemPosition;
 
             Logger.LogInfo(nameof(ContactList), nameof(GetNextItemToSelect), "currently selected item is: " + currentlyFocusedItem.ToString());
 
