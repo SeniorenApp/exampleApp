@@ -9,7 +9,7 @@
         android:id="@+id/ContactsList"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_weight="1"/>
+        android:layout_weight="1" />
     <Button
         android:id="@+id/GoBack"
         android:gravity="center_horizontal"
@@ -17,5 +17,5 @@
         android:layout_width="match_parent"
         android:text="Back"
         android:onClick="GoToPreviousActivity"
-        android:layout_weight="0"/>
+        android:layout_weight="0" />
 </LinearLayout>

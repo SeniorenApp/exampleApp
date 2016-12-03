@@ -30,15 +30,15 @@ namespace SeniorenApp.Activities
 
         protected void OnUsbDataReceived(byte[] data)
         {
-            Logger.LogInfo(nameof(MainActivity), nameof(OnUsbDataReceived), "called.");
+            Logger.LogInfo(GetType().Name, nameof(OnUsbDataReceived), "called.");
 
             if (IsActive)
             {
-                Logger.LogInfo(nameof(MainActivity), nameof(OnUsbDataReceived), "activity is active.");
+                Logger.LogInfo(GetType().Name, nameof(OnUsbDataReceived), "activity is active.");
 
                 try
                 {
-                    Logger.LogInfo(nameof(MainActivity), nameof(OnUsbDataReceived), data.Length + " bytes received. Message: " + System.BitConverter.ToString(data));
+                    Logger.LogInfo(GetType().Name, nameof(OnUsbDataReceived), data.Length + " bytes received. Message: " + System.BitConverter.ToString(data));
 
                     USBHelper.InterpretUSBData(data, this, _HandleUSBData);
                 }
@@ -54,6 +54,14 @@ namespace SeniorenApp.Activities
             Logger.LogInfo(GetType().Name, nameof(OnStart), "called.");
 
             base.OnStart();
+
+            switch(Intent.Action)
+            {
+                case UsbManager.ActionUsbAccessoryAttached:
+                    Logger.LogInfo(GetType().Name, nameof(OnStart), "Accessory attached.");
+                    USBHelper.CreateUSBConnection(this, OnUsbDataReceived);
+                    break;
+            }
 
             if (USBHelper.USBConnection != null)
             {

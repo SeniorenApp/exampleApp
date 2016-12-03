@@ -46,7 +46,7 @@ namespace SeniorenApp.Activities
 
                 _Contacts.Adapter = new ContactListAdapter(this, FindContacts().ToArray());
 
-                _Contacts.ChoiceMode = ChoiceMode.Single;
+                _Contacts.SetItemChecked(0, true);
                 _Contacts.SetSelection(0);
             }
             catch (Java.Lang.Exception ex)
@@ -138,6 +138,7 @@ namespace SeniorenApp.Activities
                         return;
                     }
 
+                    _Contacts.SetItemChecked(nextItemToSelectPosition, true);
                     _Contacts.SetSelection(nextItemToSelectPosition);
                 }
                 else
@@ -181,6 +182,8 @@ namespace SeniorenApp.Activities
             Logger.LogInfo(nameof(ContactList), nameof(GetNextItemToSelect), "called.");
 
             var currentlyFocusedItem = _Contacts.SelectedItemPosition;
+
+            _Contacts.SetItemChecked(currentlyFocusedItem, false);
 
             Logger.LogInfo(nameof(ContactList), nameof(GetNextItemToSelect), "currently selected item is: " + currentlyFocusedItem.ToString());
 

@@ -41,7 +41,7 @@ namespace SeniorenApp.Activities
                 {
                     { FindViewById<Button>(Resource.Id.CallActivity) },
                     { FindViewById<Button>(Resource.Id.ContactListActivity) },
-                    { FindViewById<Button>(Resource.Id.Temp2) },
+                    { FindViewById<Button>(Resource.Id.CameraActivity) },
                     { FindViewById<Button>(Resource.Id.AboutActivity) },
                 };
 
@@ -53,20 +53,7 @@ namespace SeniorenApp.Activities
             {
                 Logger.LogError(ex);
             }                        
-        }
-
-        protected override void OnStart()
-        {
-            switch (Intent.Action)
-            {
-                case UsbManager.ActionUsbAccessoryAttached:
-                    Logger.LogInfo(nameof(MainActivity), nameof(OnStart), "Accessory attached.");
-                    USBHelper.CreateUSBConnection(this, OnUsbDataReceived);
-                    break;
-            }
-
-            base.OnStart();           
-        }       
+        }  
 
         [Export("StartPhoneCallActivity")]
         public void StartPhoneCallActivity(View view)
@@ -82,6 +69,14 @@ namespace SeniorenApp.Activities
             Logger.LogInfo(nameof(MainActivity), nameof(StartContactListActivity), "called.");
 
             StartActivity(typeof(ContactList));
+        }
+
+        [Export("StartCameraActivity")]
+        public void StartCameraActivity(View view)
+        {
+            Logger.LogInfo(nameof(MainActivity), nameof(StartCameraActivity), "called.");
+
+            StartActivity(typeof(CameraToRead));
         }
 
         [Export("StartAboutActivity")]

@@ -18,8 +18,8 @@
             android:text="Make a Call"
             android:nextFocusRight="@+id/ContactListActivity"
             android:nextFocusLeft="@+id/ContactListActivity"
-            android:nextFocusDown="@+id/Temp2"
-            android:nextFocusUp="@+id/Temp2" />
+            android:nextFocusDown="@+id/CameraActivity"
+            android:nextFocusUp="@+id/CameraActivity" />
         <Button
             android:layout_width="0dip"
             android:layout_height="match_parent"
@@ -30,8 +30,8 @@
             android:text="Open Contacts"
             android:nextFocusRight="@+id/CallActivity"
             android:nextFocusLeft="@+id/CallActivity"
-            android:nextFocusDown="@+id/tmp2"
-            android:nextFocusUp="@+id/tmp2" />
+            android:nextFocusDown="@+id/CameraActivity"
+            android:nextFocusUp="@+id/CameraActivity" />
     </LinearLayout>
     <LinearLayout
         android:layout_width="match_parent"
@@ -42,11 +42,14 @@
             android:layout_width="0dip"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:id="@+id/Temp2"
+            android:id="@+id/CameraActivity"
+            android:onClick="StartCameraActivity"
             android:nextFocusRight="@+id/AboutActivity"
             android:nextFocusLeft="@+id/AboutActivity"
             android:nextFocusDown="@+id/CallActivity"
-            android:nextFocusUp="@+id/CallActivity" />
+            android:nextFocusUp="@+id/CallActivity" 
+            android:drawableTop="@drawable/CameraToRead128"
+            android:text="Camera for reading"/>
         <Button
             android:layout_width="0dip"
             android:layout_height="match_parent"
@@ -54,8 +57,8 @@
             android:id="@+id/AboutActivity"
             android:onClick="StartAboutActivity"
             android:drawableTop="@drawable/about128"
-            android:nextFocusRight="@+id/tmp2"
-            android:nextFocusLeft="@+id/tmp2"
+            android:nextFocusRight="@+id/CameraActivity"
+            android:nextFocusLeft="@+id/CameraActivity"
             android:nextFocusDown="@+id/ContactListActivity"
             android:nextFocusUp="@+id/ContactListActivity"
             android:text="App Info" />

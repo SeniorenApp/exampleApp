@@ -48,13 +48,16 @@ namespace SeniorenApp
 			public const int about128 = 2130837504;
 			
 			// aapt resource value: 0x7f020001
-			public const int contactList128 = 2130837505;
+			public const int CameraToRead128 = 2130837505;
 			
 			// aapt resource value: 0x7f020002
-			public const int Icon = 2130837506;
+			public const int contactList128 = 2130837506;
 			
 			// aapt resource value: 0x7f020003
-			public const int phonereceiver128 = 2130837507;
+			public const int Icon = 2130837507;
+			
+			// aapt resource value: 0x7f020004
+			public const int phonereceiver128 = 2130837508;
 			
 			static Drawable()
 			{
@@ -108,38 +111,38 @@ namespace SeniorenApp
 			// aapt resource value: 0x7f070016
 			public const int ButtonZero = 2131165206;
 			
-			// aapt resource value: 0x7f070006
-			public const int CallActivity = 2131165190;
-			
 			// aapt resource value: 0x7f070007
-			public const int ContactListActivity = 2131165191;
+			public const int CallActivity = 2131165191;
 			
-			// aapt resource value: 0x7f070005
-			public const int ContactsList = 2131165189;
+			// aapt resource value: 0x7f070009
+			public const int CameraActivity = 2131165193;
+			
+			// aapt resource value: 0x7f070008
+			public const int ContactListActivity = 2131165192;
+			
+			// aapt resource value: 0x7f070006
+			public const int ContactsList = 2131165190;
 			
 			// aapt resource value: 0x7f070001
 			public const int GoBack = 2131165185;
 			
-			// aapt resource value: 0x7f070004
-			public const int LinearLayout1 = 2131165188;
+			// aapt resource value: 0x7f070005
+			public const int LinearLayout1 = 2131165189;
 			
 			// aapt resource value: 0x7f07000f
 			public const int MakeCall = 2131165199;
 			
-			// aapt resource value: 0x7f070002
-			public const int Name = 2131165186;
-			
 			// aapt resource value: 0x7f070003
-			public const int PhoneNumber = 2131165187;
+			public const int Name = 2131165187;
 			
-			// aapt resource value: 0x7f070008
-			public const int Temp2 = 2131165192;
+			// aapt resource value: 0x7f070004
+			public const int PhoneNumber = 2131165188;
+			
+			// aapt resource value: 0x7f070002
+			public const int Preview = 2131165186;
 			
 			// aapt resource value: 0x7f070000
 			public const int info_text = 2131165184;
-			
-			// aapt resource value: 0x7f070009
-			public const int tmp2 = 2131165193;
 			
 			static Id()
 			{
@@ -158,16 +161,19 @@ namespace SeniorenApp
 			public const int About = 2130903040;
 			
 			// aapt resource value: 0x7f030001
-			public const int ContactsListItem = 2130903041;
+			public const int Camera = 2130903041;
 			
 			// aapt resource value: 0x7f030002
-			public const int ContactsListView = 2130903042;
+			public const int ContactsListItem = 2130903042;
 			
 			// aapt resource value: 0x7f030003
-			public const int Main = 2130903043;
+			public const int ContactsListView = 2130903043;
 			
 			// aapt resource value: 0x7f030004
-			public const int ManualCall = 2130903044;
+			public const int Main = 2130903044;
+			
+			// aapt resource value: 0x7f030005
+			public const int ManualCall = 2130903045;
 			
 			static Layout()
 			{
