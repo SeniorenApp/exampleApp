@@ -4,14 +4,14 @@ using Android.Widget;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace SeniorenApp.Activities
+namespace SeniorenApp.Data
 {
-    internal class ContactListAdapter : ArrayAdapter<string>
+    internal class ContactListAdapter : ArrayAdapter<ContactListItem>
     {
         private Context _Context;
-        private List<string> _Values;
+        private List<ContactListItem> _Values;
 
-        public ContactListAdapter(Context context, string[] values)
+        public ContactListAdapter(Context context, ContactListItem[] values)
             : base(context, Resource.Layout.ContactsListItem, values)
         {
             _Context = context;
@@ -30,8 +30,8 @@ namespace SeniorenApp.Activities
             name.Focusable = true;
             name.FocusableInTouchMode = true;
 
-            name.SetText(_Values[position].Split(';').First(), TextView.BufferType.Normal);
-            number.SetText(_Values[position].Split(';').Last(), TextView.BufferType.Normal);
+            name.SetText(_Values[position].Name, TextView.BufferType.Normal);
+            number.SetText(_Values[position].Number, TextView.BufferType.Normal);
 
             return row;
         }

@@ -58,6 +58,7 @@
     <Compile Include="Activities\CameraToRead.cs" />
     <Compile Include="Activities\ContactList.cs" />
     <Compile Include="Data\ContactListAdapter.cs" />
+    <Compile Include="Data\ContactListItem.cs" />
     <Compile Include="Data\SurfaceHolderCallback.cs" />
     <Compile Include="Helper\Logger.cs" />
     <Compile Include="Helper\USBHelper.cs" />

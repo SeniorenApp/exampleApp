@@ -6,6 +6,7 @@ using Android.Provider;
 using Android.Views;
 using Android.Widget;
 using Java.Interop;
+using SeniorenApp.Data;
 using SeniorenApp.Helper;
 using System;
 using System.Collections.Generic;
@@ -55,13 +56,13 @@ namespace SeniorenApp.Activities
             }            
         }  
 
-        private List<string> FindContacts()
+        private List<ContactListItem> FindContacts()
         {
             Logger.LogInfo(nameof(ContactList), nameof(FindContacts), " called");
 
             try
             {
-                var contacts = new List<string>();
+                var contacts = new List<ContactListItem>();
 
                 ICursor c = ContentResolver.Query(ContactsContract.CommonDataKinds.Phone.ContentUri, null, null, null, null, null);
 
@@ -71,19 +72,19 @@ namespace SeniorenApp.Activities
 
                     string number = c.GetString(c.GetColumnIndex(ContactsContract.CommonDataKinds.Phone.Number));
 
-                    if (!contacts.Any(x => x.Split(';').First() == name))
+                    if (!contacts.Any(x => x.Name.Trim().ToLower() == name.Trim().ToLower()))
                     {
-                        contacts.Add(name + ";" + number);
+                        contacts.Add(new ContactListItem() { Name = name, Number = number });
                     }
                 }
 
-                return contacts.OrderBy(x => x).ToList();
+                return contacts.OrderBy(x => x.Name).ToList();
             }
             catch (Java.Lang.Exception ex)
             {
                 Logger.LogError(ex);
 
-                return new List<string>();
+                return new List<ContactListItem>();
             }      
         }
 
