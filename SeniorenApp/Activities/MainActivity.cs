@@ -12,7 +12,7 @@ using System.Linq;
 namespace SeniorenApp.Activities
 {
 
-    [Activity(Label = "Accessory", MainLauncher = true, Icon = "@drawable/icon")]
+    [Activity(Label = "Accessory", MainLauncher = true, Icon = "@drawable/icon", LaunchMode = Android.Content.PM.LaunchMode.SingleTask)]
     [UsesLibrary("android.hardware.usb.host", Required = true)]
     [IntentFilter(new string[] { "android.hardware.usb.action.USB_ACCESSORY_ATTACHED", "android.hardware.usb.action.USB_ACCESSORY_DETACHED" })]
     [MetaData("android.hardware.usb.action.USB_ACCESSORY_ATTACHED", Resource = "@xml/accessory_filter")]
@@ -53,19 +53,6 @@ namespace SeniorenApp.Activities
             {
                 Logger.LogError(ex);
             }                        
-        }
-
-        protected override void OnStart()
-        {
-            switch (Intent.Action)
-            {
-                case UsbManager.ActionUsbAccessoryAttached:
-                    Logger.LogInfo(GetType().Name, nameof(OnStart), "Accessory attached.");
-                    USBHelper.CreateUSBConnection(this, OnUsbDataReceived);
-                    break;
-            }
-
-            base.OnStart();
         }
 
         [Export("StartPhoneCallActivity")]

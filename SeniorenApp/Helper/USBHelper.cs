@@ -10,7 +10,6 @@ namespace SeniorenApp.Helper
     internal static class USBHelper
     {
         private static Connection _USBConnection;
-        private static DisconnectReceiver _DisconnectReceiver;
 
         public static Connection USBConnection
         {
@@ -41,8 +40,6 @@ namespace SeniorenApp.Helper
                 Logger.LogInfo(nameof(USBHelper), nameof(CreateUSBConnection), nameof(_USBConnection) + " : " + "was null.");
 
                 _USBConnection = new Connection(accessory, manager, onDataReceived);
-
-                _DisconnectReceiver = new DisconnectReceiver();
             }
         }
 

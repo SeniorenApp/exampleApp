@@ -12,7 +12,7 @@ using System.Linq;
 
 namespace SeniorenApp.Activities
 {
-    [Activity(Label = "Accessory", MainLauncher = false, Icon = "@drawable/icon")]
+    [Activity(Label = "Accessory", MainLauncher = false, Icon = "@drawable/icon", LaunchMode = Android.Content.PM.LaunchMode.SingleTask)]
     public class ManualPhoneCall : ActivityBase
     {
         private TextView _PhoneNumber;

@@ -55,6 +55,14 @@ namespace SeniorenApp.Activities
 
             base.OnStart();
 
+            switch (Intent.Action)
+            {
+                case UsbManager.ActionUsbAccessoryAttached:
+                    Logger.LogInfo(GetType().Name, nameof(OnStart), "Accessory attached.");
+                    USBHelper.CreateUSBConnection(this, OnUsbDataReceived);
+                    break;
+            }
+
             if (USBHelper.USBConnection != null)
             {
                 USBHelper.USBConnection.AddToDataReceivedEvent(OnUsbDataReceived);
@@ -62,6 +70,22 @@ namespace SeniorenApp.Activities
 
             IsActive = true;
         }
+
+        protected override void OnNewIntent(Intent intent)
+        {
+            Logger.LogInfo(GetType().Name, nameof(OnNewIntent), " called");
+            Logger.LogInfo(GetType().Name, nameof(OnNewIntent), " Intent is: " + intent.Action.ToString());
+
+            switch (Intent.Action)
+            {
+                case UsbManager.ActionUsbAccessoryAttached:
+                    Logger.LogInfo(GetType().Name, nameof(OnStart), "Accessory attached.");
+                    USBHelper.CreateUSBConnection(this, OnUsbDataReceived);
+                    break;
+            }
+
+            base.OnNewIntent(intent);
+        }       
 
         protected override void OnStop()
         {

@@ -176,10 +176,6 @@ namespace SeniorenApp.USBCommunication
 
                         Logger.LogInfo(nameof(Connection), nameof(ReceiveData), nameof(_OnDataReceived) + " called.");
                     }
-                    catch (IOException ex)
-                    {
-                        USBHelper.CloseUSBConnection();
-                    }
                     catch (Java.Lang.Exception ex)
                     {
                         Logger.LogError(ex);

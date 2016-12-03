@@ -25,7 +25,7 @@ namespace SeniorenApp.USBCommunication
             {
                 var acceesory = (UsbAccessory)intent.GetParcelableExtra(UsbManager.ExtraAccessory);
 
-                if (acceesory == null)
+                if (acceesory != null)
                 {
                     USBHelper.CloseUSBConnection();
                 }

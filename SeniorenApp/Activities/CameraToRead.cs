@@ -6,7 +6,7 @@ using SeniorenApp.Helper;
 
 namespace SeniorenApp.Activities
 {
-    [Activity(Label = "Accessory", MainLauncher = false, Icon = "@drawable/icon")]
+    [Activity(Label = "Accessory", MainLauncher = false, Icon = "@drawable/icon", LaunchMode = Android.Content.PM.LaunchMode.SingleTask)]
     [UsesLibrary("android.hardware.camera")]
     public class CameraToRead : ActivityBase
     {

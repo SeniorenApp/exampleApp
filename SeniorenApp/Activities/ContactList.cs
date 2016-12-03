@@ -15,7 +15,7 @@ using static Android.Widget.AdapterView;
 
 namespace SeniorenApp.Activities
 {
-    [Activity(Label = "Accessory", MainLauncher = false, Icon = "@drawable/icon")]
+    [Activity(Label = "Accessory", MainLauncher = false, Icon = "@drawable/icon", LaunchMode = Android.Content.PM.LaunchMode.SingleTask)]
     public class ContactList : ActivityBase
     {
         private ListView _Contacts;
