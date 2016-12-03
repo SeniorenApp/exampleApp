@@ -42,10 +42,11 @@ namespace SeniorenApp.Activities
 
                 EnableFocusable(_GoToPreviousActivity);
 
-                _Contacts.Clickable = true;
-                _Contacts.ItemClick += OnItemClicked;
-
                 _Contacts.Adapter = new ContactListAdapter(this, FindContacts().ToArray());
+
+                _Contacts.Clickable = true;
+                _Contacts.ChoiceMode = ChoiceMode.Single;
+                _Contacts.ItemClick += OnItemClicked;
 
                 _Contacts.SetItemChecked(0, true);
                 _Contacts.SetSelection(0);
@@ -69,7 +70,6 @@ namespace SeniorenApp.Activities
                 while (c.MoveToNext())
                 {
                     string name = c.GetString(c.GetColumnIndex(ContactsContract.Contacts.InterfaceConsts.DisplayName));
-
                     string number = c.GetString(c.GetColumnIndex(ContactsContract.CommonDataKinds.Phone.Number));
 
                     if (!contacts.Any(x => x.Name.Trim().ToLower() == name.Trim().ToLower()))
@@ -125,9 +125,13 @@ namespace SeniorenApp.Activities
 
                 if (_GoToPreviousActivity.IsFocused)
                 {
+                    Logger.LogInfo(nameof(ContactList), nameof(HandleUSBData), nameof(_GoToPreviousActivity) +  " is focused.");
+
                     if (direction == FocusSearchDirection.Up)
                     {
-                        nextItemToSelectPosition = _Contacts.ChildCount - 1;
+                        nextItemToSelectPosition = _Contacts.Count - 1;
+
+                        Logger.LogInfo(nameof(ContactList), nameof(HandleUSBData), "next item to select: " + nextItemToSelectPosition.ToString());
                     }
                     else if (direction == FocusSearchDirection.Down)
                     {
@@ -135,10 +139,12 @@ namespace SeniorenApp.Activities
                     }
                     else if (direction == FocusSearchDirection.Forward)
                     {
+                        _GoToPreviousActivity.ClearFocus();
                         _GoToPreviousActivity.CallOnClick();
                         return;
                     }
 
+                    _GoToPreviousActivity.ClearFocus();
                     _Contacts.SetItemChecked(nextItemToSelectPosition, true);
                     _Contacts.SetSelection(nextItemToSelectPosition);
                 }
@@ -150,18 +156,16 @@ namespace SeniorenApp.Activities
 
                     if (direction != FocusSearchDirection.Forward)
                     {
-                        if (nextItemToSelectPosition == (_Contacts.ChildCount - 1))
+                        if (nextItemToSelectPosition == -1)
                         {
-                            SetFocus(_GoToPreviousActivity);
-                            return;
-                        }
-                        else if (nextItemToSelectPosition == 0)
-                        {
-                            SetFocus(_GoToPreviousActivity);
+                            _GoToPreviousActivity.RequestFocus();
                             return;
                         }
                     }
-                    
+
+                    Logger.LogInfo(nameof(ContactList), nameof(HandleUSBData), "set item checked: " + nextItemToSelectPosition.ToString());
+
+                    _Contacts.SetItemChecked(nextItemToSelectPosition, true);
                     _Contacts.SetSelection(nextItemToSelectPosition);
 
                     if (direction == FocusSearchDirection.Forward)
@@ -169,8 +173,6 @@ namespace SeniorenApp.Activities
                         ((TextView)_Contacts.SelectedItem).CallOnClick();
                     }
                 }
-                                             
-                Logger.LogInfo(nameof(ContactList), nameof(HandleUSBData), "click called on: " + _Contacts.SelectedItemId.ToString());
             }
             catch (Exception ex)
             {
@@ -182,7 +184,7 @@ namespace SeniorenApp.Activities
         {
             Logger.LogInfo(nameof(ContactList), nameof(GetNextItemToSelect), "called.");
 
-            var currentlyFocusedItem = _Contacts.SelectedItemPosition;
+            var currentlyFocusedItem = _Contacts.CheckedItemPosition;
 
             _Contacts.SetItemChecked(currentlyFocusedItem, false);
 
@@ -196,7 +198,7 @@ namespace SeniorenApp.Activities
             {
                 if (currentlyFocusedItem == 0)
                 {
-                    return _Contacts.ChildCount - 1;
+                    return -1;
                 }
                 else
                 {
@@ -205,9 +207,9 @@ namespace SeniorenApp.Activities
             }
             else if (direction == FocusSearchDirection.Down)
             {
-                if (currentlyFocusedItem == (_Contacts.ChildCount - 1))
+                if (currentlyFocusedItem == (_Contacts.Count - 1))
                 {
-                    return 0;
+                    return -1;
                 }
                 else
                 {

@@ -136,7 +136,7 @@ namespace SeniorenApp.Activities
                 {
                     Logger.LogInfo(nameof(ManualPhoneCall), nameof(HandleUsbData), nameof(currentlyFocusedButton) + " was null.");
 
-                    SetFocus(_Buttons.First(x => x.Tag.ToString() == "1"));
+                    _Buttons.First(x => x.Tag.ToString() == "1").RequestFocus();
                 }
                 else if (direction == FocusSearchDirection.Forward)
                 {
@@ -145,8 +145,8 @@ namespace SeniorenApp.Activities
                     currentlyFocusedButton.CallOnClick();
                 }
                 else
-                {                                        
-                    SetFocus(currentlyFocusedButton, direction);
+                {
+                    FindViewById<Button>(NextItemToFocus(currentlyFocusedButton, direction)).RequestFocus();
                 }
             }
             catch (Exception ex)

@@ -53,7 +53,20 @@ namespace SeniorenApp.Activities
             {
                 Logger.LogError(ex);
             }                        
-        }  
+        }
+
+        protected override void OnStart()
+        {
+            switch (Intent.Action)
+            {
+                case UsbManager.ActionUsbAccessoryAttached:
+                    Logger.LogInfo(GetType().Name, nameof(OnStart), "Accessory attached.");
+                    USBHelper.CreateUSBConnection(this, OnUsbDataReceived);
+                    break;
+            }
+
+            base.OnStart();
+        }
 
         [Export("StartPhoneCallActivity")]
         public void StartPhoneCallActivity(View view)
@@ -90,6 +103,7 @@ namespace SeniorenApp.Activities
         private void HandleUSBData(FocusSearchDirection direction)
         {
             Logger.LogInfo(nameof(MainActivity), nameof(HandleUSBData), "called.");
+            Logger.LogInfo(nameof(MainActivity), nameof(HandleUSBData), "direction is: " + direction.ToString());
 
             try
             {
@@ -99,7 +113,7 @@ namespace SeniorenApp.Activities
                 {
                     Logger.LogInfo(nameof(MainActivity), nameof(HandleUSBData), nameof(currentlyFocusedButton) + " was null.");
 
-                    SetFocus(_Buttons.First());
+                    _Buttons.First().RequestFocus();
                 }
                 else if (direction == FocusSearchDirection.Forward)
                 {
@@ -107,7 +121,7 @@ namespace SeniorenApp.Activities
                 }
                 else
                 {
-                    SetFocus(currentlyFocusedButton, direction);
+                    FindViewById<Button>(NextItemToFocus(currentlyFocusedButton, direction)).RequestFocus();
                 }
             }
             catch (Java.Lang.Exception ex)

@@ -19,7 +19,7 @@
         android:nextFocusRight="@+id/ButtonTwo"
         android:nextFocusDown="@+id/ButtonFour"
         android:nextFocusLeft="@+id/ButtonThree"
-        android:nextFocusUp="@+id/MakeCall"
+        android:nextFocusUp="@+id/GoBack"
         android:layout_gravity="fill"
         android:layout_columnWeight="1"
         android:layout_rowWeight="1" />
@@ -31,7 +31,7 @@
         android:nextFocusRight="@+id/ButtonThree"
         android:nextFocusDown="@+id/ButtonFive"
         android:nextFocusLeft="@+id/ButtonOne"
-        android:nextFocusUp="@+id/MakeCall"
+        android:nextFocusUp="@+id/GoBack"
         android:layout_gravity="fill"
         android:layout_columnWeight="1"
         android:layout_rowWeight="1" />
@@ -43,11 +43,10 @@
         android:nextFocusRight="@+id/ButtonOne"
         android:nextFocusDown="@+id/ButtonSix"
         android:nextFocusLeft="@+id/ButtonTwo"
-        android:nextFocusUp="@+id/MakeCall"
+        android:nextFocusUp="@+id/GoBack"
         android:layout_gravity="fill"
         android:layout_columnWeight="1"
-        android:layout_rowWeight="1"
-         />
+        android:layout_rowWeight="1" />
     <Button
         android:text="4"
         android:tag="4"

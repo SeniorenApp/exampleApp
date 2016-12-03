@@ -55,14 +55,6 @@ namespace SeniorenApp.Activities
 
             base.OnStart();
 
-            switch(Intent.Action)
-            {
-                case UsbManager.ActionUsbAccessoryAttached:
-                    Logger.LogInfo(GetType().Name, nameof(OnStart), "Accessory attached.");
-                    USBHelper.CreateUSBConnection(this, OnUsbDataReceived);
-                    break;
-            }
-
             if (USBHelper.USBConnection != null)
             {
                 USBHelper.USBConnection.AddToDataReceivedEvent(OnUsbDataReceived);
@@ -131,15 +123,22 @@ namespace SeniorenApp.Activities
             element.Focusable = true;
             element.FocusableInTouchMode = true;            
         }
-
-        protected void SetFocus(View element)
+        
+        protected int NextItemToFocus(View element, FocusSearchDirection direction)
         {
-            element.Post(() => element.RequestFocus());
-        }
-
-        protected void SetFocus(View element, FocusSearchDirection direction)
-        {
-            element.Post(() => element.RequestFocus());
-        }            
+            switch (direction)
+            {
+                case FocusSearchDirection.Up:
+                    return element.NextFocusUpId;
+                case FocusSearchDirection.Down:
+                    return element.NextFocusDownId;
+                case FocusSearchDirection.Left:
+                    return element.NextFocusLeftId;
+                case FocusSearchDirection.Right:
+                    return element.NextFocusRightId;
+                default:
+                    return element.Id;
+            }
+        }    
     }
 }

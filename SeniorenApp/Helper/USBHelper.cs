@@ -53,6 +53,7 @@ namespace SeniorenApp.Helper
             if (_USBConnection != null)
             {
                 _USBConnection.CloseConnection();
+                _USBConnection = null;
             }
         }
 

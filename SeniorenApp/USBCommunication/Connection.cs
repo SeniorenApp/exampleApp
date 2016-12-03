@@ -47,8 +47,8 @@ namespace SeniorenApp.USBCommunication
             catch (Exception ex)
             {
                 Logger.LogError(ex);
-            }            
-        }        
+            }
+        }
 
         public void AddToDataReceivedEvent(Action<byte[]> onDataReceived)
         {
@@ -97,20 +97,27 @@ namespace SeniorenApp.USBCommunication
         {
             Logger.LogInfo(nameof(Connection), nameof(CloseConnection), "called.");
 
-            _InputStream.Dispose();
-            _OutputStream.Dispose();
+            try
+            {
+                _InputStream.Dispose();
+                _OutputStream.Dispose();
 
-            _Accessory.Dispose();
-            _Manager.Dispose();
+                _Accessory.Dispose();
+                _Manager.Dispose();
 
-            _OnDataReceived = null;
+                _OnDataReceived = null;
 
-            _TaskCancelTokenSource.Cancel();
+                _TaskCancelTokenSource.Cancel();
+            }
+            catch (Exception ex)
+            {
+                Logger.LogError(ex);
+            }
         }
 
         public void SendData(byte[] data)
         {
-            Logger.LogInfo(nameof(Connection), nameof(SendData), "called."); 
+            Logger.LogInfo(nameof(Connection), nameof(SendData), "called.");
 
             if (_OutputStream != null)
             {
@@ -139,51 +146,44 @@ namespace SeniorenApp.USBCommunication
                 {
                     Logger.LogInfo(nameof(Connection), nameof(ReceiveData), nameof(_InputStream) + " was not null.");
 
-                    if (_InputStream.FD != null)
+                    try
                     {
-                        Logger.LogInfo(nameof(Connection), nameof(ReceiveData), nameof(_InputStream.FD) + " was not null.");
-
-                        try
+                        if (_TaskCancelToken.IsCancellationRequested)
                         {
-                            if (_TaskCancelToken.IsCancellationRequested)
-                            {
-                                Logger.LogInfo(nameof(Connection), nameof(ReceiveData), "cancelled.");
-                                return;
-                            }
-                                                        
-                            var data = new List<byte>();
-                           
-                            do
-                            {
-                                var buffer = new byte[4096];
-
-                                _InputStream.Read(buffer);
-
-                                data.AddRange(buffer);                                                                                                
-
-                                Logger.LogInfo(nameof(Connection), nameof(ReceiveData), "Complete message: " + BitConverter.ToString(data.ToArray()));
-
-                            } while (!data.Any(x => x == ENDOFSTREAMBYTE));
-
-                            Logger.LogInfo(nameof(Connection), nameof(ReceiveData), data.Count + " bytes received. Message: " + BitConverter.ToString(data.ToArray()));
-
-                            Logger.LogInfo(nameof(Connection), nameof(ReceiveData), "Index of ENDOFSTREAMBYTE: " + data.IndexOf(ENDOFSTREAMBYTE) + " Index of Last Item: " + (data.Count - 1).ToString());
-
-                            data.RemoveRange(data.IndexOf(ENDOFSTREAMBYTE), data.Count - data.IndexOf(ENDOFSTREAMBYTE));
-
-                            _OnDataReceived(data.ToArray());
-
-                            Logger.LogInfo(nameof(Connection), nameof(ReceiveData), nameof(_OnDataReceived) + " called.");
+                            Logger.LogInfo(nameof(Connection), nameof(ReceiveData), "cancelled.");
+                            return;
                         }
-                        catch (IOException ex)
+
+                        var data = new List<byte>();
+
+                        do
                         {
-                            USBHelper.CloseUSBConnection();
-                        }
-                        catch (Java.Lang.Exception ex)
-                        {
-                            Logger.LogError(ex);
-                        }
-                    }                    
+                            var buffer = new byte[4096];
+
+                            _InputStream.Read(buffer);
+
+                            data.AddRange(buffer);
+
+                            Logger.LogInfo(nameof(Connection), nameof(ReceiveData), "Complete message: " + BitConverter.ToString(data.ToArray()));
+
+                        } while (!data.Any(x => x == ENDOFSTREAMBYTE));
+
+                        Logger.LogInfo(nameof(Connection), nameof(ReceiveData), data.Count + " bytes received. Message: " + BitConverter.ToString(data.ToArray()));
+
+                        data.RemoveRange(data.IndexOf(ENDOFSTREAMBYTE), data.Count - data.IndexOf(ENDOFSTREAMBYTE));
+
+                        _OnDataReceived(data.ToArray());
+
+                        Logger.LogInfo(nameof(Connection), nameof(ReceiveData), nameof(_OnDataReceived) + " called.");
+                    }
+                    catch (IOException ex)
+                    {
+                        USBHelper.CloseUSBConnection();
+                    }
+                    catch (Java.Lang.Exception ex)
+                    {
+                        Logger.LogError(ex);
+                    }
                 }
             }
         }
