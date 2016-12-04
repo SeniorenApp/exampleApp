@@ -1,15 +1,3 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-using Android.App;
-using Android.Content;
-using Android.OS;
-using Android.Runtime;
-using Android.Views;
-using Android.Widget;
-
 namespace SeniorenApp.Data
 {
     internal class ContactListItem
@@ -24,6 +12,13 @@ namespace SeniorenApp.Data
         {
             get;
             set;
+        }
+
+        public static explicit operator ContactListItem(Java.Lang.Object obj)
+        {
+            var propInfo = obj.GetType().GetProperty("Instance");
+
+            return propInfo == null ? null : propInfo.GetValue(obj, null) as ContactListItem;
         }
     }
 }

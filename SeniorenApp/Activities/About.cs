@@ -34,12 +34,13 @@ namespace SeniorenApp.Activities
                 SetContentView(Resource.Layout.About);
 
                 var tv = FindViewById<TextView>(Resource.Id.info_text);
-                _Back = FindViewById<Button>(Resource.Id.GoBack);
-                _Back.RequestFocus();
 
                 tv.SetText(TranslateHTML(ReadFromTextFile(Resource.Raw.AppInfo)), TextView.BufferType.Normal);
 
                 Linkify.AddLinks(tv, MatchOptions.All);
+
+                _Back = FindViewById<Button>(Resource.Id.GoBack);
+                _Back.RequestFocus();
             }
             catch (Java.Lang.Exception ex)
             {
@@ -77,7 +78,7 @@ namespace SeniorenApp.Activities
             {
                 Logger.LogError(ex);
 
-                return null;
+                return string.Empty;
             }
 
             return text.ToString();

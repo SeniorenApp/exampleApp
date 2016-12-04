@@ -93,13 +93,11 @@ namespace SeniorenApp.Activities
             Logger.LogInfo(nameof(ContactList), nameof(OnItemClicked), " called");
 
             var call = new Intent(Intent.ActionCall);
-            var child = _Contacts.GetItemAtPosition(((ListView)sender).CheckedItemPosition);
+            var selectedItem = (ContactListItem)_Contacts.GetItemAtPosition(((ListView)sender).CheckedItemPosition);
 
-            var number = Android.Net.Uri.Parse(child.ToString().Split(';').Last());
+            Logger.LogInfo(nameof(ContactList), nameof(OnItemClicked), " number is: " + selectedItem.Number);
 
-            Logger.LogInfo(nameof(ContactList), nameof(OnItemClicked), " number is: " + number.ToString());
-
-            call.SetData(Android.Net.Uri.Parse("tel:" + number));
+            call.SetData(Android.Net.Uri.Parse("tel:" + selectedItem.Name));
 
             StartActivity(call);
 
