@@ -97,7 +97,7 @@ namespace SeniorenApp.Activities
 
             Logger.LogInfo(nameof(ContactList), nameof(OnItemClicked), " number is: " + selectedItem.Number);
 
-            call.SetData(Android.Net.Uri.Parse("tel:" + selectedItem.Name));
+            call.SetData(Android.Net.Uri.Parse("tel:" + selectedItem.Number));
 
             StartActivity(call);
 

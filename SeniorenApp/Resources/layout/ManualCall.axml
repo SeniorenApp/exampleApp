@@ -10,7 +10,9 @@
         android:layout_columnSpan="3"
         android:layout_gravity="fill"
         android:layout_columnWeight="1"
-        android:layout_rowWeight="1" />
+        android:layout_rowWeight="1"
+        android:gravity="center"
+        android:textSize="25sp"/>
     <Button
         android:text="1"
         android:tag="1"
