@@ -1,18 +1,16 @@
 using Android.App;
 using Android.Content;
 using Android.OS;
-using Android.Text;
 using Android.Text.Util;
 using Android.Views;
 using Android.Widget;
 using Java.Interop;
-using Java.IO;
+using SeniorenApp.Data;
 using SeniorenApp.Helper;
-using System.Text;
 
 namespace SeniorenApp.Activities
 {
-    [Activity(Label = "Accessory", MainLauncher = false, Icon = "@drawable/icon", LaunchMode = Android.Content.PM.LaunchMode.SingleTask)]
+    [Activity(Label = Constants.AboutActivityLabel, MainLauncher = false, Icon = "@drawable/icon", LaunchMode = Android.Content.PM.LaunchMode.SingleTask)]
     public class About : ActivityBase
     {
         private Button _Back;
@@ -35,7 +33,7 @@ namespace SeniorenApp.Activities
 
                 var tv = FindViewById<TextView>(Resource.Id.info_text);
 
-                tv.SetText(TranslateHTML(ReadFromTextFile(Resource.Raw.AppInfo)), TextView.BufferType.Normal);
+                tv.SetText(Constants.AppInfo, TextView.BufferType.Normal);
 
                 Linkify.AddLinks(tv, MatchOptions.All);
 
@@ -48,52 +46,12 @@ namespace SeniorenApp.Activities
             }
         }
 
-        [Export("GoBack")]
+        [Export(nameof(GoBack))]
         public void GoBack(View view)
         {
             Logger.LogInfo(nameof(About), nameof(GoBack), " called");
 
             Finish();
-        }
-
-        private string ReadFromTextFile(int id)
-        {
-            Logger.LogInfo(nameof(About), nameof(ReadFromTextFile), " called");
-            Logger.LogInfo(nameof(About), nameof(ReadFromTextFile), " Id is: " + id.ToString());
-
-            var reader = new InputStreamReader(ApplicationContext.Resources.OpenRawResource(id));
-            var bufReader = new BufferedReader(reader);
-
-            var text = new StringBuilder();
-            string line;
-            
-            try
-            {
-                while ((line = bufReader.ReadLine()) != null)
-                {
-                    text.Append(line);
-                }
-            }
-            catch (Java.Lang.Exception ex)
-            {
-                Logger.LogError(ex);
-
-                return string.Empty;
-            }
-
-            return text.ToString();
-        }
-        
-        private string TranslateHTML(string text)
-        {
-            if (((int)Build.VERSION.SdkInt) >= 24)
-            {
-                return Html.FromHtml(text, FromHtmlOptions.ModeLegacy).ToString();
-            }
-            else
-            {
-                return Html.FromHtml(text).ToString();
-            }
         }
 
         private void HandleUSBData(FocusSearchDirection direction)

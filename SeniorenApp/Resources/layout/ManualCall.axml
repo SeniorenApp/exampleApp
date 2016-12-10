@@ -12,7 +12,7 @@
         android:layout_columnWeight="1"
         android:layout_rowWeight="1"
         android:gravity="center"
-        android:textSize="25sp"/>
+        android:textSize="25sp" />
     <Button
         android:text="1"
         android:tag="1"
@@ -122,7 +122,7 @@
         android:layout_columnWeight="1"
         android:layout_rowWeight="1" />
     <Button
-        android:text="CLR"
+        android:text="@string/ClearNumberText"
         android:tag="CLR"
         android:id="@+id/ButtonClear"
         android:onClick="EnterChar"
@@ -146,7 +146,7 @@
         android:layout_columnWeight="1"
         android:layout_rowWeight="1" />
     <Button
-        android:text="&lt;"
+        android:text="@string/DeleteCharacterText"
         android:tag="&lt;"
         android:id="@+id/ButtonRemove"
         android:onClick="EnterChar"
@@ -158,7 +158,7 @@
         android:layout_columnWeight="1"
         android:layout_rowWeight="1" />
     <Button
-        android:text="Call"
+        android:text="@string/StartCallText"
         android:id="@+id/MakeCall"
         android:layout_columnSpan="3"
         android:onClick="Call"
@@ -170,7 +170,7 @@
         android:layout_columnWeight="1"
         android:layout_rowWeight="1" />
     <Button
-        android:text="Back"
+        android:text="@string/BackButtonText"
         android:id="@+id/GoBack"
         android:layout_columnSpan="3"
         android:onClick="GoToPreviousActivity"

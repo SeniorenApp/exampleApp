@@ -1,7 +1,0 @@
-﻿<h3>SeniorenApp</h3>
-
-Version 1.0<br>
-
-Copyright 2016<br><br>
-
-Icons made by Zurb (http://www.zurb.com) <br> from http://www.flaticon.com

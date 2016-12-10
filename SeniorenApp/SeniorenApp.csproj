@@ -58,11 +58,12 @@
     <Compile Include="Activities\ActivityBase.cs" />
     <Compile Include="Activities\CameraToRead.cs" />
     <Compile Include="Activities\ContactList.cs" />
+    <Compile Include="Data\Constants.cs" />
     <Compile Include="Data\ContactListAdapter.cs" />
     <Compile Include="Data\ContactListItem.cs" />
     <Compile Include="Data\SurfaceHolderCallback.cs" />
     <Compile Include="Helper\Logger.cs" />
-    <Compile Include="Helper\USBHelper.cs" />
+    <Compile Include="Helper\USB.cs" />
     <Compile Include="Activities\MainActivity.cs" />
     <Compile Include="Activities\ManualPhoneCall.cs" />
     <Compile Include="Resources\Resource.Designer.cs" />
@@ -105,14 +106,9 @@
   <ItemGroup>
     <AndroidResource Include="Resources\drawable\phonereceiver128.png" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Assets\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <AndroidResource Include="Resources\drawable\contactList128.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <AndroidResource Include="Resources\raw\AppInfo.txt" />
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\drawable\about128.png" />

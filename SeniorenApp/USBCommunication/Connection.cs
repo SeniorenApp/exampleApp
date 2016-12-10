@@ -1,6 +1,7 @@
 using Android.Hardware.Usb;
 using Android.OS;
 using Java.IO;
+using SeniorenApp.Data;
 using SeniorenApp.Helper;
 using System;
 using System.Collections.Generic;
@@ -12,8 +13,6 @@ namespace SeniorenApp.USBCommunication
 {
     internal class Connection
     {
-        private const byte ENDOFSTREAMBYTE = 0x04;
-
         private UsbAccessory _Accessory;
         private UsbManager _Manager;
         private FileInputStream _InputStream;
@@ -158,7 +157,7 @@ namespace SeniorenApp.USBCommunication
 
                         do
                         {
-                            var buffer = new byte[4096];
+                            var buffer = new byte[Constants.USBMaxPacketSize];
 
                             _InputStream.Read(buffer);
 
@@ -166,11 +165,11 @@ namespace SeniorenApp.USBCommunication
 
                             Logger.LogInfo(nameof(Connection), nameof(ReceiveData), "Complete message: " + BitConverter.ToString(data.ToArray()));
 
-                        } while (!data.Any(x => x == ENDOFSTREAMBYTE));
+                        } while (!data.Any(x => x == Constants.EndOfStreamByte));
 
                         Logger.LogInfo(nameof(Connection), nameof(ReceiveData), data.Count + " bytes received. Message: " + BitConverter.ToString(data.ToArray()));
 
-                        data.RemoveRange(data.IndexOf(ENDOFSTREAMBYTE), data.Count - data.IndexOf(ENDOFSTREAMBYTE));
+                        data.RemoveRange(data.IndexOf(Constants.EndOfStreamByte), data.Count - data.IndexOf(Constants.EndOfStreamByte));
 
                         _OnDataReceived(data.ToArray());
 

@@ -7,60 +7,60 @@ using System.Text;
 
 namespace SeniorenApp.Helper
 {
-    internal static class USBHelper
+    internal static class USB
     {
-        private static Connection _USBConnection;
+        private static Connection _Instance;
 
-        public static Connection USBConnection
+        public static Connection Instance
         {
             get
             {
-                Logger.LogInfo(nameof(USBHelper), nameof(USBConnection), "get called.");
+                Logger.LogInfo(nameof(USB), nameof(Instance), "get called.");
 
-                if (_USBConnection == null)
+                if (_Instance == null)
                 {                    
-                    Logger.LogInfo(nameof(USBHelper), nameof(USBConnection), "was null. Running Non-USB-Mode.");
+                    Logger.LogInfo(nameof(USB), nameof(Instance), "was null. Running Non-USB-Mode.");
 
                     return null;
                 }
 
-                return _USBConnection;
+                return _Instance;
             }     
         }
 
         public static void CreateUSBConnection(Activity activity, Action<byte[]> onDataReceived)
         {
-            Logger.LogInfo(nameof(USBHelper), nameof(CreateUSBConnection), "called.");
+            Logger.LogInfo(nameof(USB), nameof(CreateUSBConnection), "called.");
 
-            if (_USBConnection == null)
+            if (_Instance == null)
             {
                 UsbAccessory accessory = (UsbAccessory)activity.Intent.GetParcelableExtra(UsbManager.ExtraAccessory);
                 UsbManager manager = (UsbManager)activity.GetSystemService("usb");
 
-                Logger.LogInfo(nameof(USBHelper), nameof(CreateUSBConnection), nameof(_USBConnection) + " : " + "was null.");
+                Logger.LogInfo(nameof(USB), nameof(CreateUSBConnection), nameof(_Instance) + " : " + "was null.");
 
-                _USBConnection = new Connection(accessory, manager, onDataReceived);
+                _Instance = new Connection(accessory, manager, onDataReceived);
             }
         }
 
         public static void CloseUSBConnection()
         {
-            Logger.LogInfo(nameof(USBHelper), nameof(CloseUSBConnection), "called.");
+            Logger.LogInfo(nameof(USB), nameof(CloseUSBConnection), "called.");
 
-            if (_USBConnection != null)
+            if (_Instance != null)
             {
-                _USBConnection.CloseConnection();
-                _USBConnection = null;
+                _Instance.CloseConnection();
+                _Instance = null;
             }
         }
 
         public static void InterpretUSBData(byte[] data, Activity currentActivity, Action<FocusSearchDirection> actionToRunInUIThread)
         {
-            Logger.LogInfo(nameof(USBHelper), nameof(InterpretUSBData), "called.");
+            Logger.LogInfo(nameof(USB), nameof(InterpretUSBData), "called.");
 
             string receivedText = Encoding.ASCII.GetString(data);
 
-            Logger.LogInfo(nameof(USBHelper), nameof(InterpretUSBData), "Message decoded to: " + receivedText);
+            Logger.LogInfo(nameof(USB), nameof(InterpretUSBData), "Message decoded to: " + receivedText);
 
             switch (receivedText)
             {
@@ -80,7 +80,7 @@ namespace SeniorenApp.Helper
                     currentActivity.RunOnUiThread(() => actionToRunInUIThread(FocusSearchDirection.Forward));
                     break;
                 default:
-                    Logger.LogInfo(nameof(USBHelper), nameof(InterpretUSBData), "Received text could not be interpreted in switch case.");
+                    Logger.LogInfo(nameof(USB), nameof(InterpretUSBData), "Received text could not be interpreted in switch case.");
                     break;
             }
         }

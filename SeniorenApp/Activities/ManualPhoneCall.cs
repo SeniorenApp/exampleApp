@@ -6,13 +6,14 @@ using Android.Views;
 using Android.Widget;
 using Java.Interop;
 using Java.Lang;
+using SeniorenApp.Data;
 using SeniorenApp.Helper;
 using System.Collections.Generic;
 using System.Linq;
 
 namespace SeniorenApp.Activities
 {
-    [Activity(Label = "Accessory", MainLauncher = false, Icon = "@drawable/icon", LaunchMode = Android.Content.PM.LaunchMode.SingleTask)]
+    [Activity(Label = Constants.ManualPhoneCallActivityLabel, MainLauncher = false, Icon = "@drawable/icon", LaunchMode = Android.Content.PM.LaunchMode.SingleTask)]
     public class ManualPhoneCall : ActivityBase
     {
         private TextView _PhoneNumber;
@@ -64,7 +65,7 @@ namespace SeniorenApp.Activities
             }            
         }
 
-        [Export("EnterChar")]
+        [Export(nameof(EnterChar))]
         public void EnterChar(View view)
         {
             Logger.LogInfo(nameof(ManualPhoneCall), nameof(EnterChar), "called.");
@@ -94,7 +95,7 @@ namespace SeniorenApp.Activities
             }            
         }
 
-        [Export("Call")]
+        [Export(nameof(Call))]
         public void Call(View view)
         {
             Logger.LogInfo(nameof(ManualPhoneCall), nameof(Call), "called.");
@@ -115,7 +116,7 @@ namespace SeniorenApp.Activities
             }            
         }
 
-        [Export("GoToPreviousActivity")]
+        [Export(nameof(GoToPreviousActivity))]
         public void GoToPreviousActivity(View view)
         {
             Logger.LogInfo(nameof(ManualPhoneCall), nameof(GoToPreviousActivity), "called.");

@@ -15,7 +15,7 @@
             android:drawableTop="@drawable/phonereceiver128"
             android:onClick="StartPhoneCallActivity"
             android:id="@+id/CallActivity"
-            android:text="Make a Call"
+            android:text="@string/CallActivityText"
             android:nextFocusRight="@+id/ContactListActivity"
             android:nextFocusLeft="@+id/ContactListActivity"
             android:nextFocusDown="@+id/CameraActivity"
@@ -27,7 +27,7 @@
             android:drawableTop="@drawable/contactList128"
             android:id="@+id/ContactListActivity"
             android:onClick="StartContactListActivity"
-            android:text="Open Contacts"
+            android:text="@string/OpenContactsActivityText"
             android:nextFocusRight="@+id/CallActivity"
             android:nextFocusLeft="@+id/CallActivity"
             android:nextFocusDown="@+id/CameraActivity"
@@ -49,7 +49,7 @@
             android:nextFocusDown="@+id/CallActivity"
             android:nextFocusUp="@+id/CallActivity"
             android:drawableTop="@drawable/CameraToRead128"
-            android:text="Camera for reading" />
+            android:text="@string/OpenCameraActivityText" />
         <Button
             android:layout_width="0dip"
             android:layout_height="match_parent"
@@ -61,6 +61,6 @@
             android:nextFocusLeft="@+id/CameraActivity"
             android:nextFocusDown="@+id/ContactListActivity"
             android:nextFocusUp="@+id/ContactListActivity"
-            android:text="App Info" />
+            android:text="@string/OpenAboutActivityText" />
     </LinearLayout>
 </LinearLayout>

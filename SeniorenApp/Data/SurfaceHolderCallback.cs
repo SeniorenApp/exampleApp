@@ -11,6 +11,12 @@ namespace SeniorenApp.Data
         private Android.Hardware.Camera _Camera;
         private Parameters _Parameters;
 
+        public enum ZoomDirection
+        {
+            In = 0,
+            Out
+        };
+
         public void SurfaceChanged(ISurfaceHolder holder, [GeneratedEnum] Format format, int width, int height)
         {
             Logger.LogInfo(nameof(SurfaceHolderCallback), nameof(SurfaceChanged), "called.");
@@ -74,44 +80,38 @@ namespace SeniorenApp.Data
             return _Parameters == null ? false : _Parameters.IsZoomSupported;
         }
 
-        public void ZoomIn()
+        public void Zoom(ZoomDirection direction)
         {
-            Logger.LogInfo(nameof(SurfaceHolderCallback), nameof(ZoomIn), "called.");
+            Logger.LogInfo(nameof(SurfaceHolderCallback), nameof(Zoom), "called.");
+            Logger.LogInfo(nameof(SurfaceHolderCallback), nameof(Zoom), " direction is: " + direction.ToString());
 
             if (_Camera != null)
             {
                 if (SupportsZoom())
                 {
-                    Logger.LogInfo(nameof(SurfaceHolderCallback), nameof(ZoomIn), "zoom is supported.");
+                    Logger.LogInfo(nameof(SurfaceHolderCallback), nameof(Zoom), "zoom is supported.");
 
-                    if (_Parameters.Zoom < _Parameters.MaxZoom)
+                    switch (direction)
                     {
-                        _Parameters.Zoom++;
-                        _Camera.SetParameters(_Parameters);
-
-                        Logger.LogInfo(nameof(SurfaceHolderCallback), nameof(ZoomIn), "Zoom set to: " + _Parameters.Zoom.ToString());
+                        case ZoomDirection.In:
+                            if (_Parameters.Zoom < _Parameters.MaxZoom)
+                            {
+                                _Parameters.Zoom++;
+                                _Camera.SetParameters(_Parameters);
+                            }
+                            break;
+                        case ZoomDirection.Out:
+                            if (_Parameters.Zoom != 0)
+                            {
+                                _Parameters.Zoom--;
+                                _Camera.SetParameters(_Parameters);
+                            }
+                            break;
+                        default:
+                            return;
                     }
-                }
-            }
-        }
 
-        public void ZoomOut()
-        {
-            Logger.LogInfo(nameof(SurfaceHolderCallback), nameof(ZoomOut), "called.");
-
-            if (_Camera != null)
-            {
-                if (SupportsZoom())
-                {
-                    Logger.LogInfo(nameof(SurfaceHolderCallback), nameof(ZoomOut), "zoom is supported.");
-
-                    if (_Parameters.Zoom != 0)
-                    {
-                        _Parameters.Zoom--;
-                        _Camera.SetParameters(_Parameters);
-
-                        Logger.LogInfo(nameof(SurfaceHolderCallback), nameof(ZoomOut), "Zoom set to: " + _Parameters.Zoom.ToString());
-                    }
+                    Logger.LogInfo(nameof(SurfaceHolderCallback), nameof(Zoom), "Zoom set to: " + _Parameters.Zoom.ToString());
                 }
             }
         }

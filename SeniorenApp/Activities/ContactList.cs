@@ -15,7 +15,7 @@ using static Android.Widget.AdapterView;
 
 namespace SeniorenApp.Activities
 {
-    [Activity(Label = "Accessory", MainLauncher = false, Icon = "@drawable/icon", LaunchMode = Android.Content.PM.LaunchMode.SingleTask)]
+    [Activity(Label = Constants.ContactListActivityLabel, MainLauncher = false, Icon = "@drawable/icon", LaunchMode = Android.Content.PM.LaunchMode.SingleTask)]
     public class ContactList : ActivityBase
     {
         private ListView _Contacts;
@@ -104,7 +104,7 @@ namespace SeniorenApp.Activities
             Logger.LogInfo(nameof(ContactList), nameof(OnItemClicked), " started activity: " + nameof(call));
         }
 
-        [Export("GoToPreviousActivity")]
+        [Export(nameof(GoToPreviousActivity))]
         public void GoToPreviousActivity(View view)
         {
             Logger.LogInfo(nameof(ContactList), nameof(GoToPreviousActivity), "called.");

@@ -60,11 +60,11 @@ namespace SeniorenApp.Activities
                 }
                 else if (direction == FocusSearchDirection.Up)
                 {
-                    _CameraHandler.ZoomIn();
+                    _CameraHandler.Zoom(SurfaceHolderCallback.ZoomDirection.In);
                 }
                 else if (direction == FocusSearchDirection.Down)
                 {
-                    _CameraHandler.ZoomOut();
+                    _CameraHandler.Zoom(SurfaceHolderCallback.ZoomDirection.Out);
                 }
             }
             catch (Java.Lang.Exception ex)

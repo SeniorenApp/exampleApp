@@ -7,7 +7,7 @@ using System;
 
 namespace SeniorenApp.Activities
 {
-    public class ActivityBase : Activity
+    public abstract class ActivityBase : Activity
     {
         protected bool _IsActive = false;
         protected Action<FocusSearchDirection> _HandleUSBData;
@@ -38,9 +38,9 @@ namespace SeniorenApp.Activities
 
                 try
                 {
-                    Logger.LogInfo(GetType().Name, nameof(OnUsbDataReceived), data.Length + " bytes received. Message: " + System.BitConverter.ToString(data));
+                    Logger.LogInfo(GetType().Name, nameof(OnUsbDataReceived), data.Length + " bytes received. Message: " + BitConverter.ToString(data));
 
-                    USBHelper.InterpretUSBData(data, this, _HandleUSBData);
+                    USB.InterpretUSBData(data, this, _HandleUSBData);
                 }
                 catch (Java.Lang.Exception ex)
                 {
@@ -59,13 +59,13 @@ namespace SeniorenApp.Activities
             {
                 case UsbManager.ActionUsbAccessoryAttached:
                     Logger.LogInfo(GetType().Name, nameof(OnStart), "Accessory attached.");
-                    USBHelper.CreateUSBConnection(this, OnUsbDataReceived);
+                    USB.CreateUSBConnection(this, OnUsbDataReceived);
                     break;
             }
 
-            if (USBHelper.USBConnection != null)
+            if (USB.Instance != null)
             {
-                USBHelper.USBConnection.AddToDataReceivedEvent(OnUsbDataReceived);
+                USB.Instance.AddToDataReceivedEvent(OnUsbDataReceived);
             }
 
             IsActive = true;
@@ -80,7 +80,7 @@ namespace SeniorenApp.Activities
             {
                 case UsbManager.ActionUsbAccessoryAttached:
                     Logger.LogInfo(GetType().Name, nameof(OnStart), "Accessory attached.");
-                    USBHelper.CreateUSBConnection(this, OnUsbDataReceived);
+                    USB.CreateUSBConnection(this, OnUsbDataReceived);
                     break;
             }
 
@@ -102,9 +102,9 @@ namespace SeniorenApp.Activities
 
             base.OnRestart();
 
-            if (USBHelper.USBConnection != null)
+            if (USB.Instance != null)
             {
-                USBHelper.USBConnection.AddToDataReceivedEvent(OnUsbDataReceived);
+                USB.Instance.AddToDataReceivedEvent(OnUsbDataReceived);
             }
 
             IsActive = true;
@@ -125,9 +125,9 @@ namespace SeniorenApp.Activities
 
             base.OnResume();
 
-            if (USBHelper.USBConnection != null)
+            if (USB.Instance != null)
             {
-                USBHelper.USBConnection.AddToDataReceivedEvent(OnUsbDataReceived);
+                USB.Instance.AddToDataReceivedEvent(OnUsbDataReceived);
             }
 
             IsActive = true;

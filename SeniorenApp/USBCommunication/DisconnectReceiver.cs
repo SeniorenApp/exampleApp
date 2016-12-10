@@ -1,14 +1,15 @@
 using Android.App;
 using Android.Content;
 using Android.Hardware.Usb;
+using SeniorenApp.Data;
 using SeniorenApp.Helper;
 
 namespace SeniorenApp.USBCommunication
 {
     [BroadcastReceiver]
     [IntentFilter(new[] { UsbManager.ActionUsbAccessoryAttached, UsbManager.ActionUsbAccessoryDetached })]
-    [MetaData(UsbManager.ActionUsbAccessoryAttached, Resource = "@xml/accessory_filter")]
-    [MetaData(UsbManager.ActionUsbAccessoryDetached, Resource = "@xml/accessory_filter")]
+    [MetaData(UsbManager.ActionUsbAccessoryAttached, Resource = Constants.AccessoryFilterLocation)]
+    [MetaData(UsbManager.ActionUsbAccessoryDetached, Resource = Constants.AccessoryFilterLocation)]
     internal class DisconnectReceiver : BroadcastReceiver
     {
         public DisconnectReceiver()
@@ -27,7 +28,7 @@ namespace SeniorenApp.USBCommunication
 
                 if (acceesory != null)
                 {
-                    USBHelper.CloseUSBConnection();
+                    USB.CloseUSBConnection();
                 }
             }
         }

@@ -1,5 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="Hello">Hello World, Click Me!</string>
-    <string name="ApplicationName">SeniorenApp</string>
+  <string name="BackButtonText">Back</string>
+  <string name="CallActivityText">Start manual call</string>
+  <string name="OpenContactsActivityText">Open contacts list</string>
+  <string name="OpenCameraActivityText">Open camera for reading</string>
+  <string name="OpenAboutActivityText">Application Info</string>
+  <string name="DeleteCharacterText">&lt;</string>
+  <string name="StartCallText">Call</string>
+  <string name="ClearNumberText">CLR</string>
 </resources>

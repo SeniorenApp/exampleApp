@@ -5,6 +5,7 @@ using Android.OS;
 using Android.Views;
 using Android.Widget;
 using Java.Interop;
+using SeniorenApp.Data;
 using SeniorenApp.Helper;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,11 +13,11 @@ using System.Linq;
 namespace SeniorenApp.Activities
 {
 
-    [Activity(Label = "Accessory", MainLauncher = true, Icon = "@drawable/icon", LaunchMode = Android.Content.PM.LaunchMode.SingleTask)]
-    [UsesLibrary("android.hardware.usb.host", Required = true)]
-    [IntentFilter(new string[] { "android.hardware.usb.action.USB_ACCESSORY_ATTACHED", "android.hardware.usb.action.USB_ACCESSORY_DETACHED" })]
-    [MetaData("android.hardware.usb.action.USB_ACCESSORY_ATTACHED", Resource = "@xml/accessory_filter")]
-    [MetaData("android.hardware.usb.action.USB_ACCESSORY_DETACHED", Resource = "@xml/accessory_filter")]    
+    [Activity(Label = Constants.MainActivityLabel, MainLauncher = true, Icon = "@drawable/icon", LaunchMode = Android.Content.PM.LaunchMode.SingleTask)]
+    [UsesLibrary(Constants.AndroidUSBHostLibrary, Required = true)]
+    [IntentFilter(new string[] { UsbManager.ActionUsbAccessoryAttached, UsbManager.ActionUsbAccessoryDetached })]
+    [MetaData(UsbManager.ActionUsbAccessoryAttached, Resource = Constants.AccessoryFilterLocation)]
+    [MetaData(UsbManager.ActionUsbAccessoryDetached, Resource = Constants.AccessoryFilterLocation)]    
     public class MainActivity : ActivityBase
     {
         private List<Button> _Buttons;
@@ -55,7 +56,7 @@ namespace SeniorenApp.Activities
             }                        
         }
 
-        [Export("StartPhoneCallActivity")]
+        [Export(nameof(StartPhoneCallActivity))]
         public void StartPhoneCallActivity(View view)
         {
             Logger.LogInfo(nameof(MainActivity), nameof(StartPhoneCallActivity), "called.");
@@ -63,7 +64,7 @@ namespace SeniorenApp.Activities
             StartActivity(typeof(ManualPhoneCall));
         }
 
-        [Export("StartContactListActivity")]
+        [Export(nameof(StartContactListActivity))]
         public void StartContactListActivity(View view)
         {
             Logger.LogInfo(nameof(MainActivity), nameof(StartContactListActivity), "called.");
@@ -71,7 +72,7 @@ namespace SeniorenApp.Activities
             StartActivity(typeof(ContactList));
         }
 
-        [Export("StartCameraActivity")]
+        [Export(nameof(StartCameraActivity))]
         public void StartCameraActivity(View view)
         {
             Logger.LogInfo(nameof(MainActivity), nameof(StartCameraActivity), "called.");
@@ -79,7 +80,7 @@ namespace SeniorenApp.Activities
             StartActivity(typeof(CameraToRead));
         }
 
-        [Export("StartAboutActivity")]
+        [Export(nameof(StartAboutActivity))]
         public void StartAboutActivity(View view)
         {
             Logger.LogInfo(nameof(MainActivity), nameof(StartAboutActivity), "called.");
