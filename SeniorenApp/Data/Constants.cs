@@ -16,7 +16,7 @@ namespace SeniorenApp.Data
                 .ToString();
 
         public const byte EndOfStreamByte = 0x04;
-        public const int USBMaxPacketSize = 16384;
+        public const int USBMaxPacketSize = 2524;
 
         public const string AccessoryFilterLocation = "@xml/accessory_filter";
         public const string AndroidUSBHostLibrary = "android.hardware.usb.host";

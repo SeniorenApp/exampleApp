@@ -15,9 +15,10 @@ namespace SeniorenApp.USBCommunication
     {
         private UsbAccessory _Accessory;
         private UsbManager _Manager;
+        private ParcelFileDescriptor _FileDescriptor; 
         private FileInputStream _InputStream;
         private FileOutputStream _OutputStream;
-
+                
         private CancellationTokenSource _TaskCancelTokenSource;
         private CancellationToken _TaskCancelToken;
 
@@ -77,16 +78,16 @@ namespace SeniorenApp.USBCommunication
         {
             Logger.LogInfo(nameof(Connection), nameof(OpenConnection), "called.");
 
-            ParcelFileDescriptor fileDescriptor = _Manager.OpenAccessory(_Accessory);
+            _FileDescriptor = _Manager.OpenAccessory(_Accessory);
 
-            Logger.LogInfo(nameof(Connection), nameof(OpenConnection), "accessory opened." + nameof(fileDescriptor) + " created.");
+            Logger.LogInfo(nameof(Connection), nameof(OpenConnection), "accessory opened." + nameof(_FileDescriptor) + " created.");
 
-            if (fileDescriptor != null)
+            if (_FileDescriptor != null)
             {
-                Logger.LogInfo(nameof(Connection), nameof(OpenConnection), nameof(fileDescriptor) + " was not null.");
+                Logger.LogInfo(nameof(Connection), nameof(OpenConnection), nameof(_FileDescriptor) + " was not null.");
 
-                _InputStream = new FileInputStream(fileDescriptor.FileDescriptor);
-                _OutputStream = new FileOutputStream(fileDescriptor.FileDescriptor);
+                _InputStream = new FileInputStream(_FileDescriptor.FileDescriptor);
+                _OutputStream = new FileOutputStream(_FileDescriptor.FileDescriptor);
 
                 Logger.LogInfo(nameof(Connection), nameof(OpenConnection), "Streams retrieved.");
             }
@@ -170,14 +171,15 @@ namespace SeniorenApp.USBCommunication
                         Logger.LogInfo(nameof(Connection), nameof(ReceiveData), data.Count + " bytes received. Message: " + BitConverter.ToString(data.ToArray()));
 
                         data.RemoveRange(data.IndexOf(Constants.EndOfStreamByte), data.Count - data.IndexOf(Constants.EndOfStreamByte));
-
+                        
                         _OnDataReceived(data.ToArray());
 
                         Logger.LogInfo(nameof(Connection), nameof(ReceiveData), nameof(_OnDataReceived) + " called.");
                     }
                     catch (Java.Lang.Exception ex)
-                    {
+                    {                        
                         Logger.LogError(ex);
+                        this.CloseConnection();
                     }
                 }
             }
