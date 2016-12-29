@@ -30,8 +30,8 @@
             android:text="@string/OpenContactsActivityText"
             android:nextFocusRight="@+id/CallActivity"
             android:nextFocusLeft="@+id/CallActivity"
-            android:nextFocusDown="@+id/CameraActivity"
-            android:nextFocusUp="@+id/CameraActivity" />
+            android:nextFocusDown="@+id/AboutActivity"
+            android:nextFocusUp="@+id/AboutActivity" />
     </LinearLayout>
     <LinearLayout
         android:layout_width="match_parent"
