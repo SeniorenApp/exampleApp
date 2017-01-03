@@ -15,7 +15,7 @@ using static Android.Widget.AdapterView;
 
 namespace SeniorenApp.Activities
 {
-    [Activity(Label = Constants.ContactListActivityLabel, MainLauncher = false, Icon = "@drawable/icon", LaunchMode = Android.Content.PM.LaunchMode.SingleTask)]
+    [Activity(Label = Constants.ContactListActivityLabel, MainLauncher = false, Icon = "@drawable/icon", LaunchMode = Android.Content.PM.LaunchMode.SingleTop)]
     public class ContactList : ActivityBase
     {
         private ListView _Contacts;
@@ -24,6 +24,7 @@ namespace SeniorenApp.Activities
         public ContactList()
         {
             _HandleUSBData = HandleUSBData;
+            _OnConnectionClosed = OnConnectionClosed;
         }
 
         protected override void OnCreate(Bundle savedInstanceState)
@@ -55,7 +56,21 @@ namespace SeniorenApp.Activities
             {
                 Logger.LogError(ex);
             }            
-        }  
+        }
+
+        protected override void OnNewIntent(Intent intent)
+        {
+            base.OnNewIntent(intent);
+
+            EnableFocusable(_GoToPreviousActivity);
+        }
+
+        private void OnConnectionClosed()
+        {
+            Logger.LogInfo(nameof(ContactList), nameof(OnConnectionClosed), " called");
+
+            DisableFocusable(_GoToPreviousActivity);
+        }
 
         private List<ContactListItem> FindContacts()
         {

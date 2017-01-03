@@ -10,7 +10,7 @@ using SeniorenApp.Helper;
 
 namespace SeniorenApp.Activities
 {
-    [Activity(Label = Constants.AboutActivityLabel, MainLauncher = false, Icon = "@drawable/icon", LaunchMode = Android.Content.PM.LaunchMode.SingleTask)]
+    [Activity(Label = Constants.AboutActivityLabel, MainLauncher = false, Icon = "@drawable/icon", LaunchMode = Android.Content.PM.LaunchMode.SingleTop)]
     public class About : ActivityBase
     {
         private Button _Back;

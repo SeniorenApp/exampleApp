@@ -31,12 +31,70 @@ namespace SeniorenApp
 		public partial class Attribute
 		{
 			
+			// aapt resource value: 0x7f010004
+			public const int alignmentMode = 2130771972;
+			
+			// aapt resource value: 0x7f010002
+			public const int columnCount = 2130771970;
+			
+			// aapt resource value: 0x7f010006
+			public const int columnOrderPreserved = 2130771974;
+			
+			// aapt resource value: 0x7f01000a
+			public const int layout_column = 2130771978;
+			
+			// aapt resource value: 0x7f01000b
+			public const int layout_columnSpan = 2130771979;
+			
+			// aapt resource value: 0x7f01000c
+			public const int layout_columnWeight = 2130771980;
+			
+			// aapt resource value: 0x7f01000d
+			public const int layout_gravity = 2130771981;
+			
+			// aapt resource value: 0x7f010007
+			public const int layout_row = 2130771975;
+			
+			// aapt resource value: 0x7f010008
+			public const int layout_rowSpan = 2130771976;
+			
+			// aapt resource value: 0x7f010009
+			public const int layout_rowWeight = 2130771977;
+			
+			// aapt resource value: 0x7f010000
+			public const int orientation = 2130771968;
+			
+			// aapt resource value: 0x7f010001
+			public const int rowCount = 2130771969;
+			
+			// aapt resource value: 0x7f010005
+			public const int rowOrderPreserved = 2130771973;
+			
+			// aapt resource value: 0x7f010003
+			public const int useDefaultMargins = 2130771971;
+			
 			static Attribute()
 			{
 				global::Android.Runtime.ResourceIdManager.UpdateIdValues();
 			}
 			
 			private Attribute()
+			{
+			}
+		}
+		
+		public partial class Dimension
+		{
+			
+			// aapt resource value: 0x7f050000
+			public const int default_gap = 2131034112;
+			
+			static Dimension()
+			{
+				global::Android.Runtime.ResourceIdManager.UpdateIdValues();
+			}
+			
+			private Dimension()
 			{
 			}
 		}
@@ -72,77 +130,131 @@ namespace SeniorenApp
 		public partial class Id
 		{
 			
-			// aapt resource value: 0x7f06000a
-			public const int AboutActivity = 2131099658;
+			// aapt resource value: 0x7f07001c
+			public const int AboutActivity = 2131165212;
 			
-			// aapt resource value: 0x7f060014
-			public const int ButtonClear = 2131099668;
+			// aapt resource value: 0x7f070026
+			public const int ButtonClear = 2131165222;
 			
-			// aapt resource value: 0x7f060012
-			public const int ButtonEight = 2131099666;
+			// aapt resource value: 0x7f070024
+			public const int ButtonEight = 2131165220;
 			
-			// aapt resource value: 0x7f06000f
-			public const int ButtonFive = 2131099663;
+			// aapt resource value: 0x7f070021
+			public const int ButtonFive = 2131165217;
 			
-			// aapt resource value: 0x7f06000d
-			public const int ButtonFour = 2131099661;
+			// aapt resource value: 0x7f07001f
+			public const int ButtonFour = 2131165215;
 			
-			// aapt resource value: 0x7f060013
-			public const int ButtonNine = 2131099667;
+			// aapt resource value: 0x7f070025
+			public const int ButtonNine = 2131165221;
 			
-			// aapt resource value: 0x7f06000b
-			public const int ButtonOne = 2131099659;
+			// aapt resource value: 0x7f07001d
+			public const int ButtonOne = 2131165213;
 			
-			// aapt resource value: 0x7f060016
-			public const int ButtonRemove = 2131099670;
+			// aapt resource value: 0x7f070028
+			public const int ButtonRemove = 2131165224;
 			
-			// aapt resource value: 0x7f060011
-			public const int ButtonSeven = 2131099665;
+			// aapt resource value: 0x7f070023
+			public const int ButtonSeven = 2131165219;
 			
-			// aapt resource value: 0x7f060010
-			public const int ButtonSix = 2131099664;
+			// aapt resource value: 0x7f070022
+			public const int ButtonSix = 2131165218;
 			
-			// aapt resource value: 0x7f06000e
-			public const int ButtonThree = 2131099662;
+			// aapt resource value: 0x7f070020
+			public const int ButtonThree = 2131165216;
 			
-			// aapt resource value: 0x7f06000c
-			public const int ButtonTwo = 2131099660;
+			// aapt resource value: 0x7f07001e
+			public const int ButtonTwo = 2131165214;
 			
-			// aapt resource value: 0x7f060015
-			public const int ButtonZero = 2131099669;
+			// aapt resource value: 0x7f070027
+			public const int ButtonZero = 2131165223;
 			
-			// aapt resource value: 0x7f060007
-			public const int CallActivity = 2131099655;
+			// aapt resource value: 0x7f070019
+			public const int CallActivity = 2131165209;
 			
-			// aapt resource value: 0x7f060009
-			public const int CameraActivity = 2131099657;
+			// aapt resource value: 0x7f07001b
+			public const int CameraActivity = 2131165211;
 			
-			// aapt resource value: 0x7f060008
-			public const int ContactListActivity = 2131099656;
+			// aapt resource value: 0x7f07001a
+			public const int ContactListActivity = 2131165210;
 			
-			// aapt resource value: 0x7f060006
-			public const int ContactsList = 2131099654;
+			// aapt resource value: 0x7f070018
+			public const int ContactsList = 2131165208;
 			
-			// aapt resource value: 0x7f060001
-			public const int GoBack = 2131099649;
+			// aapt resource value: 0x7f070013
+			public const int GoBack = 2131165203;
 			
-			// aapt resource value: 0x7f060005
-			public const int LinearLayout1 = 2131099653;
+			// aapt resource value: 0x7f070017
+			public const int LinearLayout1 = 2131165207;
 			
-			// aapt resource value: 0x7f060017
-			public const int MakeCall = 2131099671;
+			// aapt resource value: 0x7f070029
+			public const int MakeCall = 2131165225;
 			
-			// aapt resource value: 0x7f060003
-			public const int Name = 2131099651;
+			// aapt resource value: 0x7f070015
+			public const int Name = 2131165205;
 			
-			// aapt resource value: 0x7f060004
-			public const int PhoneNumber = 2131099652;
+			// aapt resource value: 0x7f070016
+			public const int PhoneNumber = 2131165206;
 			
-			// aapt resource value: 0x7f060002
-			public const int Preview = 2131099650;
+			// aapt resource value: 0x7f070014
+			public const int Preview = 2131165204;
 			
-			// aapt resource value: 0x7f060000
-			public const int info_text = 2131099648;
+			// aapt resource value: 0x7f070002
+			public const int alignBounds = 2131165186;
+			
+			// aapt resource value: 0x7f070003
+			public const int alignMargins = 2131165187;
+			
+			// aapt resource value: 0x7f070004
+			public const int bottom = 2131165188;
+			
+			// aapt resource value: 0x7f070005
+			public const int center = 2131165189;
+			
+			// aapt resource value: 0x7f070006
+			public const int center_horizontal = 2131165190;
+			
+			// aapt resource value: 0x7f070007
+			public const int center_vertical = 2131165191;
+			
+			// aapt resource value: 0x7f070008
+			public const int clip_horizontal = 2131165192;
+			
+			// aapt resource value: 0x7f070009
+			public const int clip_vertical = 2131165193;
+			
+			// aapt resource value: 0x7f07000a
+			public const int end = 2131165194;
+			
+			// aapt resource value: 0x7f07000b
+			public const int fill = 2131165195;
+			
+			// aapt resource value: 0x7f07000c
+			public const int fill_horizontal = 2131165196;
+			
+			// aapt resource value: 0x7f07000d
+			public const int fill_vertical = 2131165197;
+			
+			// aapt resource value: 0x7f070000
+			public const int horizontal = 2131165184;
+			
+			// aapt resource value: 0x7f070012
+			public const int info_text = 2131165202;
+			
+			// aapt resource value: 0x7f07000e
+			public const int left = 2131165198;
+			
+			// aapt resource value: 0x7f07000f
+			public const int right = 2131165199;
+			
+			// aapt resource value: 0x7f070010
+			public const int start = 2131165200;
+			
+			// aapt resource value: 0x7f070011
+			public const int top = 2131165201;
+			
+			// aapt resource value: 0x7f070001
+			public const int vertical = 2131165185;
 			
 			static Id()
 			{
@@ -188,29 +300,29 @@ namespace SeniorenApp
 		public partial class String
 		{
 			
-			// aapt resource value: 0x7f050000
-			public const int BackButtonText = 2131034112;
+			// aapt resource value: 0x7f060000
+			public const int BackButtonText = 2131099648;
 			
-			// aapt resource value: 0x7f050001
-			public const int CallActivityText = 2131034113;
+			// aapt resource value: 0x7f060001
+			public const int CallActivityText = 2131099649;
 			
-			// aapt resource value: 0x7f050007
-			public const int ClearNumberText = 2131034119;
+			// aapt resource value: 0x7f060007
+			public const int ClearNumberText = 2131099655;
 			
-			// aapt resource value: 0x7f050005
-			public const int DeleteCharacterText = 2131034117;
+			// aapt resource value: 0x7f060005
+			public const int DeleteCharacterText = 2131099653;
 			
-			// aapt resource value: 0x7f050004
-			public const int OpenAboutActivityText = 2131034116;
+			// aapt resource value: 0x7f060004
+			public const int OpenAboutActivityText = 2131099652;
 			
-			// aapt resource value: 0x7f050003
-			public const int OpenCameraActivityText = 2131034115;
+			// aapt resource value: 0x7f060003
+			public const int OpenCameraActivityText = 2131099651;
 			
-			// aapt resource value: 0x7f050002
-			public const int OpenContactsActivityText = 2131034114;
+			// aapt resource value: 0x7f060002
+			public const int OpenContactsActivityText = 2131099650;
 			
-			// aapt resource value: 0x7f050006
-			public const int StartCallText = 2131034118;
+			// aapt resource value: 0x7f060006
+			public const int StartCallText = 2131099654;
 			
 			static String()
 			{
@@ -234,6 +346,107 @@ namespace SeniorenApp
 			}
 			
 			private Xml()
+			{
+			}
+		}
+		
+		public partial class Styleable
+		{
+			
+			public static int[] GridLayout = new int[] {
+					2130771968,
+					2130771969,
+					2130771970,
+					2130771971,
+					2130771972,
+					2130771973,
+					2130771974};
+			
+			// aapt resource value: 4
+			public const int GridLayout_alignmentMode = 4;
+			
+			// aapt resource value: 2
+			public const int GridLayout_columnCount = 2;
+			
+			// aapt resource value: 6
+			public const int GridLayout_columnOrderPreserved = 6;
+			
+			// aapt resource value: 0
+			public const int GridLayout_orientation = 0;
+			
+			// aapt resource value: 1
+			public const int GridLayout_rowCount = 1;
+			
+			// aapt resource value: 5
+			public const int GridLayout_rowOrderPreserved = 5;
+			
+			// aapt resource value: 3
+			public const int GridLayout_useDefaultMargins = 3;
+			
+			public static int[] GridLayout_Layout = new int[] {
+					16842996,
+					16842997,
+					16842998,
+					16842999,
+					16843000,
+					16843001,
+					16843002,
+					2130771975,
+					2130771976,
+					2130771977,
+					2130771978,
+					2130771979,
+					2130771980,
+					2130771981};
+			
+			// aapt resource value: 1
+			public const int GridLayout_Layout_android_layout_height = 1;
+			
+			// aapt resource value: 2
+			public const int GridLayout_Layout_android_layout_margin = 2;
+			
+			// aapt resource value: 6
+			public const int GridLayout_Layout_android_layout_marginBottom = 6;
+			
+			// aapt resource value: 3
+			public const int GridLayout_Layout_android_layout_marginLeft = 3;
+			
+			// aapt resource value: 5
+			public const int GridLayout_Layout_android_layout_marginRight = 5;
+			
+			// aapt resource value: 4
+			public const int GridLayout_Layout_android_layout_marginTop = 4;
+			
+			// aapt resource value: 0
+			public const int GridLayout_Layout_android_layout_width = 0;
+			
+			// aapt resource value: 10
+			public const int GridLayout_Layout_layout_column = 10;
+			
+			// aapt resource value: 11
+			public const int GridLayout_Layout_layout_columnSpan = 11;
+			
+			// aapt resource value: 12
+			public const int GridLayout_Layout_layout_columnWeight = 12;
+			
+			// aapt resource value: 13
+			public const int GridLayout_Layout_layout_gravity = 13;
+			
+			// aapt resource value: 7
+			public const int GridLayout_Layout_layout_row = 7;
+			
+			// aapt resource value: 8
+			public const int GridLayout_Layout_layout_rowSpan = 8;
+			
+			// aapt resource value: 9
+			public const int GridLayout_Layout_layout_rowWeight = 9;
+			
+			static Styleable()
+			{
+				global::Android.Runtime.ResourceIdManager.UpdateIdValues();
+			}
+			
+			private Styleable()
 			{
 			}
 		}

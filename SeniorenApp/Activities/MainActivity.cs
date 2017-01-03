@@ -13,7 +13,7 @@ using System.Linq;
 namespace SeniorenApp.Activities
 {
 
-    [Activity(Label = Constants.MainActivityLabel, MainLauncher = true, Icon = "@drawable/icon", LaunchMode = Android.Content.PM.LaunchMode.SingleTask)]
+    [Activity(Label = Constants.MainActivityLabel, MainLauncher = true, Icon = "@drawable/icon", LaunchMode = Android.Content.PM.LaunchMode.SingleTop)]
     [UsesLibrary(Constants.AndroidUSBHostLibrary, Required = true)]
     [IntentFilter(new string[] { UsbManager.ActionUsbAccessoryAttached, UsbManager.ActionUsbAccessoryDetached })]
     [MetaData(UsbManager.ActionUsbAccessoryAttached, Resource = Constants.AccessoryFilterLocation)]
@@ -25,6 +25,7 @@ namespace SeniorenApp.Activities
         public MainActivity()
         {
             _HandleUSBData = HandleUSBData;
+            _OnConnectionClosed = OnConnectionClosed;
         }
 
         protected override void OnCreate(Bundle bundle)
@@ -54,6 +55,27 @@ namespace SeniorenApp.Activities
             {
                 Logger.LogError(ex);
             }                        
+        }
+
+        protected override void OnStart()
+        {
+            base.OnStart();
+
+            _Buttons.ForEach(x => EnableFocusable(x));
+        }
+
+        protected override void OnNewIntent(Intent intent)
+        {
+            base.OnNewIntent(intent);
+
+            _Buttons.ForEach(x => EnableFocusable(x));
+        }
+
+        private void OnConnectionClosed()
+        {
+            Logger.LogInfo(nameof(MainActivity), nameof(OnConnectionClosed), "called.");
+
+            _Buttons.ForEach(x => DisableFocusable(x));
         }
 
         [Export(nameof(StartPhoneCallActivity))]

@@ -8,6 +8,7 @@ namespace SeniorenApp.Data
         public static readonly string AppInfo = new StringBuilder()
                 .Append(Assembly.GetExecutingAssembly().GetCustomAttribute<AssemblyTitleAttribute>().Title)
                 .AppendLine()
+                .AppendLine()
                 .AppendLine(Assembly.GetExecutingAssembly().GetName().Version.ToString())
                 .AppendLine()
                 .AppendLine(Assembly.GetExecutingAssembly().GetCustomAttribute<AssemblyCopyrightAttribute>().Copyright)
@@ -25,5 +26,7 @@ namespace SeniorenApp.Data
         public const string AboutActivityLabel = "About the App";
         public const string ContactListActivityLabel = "Your contact list";
         public const string ManualPhoneCallActivityLabel = "Make a call";
+
+        public const string LoggingLabel = "Accessory";
     }
 }

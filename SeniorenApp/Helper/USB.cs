@@ -1,4 +1,5 @@
 using Android.App;
+using Android.Content;
 using Android.Hardware.Usb;
 using Android.Views;
 using SeniorenApp.USBCommunication;
@@ -28,18 +29,23 @@ namespace SeniorenApp.Helper
             }     
         }
 
-        public static void CreateUSBConnection(Activity activity, Action<byte[]> onDataReceived)
+        public static bool IsConnected
+        {
+            get { return Instance == null ? false : Instance.IsConnected; }
+        }
+
+        public static void CreateUSBConnection(Activity activity, Action<byte[]> onDataReceived, Action onConnectionClosed, Intent intent = null)
         {
             Logger.LogInfo(nameof(USB), nameof(CreateUSBConnection), "called.");
 
             if (_Instance == null)
             {
-                UsbAccessory accessory = (UsbAccessory)activity.Intent.GetParcelableExtra(UsbManager.ExtraAccessory);
+                UsbAccessory accessory = intent == null ? (UsbAccessory)activity.Intent.GetParcelableExtra(UsbManager.ExtraAccessory) : (UsbAccessory)intent.GetParcelableExtra(UsbManager.ExtraAccessory);
                 UsbManager manager = (UsbManager)activity.GetSystemService("usb");
 
                 Logger.LogInfo(nameof(USB), nameof(CreateUSBConnection), nameof(_Instance) + " : " + "was null.");
 
-                _Instance = new Connection(accessory, manager, onDataReceived);
+                _Instance = new Connection(accessory, manager, onDataReceived, onConnectionClosed);
             }
         }
 

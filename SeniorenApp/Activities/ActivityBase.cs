@@ -11,6 +11,7 @@ namespace SeniorenApp.Activities
     {
         protected bool _IsActive = false;
         protected Action<FocusSearchDirection> _HandleUSBData;
+        protected Action _OnConnectionClosed;
 
         protected bool IsActive
         {
@@ -59,13 +60,14 @@ namespace SeniorenApp.Activities
             {
                 case UsbManager.ActionUsbAccessoryAttached:
                     Logger.LogInfo(GetType().Name, nameof(OnStart), "Accessory attached.");
-                    USB.CreateUSBConnection(this, OnUsbDataReceived);
+                    USB.CreateUSBConnection(this, OnUsbDataReceived, _OnConnectionClosed);
                     break;
             }
 
-            if (USB.Instance != null)
+            if (USB.IsConnected)
             {
                 USB.Instance.AddToDataReceivedEvent(OnUsbDataReceived);
+                USB.Instance.AddToConnectionClosedEvent(_OnConnectionClosed);
             }
 
             IsActive = true;
@@ -73,18 +75,24 @@ namespace SeniorenApp.Activities
 
         protected override void OnNewIntent(Intent intent)
         {
-            Logger.LogInfo(GetType().Name, nameof(OnNewIntent), " called");
-            Logger.LogInfo(GetType().Name, nameof(OnNewIntent), " Intent is: " + intent.Action.ToString());
+            base.OnNewIntent(intent);
 
-            switch (Intent.Action)
+            Logger.LogInfo(GetType().Name, nameof(OnNewIntent), " called");
+            Logger.LogInfo(GetType().Name, nameof(OnNewIntent), " Intent is: " + intent.Action);
+
+            switch (intent.Action)
             {
                 case UsbManager.ActionUsbAccessoryAttached:
                     Logger.LogInfo(GetType().Name, nameof(OnStart), "Accessory attached.");
-                    USB.CreateUSBConnection(this, OnUsbDataReceived);
+                    USB.CreateUSBConnection(this, OnUsbDataReceived, _OnConnectionClosed, intent);
                     break;
             }
 
-            base.OnNewIntent(intent);
+            if (USB.IsConnected)
+            {
+                USB.Instance.AddToDataReceivedEvent(OnUsbDataReceived);
+                USB.Instance.AddToConnectionClosedEvent(_OnConnectionClosed);
+            }
         }       
 
         protected override void OnStop()
@@ -102,9 +110,10 @@ namespace SeniorenApp.Activities
 
             base.OnRestart();
 
-            if (USB.Instance != null)
+            if (USB.IsConnected)
             {
                 USB.Instance.AddToDataReceivedEvent(OnUsbDataReceived);
+                USB.Instance.AddToConnectionClosedEvent(_OnConnectionClosed);
             }
 
             IsActive = true;
@@ -125,9 +134,10 @@ namespace SeniorenApp.Activities
 
             base.OnResume();
 
-            if (USB.Instance != null)
+            if (USB.IsConnected)
             {
                 USB.Instance.AddToDataReceivedEvent(OnUsbDataReceived);
+                USB.Instance.AddToConnectionClosedEvent(_OnConnectionClosed);
             }
 
             IsActive = true;
@@ -144,8 +154,20 @@ namespace SeniorenApp.Activities
 
         protected void EnableFocusable(View element)
         {
-            element.Focusable = true;
-            element.FocusableInTouchMode = true;            
+            if (USB.IsConnected)
+            {
+                element.Focusable = true;
+                element.FocusableInTouchMode = true;
+            }            
+        }
+
+        protected void DisableFocusable(View element)
+        {
+            if (!USB.IsConnected)
+            {
+                element.Focusable = false;
+                element.FocusableInTouchMode = false;
+            }
         }
         
         protected int NextItemToFocus(View element, FocusSearchDirection direction)

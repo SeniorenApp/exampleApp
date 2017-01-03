@@ -13,7 +13,7 @@ using System.Linq;
 
 namespace SeniorenApp.Activities
 {
-    [Activity(Label = Constants.ManualPhoneCallActivityLabel, MainLauncher = false, Icon = "@drawable/icon", LaunchMode = Android.Content.PM.LaunchMode.SingleTask)]
+    [Activity(Label = Constants.ManualPhoneCallActivityLabel, MainLauncher = false, Icon = "@drawable/icon", LaunchMode = Android.Content.PM.LaunchMode.SingleTop)]
     public class ManualPhoneCall : ActivityBase
     {
         private TextView _PhoneNumber;
@@ -22,6 +22,7 @@ namespace SeniorenApp.Activities
         public ManualPhoneCall()
         {
             _HandleUSBData = HandleUsbData;
+            _OnConnectionClosed = OnConnectionClosed;
         }
 
         protected override void OnCreate(Bundle bundle)
@@ -63,6 +64,20 @@ namespace SeniorenApp.Activities
             {
                 Logger.LogError(ex);
             }            
+        }
+
+        protected override void OnNewIntent(Intent intent)
+        {
+            base.OnNewIntent(intent);
+
+            _Buttons.ForEach(x => EnableFocusable(x));
+        }
+
+        private void OnConnectionClosed()
+        {
+            Logger.LogInfo(nameof(ManualPhoneCall), nameof(OnConnectionClosed), "called.");
+
+            _Buttons.ForEach(x => DisableFocusable(x));
         }
 
         [Export(nameof(EnterChar))]

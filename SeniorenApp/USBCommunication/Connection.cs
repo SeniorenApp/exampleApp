@@ -23,8 +23,16 @@ namespace SeniorenApp.USBCommunication
         private CancellationToken _TaskCancelToken;
 
         private Action<byte[]> _OnDataReceived;
+        private Action _OnConnectionClosed;
 
-        public Connection(UsbAccessory accessory, UsbManager manager, Action<byte[]> onDataReceived)
+        private bool _IsConnected;
+
+        public bool IsConnected
+        {
+            get { return _IsConnected; }
+        }
+
+        public Connection(UsbAccessory accessory, UsbManager manager, Action<byte[]> onDataReceived, Action onConnectionClosed)
         {
             Logger.LogInfo(nameof(Connection), "Constructor", "called.");
 
@@ -34,6 +42,7 @@ namespace SeniorenApp.USBCommunication
                 _Manager = manager;
 
                 _OnDataReceived += onDataReceived;
+                _OnConnectionClosed += onConnectionClosed;
 
                 OpenConnection();
 
@@ -74,6 +83,30 @@ namespace SeniorenApp.USBCommunication
             }
         }
 
+        public void AddToConnectionClosedEvent(Action onConnectionClosed)
+        {
+            Logger.LogInfo(nameof(Connection), nameof(AddToConnectionClosedEvent), "called.");
+
+            if (!_OnConnectionClosed.GetInvocationList().Contains(onConnectionClosed))
+            {
+                Logger.LogInfo(nameof(Connection), nameof(AddToConnectionClosedEvent), "invocationlist did not contain " + nameof(onConnectionClosed));
+
+                _OnConnectionClosed += onConnectionClosed;
+            }
+        }
+
+        public void RemoveFromConnectionClosedEvent(Action onConnectionClosed)
+        {
+            Logger.LogInfo(nameof(Connection), nameof(RemoveFromConnectionClosedEvent), "called.");
+
+            if (_OnConnectionClosed.GetInvocationList().Contains(onConnectionClosed))
+            {
+                Logger.LogInfo(nameof(Connection), nameof(RemoveFromConnectionClosedEvent), "invocationlist did contain " + nameof(onConnectionClosed));
+
+                _OnConnectionClosed -= onConnectionClosed;
+            }
+        }
+
         private void OpenConnection()
         {
             Logger.LogInfo(nameof(Connection), nameof(OpenConnection), "called.");
@@ -90,6 +123,8 @@ namespace SeniorenApp.USBCommunication
                 _OutputStream = new FileOutputStream(_FileDescriptor.FileDescriptor);
 
                 Logger.LogInfo(nameof(Connection), nameof(OpenConnection), "Streams retrieved.");
+
+                _IsConnected = true;
             }
         }
 
@@ -99,6 +134,12 @@ namespace SeniorenApp.USBCommunication
 
             try
             {
+                _TaskCancelTokenSource.Cancel();
+
+                _IsConnected = false;
+
+                _OnConnectionClosed();
+
                 _InputStream.Dispose();
                 _OutputStream.Dispose();
 
@@ -106,8 +147,7 @@ namespace SeniorenApp.USBCommunication
                 _Manager.Dispose();
 
                 _OnDataReceived = null;
-
-                _TaskCancelTokenSource.Cancel();
+                _OnConnectionClosed = null;                
             }
             catch (Exception ex)
             {
@@ -179,7 +219,7 @@ namespace SeniorenApp.USBCommunication
                     catch (Java.Lang.Exception ex)
                     {                        
                         Logger.LogError(ex);
-                        this.CloseConnection();
+                        return;
                     }
                 }
             }
