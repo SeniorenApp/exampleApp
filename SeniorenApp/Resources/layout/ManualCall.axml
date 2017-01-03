@@ -1,16 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
-<GridLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.v7.widget.GridLayout 
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:grid="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:columnCount="3"
-    android:rowCount="6"
-    android:orientation="horizontal">
+    android:orientation="horizontal"
+    grid:columnCount="3"
+    grid:rowCount="6">
     <TextView
         android:id="@+id/PhoneNumber"
-        android:layout_columnSpan="3"
-        android:layout_gravity="fill"
-        android:layout_columnWeight="1"
-        android:layout_rowWeight="1"
+        grid:layout_columnSpan="3"
+        grid:layout_gravity="fill"
+        grid:layout_columnWeight="1"
+        grid:layout_rowWeight="1"
         android:gravity="center"
         android:textSize="25sp" />
     <Button
@@ -22,9 +24,9 @@
         android:nextFocusDown="@+id/ButtonFour"
         android:nextFocusLeft="@+id/ButtonThree"
         android:nextFocusUp="@+id/GoBack"
-        android:layout_gravity="fill"
-        android:layout_columnWeight="1"
-        android:layout_rowWeight="1" />
+        grid:layout_gravity="fill"
+        grid:layout_columnWeight="1"
+        grid:layout_rowWeight="1" />
     <Button
         android:text="2"
         android:tag="2"
@@ -34,9 +36,9 @@
         android:nextFocusDown="@+id/ButtonFive"
         android:nextFocusLeft="@+id/ButtonOne"
         android:nextFocusUp="@+id/GoBack"
-        android:layout_gravity="fill"
-        android:layout_columnWeight="1"
-        android:layout_rowWeight="1" />
+        grid:layout_gravity="fill"
+        grid:layout_columnWeight="1"
+        grid:layout_rowWeight="1" />
     <Button
         android:text="3"
         android:tag="3"
@@ -46,9 +48,9 @@
         android:nextFocusDown="@+id/ButtonSix"
         android:nextFocusLeft="@+id/ButtonTwo"
         android:nextFocusUp="@+id/GoBack"
-        android:layout_gravity="fill"
-        android:layout_columnWeight="1"
-        android:layout_rowWeight="1" />
+        grid:layout_gravity="fill"
+        grid:layout_columnWeight="1"
+        grid:layout_rowWeight="1" />
     <Button
         android:text="4"
         android:tag="4"
@@ -58,9 +60,9 @@
         android:nextFocusDown="@+id/ButtonSeven"
         android:nextFocusLeft="@+id/ButtonSix"
         android:nextFocusUp="@+id/ButtonOne"
-        android:layout_gravity="fill"
-        android:layout_columnWeight="1"
-        android:layout_rowWeight="1" />
+        grid:layout_gravity="fill"
+        grid:layout_columnWeight="1"
+        grid:layout_rowWeight="1" />
     <Button
         android:text="5"
         android:tag="5"
@@ -70,9 +72,9 @@
         android:nextFocusDown="@+id/ButtonEight"
         android:nextFocusLeft="@+id/ButtonFour"
         android:nextFocusUp="@+id/ButtonTwo"
-        android:layout_gravity="fill"
-        android:layout_columnWeight="1"
-        android:layout_rowWeight="1" />
+        grid:layout_gravity="fill"
+        grid:layout_columnWeight="1"
+        grid:layout_rowWeight="1" />
     <Button
         android:text="6"
         android:tag="6"
@@ -82,9 +84,9 @@
         android:nextFocusDown="@+id/ButtonNine"
         android:nextFocusLeft="@+id/ButtonFive"
         android:nextFocusUp="@+id/ButtonThree"
-        android:layout_gravity="fill"
-        android:layout_columnWeight="1"
-        android:layout_rowWeight="1" />
+        grid:layout_gravity="fill"
+        grid:layout_columnWeight="1"
+        grid:layout_rowWeight="1" />
     <Button
         android:text="7"
         android:tag="7"
@@ -94,9 +96,9 @@
         android:nextFocusDown="@+id/ButtonClear"
         android:nextFocusLeft="@+id/ButtonNine"
         android:nextFocusUp="@+id/ButtonFour"
-        android:layout_gravity="fill"
-        android:layout_columnWeight="1"
-        android:layout_rowWeight="1" />
+        grid:layout_gravity="fill"
+        grid:layout_columnWeight="1"
+        grid:layout_rowWeight="1" />
     <Button
         android:text="8"
         android:tag="8"
@@ -106,9 +108,9 @@
         android:nextFocusDown="@+id/ButtonZero"
         android:nextFocusLeft="@+id/ButtonSeven"
         android:nextFocusUp="@+id/ButtonFive"
-        android:layout_gravity="fill"
-        android:layout_columnWeight="1"
-        android:layout_rowWeight="1" />
+        grid:layout_gravity="fill"
+        grid:layout_columnWeight="1"
+        grid:layout_rowWeight="1" />
     <Button
         android:text="9"
         android:tag="9"
@@ -118,9 +120,9 @@
         android:nextFocusDown="@+id/ButtonRemove"
         android:nextFocusLeft="@+id/ButtonEight"
         android:nextFocusUp="@+id/ButtonSix"
-        android:layout_gravity="fill"
-        android:layout_columnWeight="1"
-        android:layout_rowWeight="1" />
+        grid:layout_gravity="fill"
+        grid:layout_columnWeight="1"
+        grid:layout_rowWeight="1" />
     <Button
         android:text="@string/ClearNumberText"
         android:tag="CLR"
@@ -130,9 +132,9 @@
         android:nextFocusDown="@+id/MakeCall"
         android:nextFocusLeft="@+id/ButtonRemove"
         android:nextFocusUp="@+id/ButtonSeven"
-        android:layout_gravity="fill"
-        android:layout_columnWeight="1"
-        android:layout_rowWeight="1" />
+        grid:layout_gravity="fill"
+        grid:layout_columnWeight="1"
+        grid:layout_rowWeight="1" />
     <Button
         android:text="0"
         android:tag="0"
@@ -142,9 +144,9 @@
         android:nextFocusDown="@+id/MakeCall"
         android:nextFocusLeft="@+id/ButtonClear"
         android:nextFocusUp="@+id/ButtonEight"
-        android:layout_gravity="fill"
-        android:layout_columnWeight="1"
-        android:layout_rowWeight="1" />
+        grid:layout_gravity="fill"
+        grid:layout_columnWeight="1"
+        grid:layout_rowWeight="1" />
     <Button
         android:text="@string/DeleteCharacterText"
         android:tag="&lt;"
@@ -154,31 +156,31 @@
         android:nextFocusDown="@+id/MakeCall"
         android:nextFocusLeft="@+id/ButtonZero"
         android:nextFocusUp="@+id/ButtonNine"
-        android:layout_gravity="fill"
-        android:layout_columnWeight="1"
-        android:layout_rowWeight="1" />
+        grid:layout_gravity="fill"
+        grid:layout_columnWeight="1"
+        grid:layout_rowWeight="1" />
     <Button
         android:text="@string/StartCallText"
         android:id="@+id/MakeCall"
-        android:layout_columnSpan="3"
+        grid:layout_columnSpan="3"
         android:onClick="Call"
         android:nextFocusRight="@+id/MakeCall"
         android:nextFocusDown="@+id/GoBack"
         android:nextFocusLeft="@+id/MakeCall"
         android:nextFocusUp="@+id/ButtonZero"
-        android:layout_gravity="fill"
-        android:layout_columnWeight="1"
-        android:layout_rowWeight="1" />
+        grid:layout_gravity="fill"
+        grid:layout_columnWeight="1"
+        grid:layout_rowWeight="1" />
     <Button
         android:text="@string/BackButtonText"
         android:id="@+id/GoBack"
-        android:layout_columnSpan="3"
+        grid:layout_columnSpan="3"
         android:onClick="GoToPreviousActivity"
         android:nextFocusRight="@+id/GoBack"
         android:nextFocusDown="@+id/ButtonOne"
         android:nextFocusLeft="@+id/GoBack"
         android:nextFocusUp="@+id/MakeCall"
-        android:layout_gravity="fill"
-        android:layout_columnWeight="1"
-        android:layout_rowWeight="1" />
-</GridLayout>
+        grid:layout_gravity="fill"
+        grid:layout_columnWeight="1"
+        grid:layout_rowWeight="1" />
+</android.support.v7.widget.GridLayout>
