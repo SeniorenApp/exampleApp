@@ -2,17 +2,28 @@ using Android.App;
 using Android.Content;
 using Android.Hardware.Usb;
 using Android.Views;
+using SeniorenApp.Data;
 using SeniorenApp.Helper;
 using System;
 
 namespace SeniorenApp.Activities
 {
+    /// <summary>
+    /// Base activity. All others activities should inherit it.
+    /// </summary>
     public abstract class ActivityBase : Activity
     {
         protected bool _IsActive = false;
-        protected Action<FocusSearchDirection> _HandleUSBData;
+
+        // HandleUSBData and OnConnectionClosed are two actions that will be executed when data is received via USB
+        // (HandleUSBData) or when the USB connections gets closed (OnConnectionClosed).
+        // Every activity should implement the HandleUSBData action. OnConnectionClosed is only neccessary if you need it.
+        protected Action<USBCommand> _HandleUSBData;
         protected Action _OnConnectionClosed;
 
+        /// <summary>
+        /// Used to determine the current status of the activity.
+        /// </summary>
         protected bool IsActive
         {
             get
@@ -29,6 +40,10 @@ namespace SeniorenApp.Activities
             }
         }
 
+        /// <summary>
+        /// Executed once data is received via USB. Should an activity be currently active,
+        /// its HandleUSBData function will be executed via the interpretUSBData function.
+        /// </summary>
         protected void OnUsbDataReceived(byte[] data)
         {
             Logger.LogInfo(GetType().Name, nameof(OnUsbDataReceived), "called.");
@@ -50,6 +65,9 @@ namespace SeniorenApp.Activities
             }
         }
 
+        /// <summary>
+        /// OnStart creates the USBConnection if the app was started via plugging in the USB host device.
+        /// </summary>
         protected override void OnStart()
         {
             Logger.LogInfo(GetType().Name, nameof(OnStart), "called.");
@@ -73,6 +91,9 @@ namespace SeniorenApp.Activities
             IsActive = true;
         }
 
+        /// <summary>
+        /// OnNewIntent creates the USBConnection if the app was already running when the USB host device got plugged in.
+        /// </summary>
         protected override void OnNewIntent(Intent intent)
         {
             base.OnNewIntent(intent);
@@ -152,6 +173,9 @@ namespace SeniorenApp.Activities
             IsActive = false;
         }
 
+        /// <summary>
+        /// Enables the focus property for the given element only if an USB connection exists.
+        /// </summary>
         protected void EnableFocusable(View element)
         {
             if (USB.IsConnected)
@@ -161,6 +185,9 @@ namespace SeniorenApp.Activities
             }            
         }
 
+        /// <summary>
+        /// Disables the focus property for the given element only if no USB connection exists.
+        /// </summary>
         protected void DisableFocusable(View element)
         {
             if (!USB.IsConnected)
@@ -170,8 +197,14 @@ namespace SeniorenApp.Activities
             }
         }
         
-        protected int NextItemToFocus(View element, FocusSearchDirection direction)
+        /// <summary>
+        /// Translates the USBCommand to the correct direction.
+        /// And returns the id of the next element to focus.
+        /// </summary>
+        protected int NextItemToFocus(View element, USBCommand command)
         {
+            FocusSearchDirection direction = Constants.CommandMap[command];
+
             switch (direction)
             {
                 case FocusSearchDirection.Up:

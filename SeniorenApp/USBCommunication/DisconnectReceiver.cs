@@ -6,6 +6,10 @@ using SeniorenApp.Helper;
 
 namespace SeniorenApp.USBCommunication
 {
+    /// <summary>
+    /// The disconnct receiver listens for the accessory detached event.
+    /// Should it occur the connection will be closed.
+    /// </summary>
     [BroadcastReceiver]
     [IntentFilter(new[] { UsbManager.ActionUsbAccessoryAttached, UsbManager.ActionUsbAccessoryDetached })]
     [MetaData(UsbManager.ActionUsbAccessoryAttached, Resource = Constants.AccessoryFilterLocation)]

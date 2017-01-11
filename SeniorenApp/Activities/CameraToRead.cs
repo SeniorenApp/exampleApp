@@ -6,6 +6,10 @@ using SeniorenApp.Helper;
 
 namespace SeniorenApp.Activities
 {
+    /// <summary>
+    /// Camera activity for reading with zoom and flashlight.
+    /// For detecting an new intent while this activity is active (USB device plugged in) LaunchMode has been set to SingleTop.
+    /// </summary>
     [Activity(Label = "Accessory", MainLauncher = false, Icon = "@drawable/icon", LaunchMode = Android.Content.PM.LaunchMode.SingleTop)]
     [UsesLibrary("android.hardware.camera")]
     public class CameraToRead : ActivityBase
@@ -48,23 +52,24 @@ namespace SeniorenApp.Activities
             }            
         }
 
-        private void HandleUSBData(FocusSearchDirection direction)
+        private void HandleUSBData(USBCommand command)
         {
             Logger.LogInfo(nameof(CameraToRead), nameof(HandleUSBData), "called.");
+            Logger.LogInfo(nameof(CameraToRead), nameof(HandleUSBData), nameof(command) + " is: " + command.ToString());
 
             try
             {
-                if (direction == FocusSearchDirection.Forward)
+                if (command == USBCommand.ok)
                 {
                     Finish();
                 }
-                else if (direction == FocusSearchDirection.Up)
+                else if (command == USBCommand.up)
                 {
-                    _CameraHandler.Zoom(SurfaceHolderCallback.ZoomDirection.In);
+                    _CameraHandler.Zoom(ZoomDirection.In);
                 }
-                else if (direction == FocusSearchDirection.Down)
+                else if (command == USBCommand.down)
                 {
-                    _CameraHandler.Zoom(SurfaceHolderCallback.ZoomDirection.Out);
+                    _CameraHandler.Zoom(ZoomDirection.Out);
                 }
             }
             catch (Java.Lang.Exception ex)

@@ -11,17 +11,28 @@ using System.Threading.Tasks;
 
 namespace SeniorenApp.USBCommunication
 {
+    /// <summary>
+    /// Actual implementation of the usb connection.
+    /// </summary>
     internal class Connection
-    {
+    {        
         private UsbAccessory _Accessory;
         private UsbManager _Manager;
+
+        // Streams and descriptors for reading and writing. Inputstream for reading. Outputstream for sending.
         private ParcelFileDescriptor _FileDescriptor; 
         private FileInputStream _InputStream;
         private FileOutputStream _OutputStream;
                 
+        // Cancellationtoken for the receivedata task which runs in a different thread.
         private CancellationTokenSource _TaskCancelTokenSource;
         private CancellationToken _TaskCancelToken;
 
+        // OnDataReceived is called once data has been received.
+        // Theoretically an unlimited amount of functions can be added the events (ondatareceived and onconnectionclosed).
+        // Via AddToDataReceiveEvent and AddToConnectionClosedEvent additional functions can be added.
+        // Although they should be removed via RemoveFromDataReceivedEvent and RemoveFromConnectionClosedEvent as memory leaks can occur if you are not careful.
+        // Via this events the received data can be interpreted by various activities.
         private Action<byte[]> _OnDataReceived;
         private Action _OnConnectionClosed;
 
@@ -49,6 +60,7 @@ namespace SeniorenApp.USBCommunication
                 _TaskCancelTokenSource = new CancellationTokenSource();
                 _TaskCancelToken = _TaskCancelTokenSource.Token;
 
+                // Start the receivedata task in a new thread, with the given canceltoken.
                 Task.Factory.StartNew(() => ReceiveData(), _TaskCancelToken);
 
                 Logger.LogInfo(nameof(Connection), "Constructor", nameof(ReceiveData) + " task : " + "created.");
@@ -134,6 +146,7 @@ namespace SeniorenApp.USBCommunication
 
             try
             {
+                // Cancel the receive data task and dispose the rest.
                 _TaskCancelTokenSource.Cancel();
 
                 _IsConnected = false;
@@ -188,6 +201,7 @@ namespace SeniorenApp.USBCommunication
 
                     try
                     {
+                        // If the connection has been closed. Cancel the task.
                         if (_TaskCancelToken.IsCancellationRequested)
                         {
                             Logger.LogInfo(nameof(Connection), nameof(ReceiveData), "cancelled.");
@@ -196,6 +210,8 @@ namespace SeniorenApp.USBCommunication
 
                         var data = new List<byte>();
 
+                        // The do-while loop waits for data. InputStream.Read blocks the current thread until data has been received.
+                        // Once data has been received the loop will read until the endofstreambyte (0x04) has been detected.
                         do
                         {
                             var buffer = new byte[Constants.USBMaxPacketSize];
@@ -210,8 +226,10 @@ namespace SeniorenApp.USBCommunication
 
                         Logger.LogInfo(nameof(Connection), nameof(ReceiveData), data.Count + " bytes received. Message: " + BitConverter.ToString(data.ToArray()));
 
+                        // Cut off the garbage data that comes after the endofstreambyte.
                         data.RemoveRange(data.IndexOf(Constants.EndOfStreamByte), data.Count - data.IndexOf(Constants.EndOfStreamByte));
                         
+                        // And call the functions which subscribe to the ondatareceived event.
                         _OnDataReceived(data.ToArray());
 
                         Logger.LogInfo(nameof(Connection), nameof(ReceiveData), nameof(_OnDataReceived) + " called.");

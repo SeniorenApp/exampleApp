@@ -13,6 +13,10 @@ using System.Linq;
 
 namespace SeniorenApp.Activities
 {
+    /// <summary>
+    /// Call activity for entering the phone number manually.
+    /// For detecting an new intent while this activity is active (USB device plugged in) LaunchMode has been set to SingleTop.
+    /// </summary>
     [Activity(Label = Constants.ManualPhoneCallActivityLabel, MainLauncher = false, Icon = "@drawable/icon", LaunchMode = Android.Content.PM.LaunchMode.SingleTop)]
     public class ManualPhoneCall : ActivityBase
     {
@@ -22,7 +26,7 @@ namespace SeniorenApp.Activities
         public ManualPhoneCall()
         {
             _HandleUSBData = HandleUsbData;
-            _OnConnectionClosed = OnConnectionClosed;
+            _OnConnectionClosed = OnUSBConnectionClosed;
         }
 
         protected override void OnCreate(Bundle bundle)
@@ -73,13 +77,6 @@ namespace SeniorenApp.Activities
             _Buttons.ForEach(x => EnableFocusable(x));
         }
 
-        private void OnConnectionClosed()
-        {
-            Logger.LogInfo(nameof(ManualPhoneCall), nameof(OnConnectionClosed), "called.");
-
-            _Buttons.ForEach(x => DisableFocusable(x));
-        }
-
         [Export(nameof(EnterChar))]
         public void EnterChar(View view)
         {
@@ -94,6 +91,7 @@ namespace SeniorenApp.Activities
                 switch (character)
                 {
                     case "<":
+                        // If the phone number is not empty remove the last character.
                         _PhoneNumber.Text = _PhoneNumber.Text == string.Empty ? string.Empty : _PhoneNumber.Text.Remove(_PhoneNumber.Text.Length - 1, 1);
                         break;
                     case "CLR":
@@ -139,10 +137,17 @@ namespace SeniorenApp.Activities
             Finish();
         }
 
-        private void HandleUsbData(FocusSearchDirection direction)
+        private void OnUSBConnectionClosed()
+        {
+            Logger.LogInfo(nameof(ManualPhoneCall), nameof(OnUSBConnectionClosed), "called.");
+
+            _Buttons.ForEach(x => DisableFocusable(x));
+        }
+
+        private void HandleUsbData(USBCommand command)
         {
             Logger.LogInfo(nameof(ManualPhoneCall), nameof(HandleUsbData), "called.");
-            Logger.LogInfo(nameof(ManualPhoneCall), nameof(HandleUsbData), nameof(FocusSearchDirection) + " is: " + direction.ToString());           
+            Logger.LogInfo(nameof(ManualPhoneCall), nameof(HandleUsbData), nameof(command) + " is: " + command.ToString());           
 
             try
             {
@@ -154,7 +159,7 @@ namespace SeniorenApp.Activities
 
                     _Buttons.First(x => x.Tag.ToString() == "1").RequestFocus();
                 }
-                else if (direction == FocusSearchDirection.Forward)
+                else if (command == USBCommand.ok)
                 {
                     Logger.LogInfo(nameof(ManualPhoneCall), nameof(HandleUsbData), currentlyFocusedButton.Id + " called on click.");
 
@@ -162,7 +167,7 @@ namespace SeniorenApp.Activities
                 }
                 else
                 {
-                    FindViewById<Button>(NextItemToFocus(currentlyFocusedButton, direction)).RequestFocus();
+                    FindViewById<Button>(NextItemToFocus(currentlyFocusedButton, command)).RequestFocus();
                 }
             }
             catch (Exception ex)

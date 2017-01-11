@@ -15,6 +15,10 @@ using static Android.Widget.AdapterView;
 
 namespace SeniorenApp.Activities
 {
+    /// <summary>
+    /// Contact list activity for selecting an existing contact to call.
+    /// For detecting an new intent while this activity is active (USB device plugged in) LaunchMode has been set to SingleTop.
+    /// </summary>
     [Activity(Label = Constants.ContactListActivityLabel, MainLauncher = false, Icon = "@drawable/icon", LaunchMode = Android.Content.PM.LaunchMode.SingleTop)]
     public class ContactList : ActivityBase
     {
@@ -24,7 +28,7 @@ namespace SeniorenApp.Activities
         public ContactList()
         {
             _HandleUSBData = HandleUSBData;
-            _OnConnectionClosed = OnConnectionClosed;
+            _OnConnectionClosed = OnUSBConnectionClosed;
         }
 
         protected override void OnCreate(Bundle savedInstanceState)
@@ -65,13 +69,10 @@ namespace SeniorenApp.Activities
             EnableFocusable(_GoToPreviousActivity);
         }
 
-        private void OnConnectionClosed()
-        {
-            Logger.LogInfo(nameof(ContactList), nameof(OnConnectionClosed), " called");
-
-            DisableFocusable(_GoToPreviousActivity);
-        }
-
+        /// <summary>
+        /// Finds all existing contacts querieng the phone database.
+        /// </summary>
+        /// <returns></returns>
         private List<ContactListItem> FindContacts()
         {
             Logger.LogInfo(nameof(ContactList), nameof(FindContacts), " called");
@@ -127,47 +128,60 @@ namespace SeniorenApp.Activities
             Finish();
         }
 
-        private void HandleUSBData(FocusSearchDirection direction)
+        private void OnUSBConnectionClosed()
+        {
+            Logger.LogInfo(nameof(ContactList), nameof(OnUSBConnectionClosed), " called");
+
+            DisableFocusable(_GoToPreviousActivity);
+        }
+
+        private void HandleUSBData(USBCommand command)
         {
             Logger.LogInfo(nameof(ContactList), nameof(HandleUSBData), "called.");
-            Logger.LogInfo(nameof(ContactList), nameof(HandleUSBData), nameof(FocusSearchDirection) + " is: " + direction.ToString());
+            Logger.LogInfo(nameof(ContactList), nameof(HandleUSBData), nameof(command) + " is: " + command.ToString());
 
             try
             {
                 int nextItemToSelectPosition = 0;
 
+                // If goback button is focused...
                 if (_GoToPreviousActivity.IsFocused)
                 {
                     Logger.LogInfo(nameof(ContactList), nameof(HandleUSBData), nameof(_GoToPreviousActivity) +  " is focused.");
 
-                    if (direction == FocusSearchDirection.Up)
+                    // if command is up set itemposition to last item in list...
+                    if (command == USBCommand.up)
                     {
                         nextItemToSelectPosition = _Contacts.Count - 1;
 
                         Logger.LogInfo(nameof(ContactList), nameof(HandleUSBData), "next item to select: " + nextItemToSelectPosition.ToString());
                     }
-                    else if (direction == FocusSearchDirection.Down)
+                    // if command is down set itemposition to first item in list...
+                    else if (command == USBCommand.down)
                     {
                         nextItemToSelectPosition = 0;
                     }
-                    else if (direction == FocusSearchDirection.Forward)
+                    // if command is ok call goback function.
+                    else if (command == USBCommand.ok)
                     {
                         _GoToPreviousActivity.ClearFocus();
                         _GoToPreviousActivity.CallOnClick();
                         return;
                     }
 
+                    // Set new item position.
                     _GoToPreviousActivity.ClearFocus();
                     _Contacts.SetItemChecked(nextItemToSelectPosition, true);
                     _Contacts.SetSelection(nextItemToSelectPosition);
                 }
                 else
                 {
-                    nextItemToSelectPosition = GetNextItemToSelect(direction);
+                    // If goback button is not focused. Get the next item to select calling getnextitemtoselect.
+                    nextItemToSelectPosition = GetNextItemToSelect(command);
 
                     Logger.LogInfo(nameof(ContactList), nameof(HandleUSBData), "next item to select is: " + nextItemToSelectPosition.ToString());
 
-                    if (direction != FocusSearchDirection.Forward)
+                    if (command != USBCommand.ok)
                     {
                         if (nextItemToSelectPosition == -1)
                         {
@@ -181,7 +195,7 @@ namespace SeniorenApp.Activities
                     _Contacts.SetItemChecked(nextItemToSelectPosition, true);
                     _Contacts.SetSelection(nextItemToSelectPosition);
 
-                    if (direction == FocusSearchDirection.Forward)
+                    if (command == USBCommand.ok)
                     {
                         ((TextView)_Contacts.SelectedItem).CallOnClick();
                     }
@@ -193,7 +207,10 @@ namespace SeniorenApp.Activities
             }
         }
 
-        private int GetNextItemToSelect(FocusSearchDirection direction)
+        /// <summary>
+        /// Pretty complicated functions that returns the new item to select depending the given command.
+        /// </summary>
+        private int GetNextItemToSelect(USBCommand command)
         {
             Logger.LogInfo(nameof(ContactList), nameof(GetNextItemToSelect), "called.");
 
@@ -207,7 +224,7 @@ namespace SeniorenApp.Activities
             {
                 return 0;
             }
-            else if (direction == FocusSearchDirection.Up)
+            else if (command == USBCommand.up)
             {
                 if (currentlyFocusedItem == 0)
                 {
@@ -218,7 +235,7 @@ namespace SeniorenApp.Activities
                     return currentlyFocusedItem - 1;
                 }
             }
-            else if (direction == FocusSearchDirection.Down)
+            else if (command == USBCommand.down)
             {
                 if (currentlyFocusedItem == (_Contacts.Count - 1))
                 {

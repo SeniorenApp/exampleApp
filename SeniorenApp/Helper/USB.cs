@@ -1,13 +1,17 @@
 using Android.App;
 using Android.Content;
 using Android.Hardware.Usb;
-using Android.Views;
+using SeniorenApp.Data;
 using SeniorenApp.USBCommunication;
 using System;
 using System.Text;
 
 namespace SeniorenApp.Helper
 {
+    /// <summary>
+    /// Implements the actual usb connection via singleton pattern, whichs means only one connection
+    /// can exist in the whole program. 
+    /// </summary>
     internal static class USB
     {
         private static Connection _Instance;
@@ -60,7 +64,7 @@ namespace SeniorenApp.Helper
             }
         }
 
-        public static void InterpretUSBData(byte[] data, Activity currentActivity, Action<FocusSearchDirection> actionToRunInUIThread)
+        public static void InterpretUSBData(byte[] data, Activity currentActivity, Action<USBCommand> actionToRunInUIThread)
         {
             Logger.LogInfo(nameof(USB), nameof(InterpretUSBData), "called.");
 
@@ -68,26 +72,15 @@ namespace SeniorenApp.Helper
 
             Logger.LogInfo(nameof(USB), nameof(InterpretUSBData), "Message decoded to: " + receivedText);
 
-            switch (receivedText)
+            USBCommand receivedCommand;
+
+            if (Enum.TryParse<USBCommand>(receivedText, out receivedCommand))
             {
-                case "up":
-                    currentActivity.RunOnUiThread(() => actionToRunInUIThread(FocusSearchDirection.Up));
-                    break;
-                case "down":
-                    currentActivity.RunOnUiThread(() => actionToRunInUIThread(FocusSearchDirection.Down)); 
-                    break;
-                case "left":
-                    currentActivity.RunOnUiThread(() => actionToRunInUIThread(FocusSearchDirection.Left));
-                    break;
-                case "right":
-                    currentActivity.RunOnUiThread(() => actionToRunInUIThread(FocusSearchDirection.Right));
-                    break;
-                case "ok":
-                    currentActivity.RunOnUiThread(() => actionToRunInUIThread(FocusSearchDirection.Forward));
-                    break;
-                default:
-                    Logger.LogInfo(nameof(USB), nameof(InterpretUSBData), "Received text could not be interpreted in switch case.");
-                    break;
+                currentActivity.RunOnUiThread(() => actionToRunInUIThread(receivedCommand));
+            }
+            else
+            {
+                Logger.LogInfo(nameof(USB), nameof(InterpretUSBData), "Received text could not be interpreted.");
             }
         }
     }

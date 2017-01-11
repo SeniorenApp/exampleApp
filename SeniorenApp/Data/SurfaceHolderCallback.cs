@@ -6,16 +6,13 @@ using static Android.Hardware.Camera;
 
 namespace SeniorenApp.Data
 {
+    /// <summary>
+    /// Callback used for the camera. Is deprecated in newer android versions, but still supported.
+    /// </summary>
     internal class SurfaceHolderCallback : Java.Lang.Object, ISurfaceHolderCallback
     {
         private Android.Hardware.Camera _Camera;
         private Parameters _Parameters;
-
-        public enum ZoomDirection
-        {
-            In = 0,
-            Out
-        };
 
         public void SurfaceChanged(ISurfaceHolder holder, [GeneratedEnum] Format format, int width, int height)
         {

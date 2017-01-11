@@ -12,7 +12,11 @@ using System.Linq;
 
 namespace SeniorenApp.Activities
 {
-
+    /// <summary>
+    /// Main activity which starts all other activities.
+    /// Is also automatically launched if an an accessory which matches the accessory filter has been attached.
+    /// For detecting an new intent while this activity is active (USB device plugged in) LaunchMode has been set to SingleTop.
+    /// </summary>
     [Activity(Label = Constants.MainActivityLabel, MainLauncher = true, Icon = "@drawable/icon", LaunchMode = Android.Content.PM.LaunchMode.SingleTop)]
     [UsesLibrary(Constants.AndroidUSBHostLibrary, Required = true)]
     [IntentFilter(new string[] { UsbManager.ActionUsbAccessoryAttached, UsbManager.ActionUsbAccessoryDetached })]
@@ -25,7 +29,7 @@ namespace SeniorenApp.Activities
         public MainActivity()
         {
             _HandleUSBData = HandleUSBData;
-            _OnConnectionClosed = OnConnectionClosed;
+            _OnConnectionClosed = OnUSBConnectionClosed;
         }
 
         protected override void OnCreate(Bundle bundle)
@@ -71,13 +75,6 @@ namespace SeniorenApp.Activities
             _Buttons.ForEach(x => EnableFocusable(x));
         }
 
-        private void OnConnectionClosed()
-        {
-            Logger.LogInfo(nameof(MainActivity), nameof(OnConnectionClosed), "called.");
-
-            _Buttons.ForEach(x => DisableFocusable(x));
-        }
-
         [Export(nameof(StartPhoneCallActivity))]
         public void StartPhoneCallActivity(View view)
         {
@@ -110,10 +107,17 @@ namespace SeniorenApp.Activities
             StartActivity(typeof(About));
         }
 
-        private void HandleUSBData(FocusSearchDirection direction)
+        private void OnUSBConnectionClosed()
+        {
+            Logger.LogInfo(nameof(MainActivity), nameof(OnUSBConnectionClosed), "called.");
+
+            _Buttons.ForEach(x => DisableFocusable(x));
+        }
+
+        private void HandleUSBData(USBCommand command)
         {
             Logger.LogInfo(nameof(MainActivity), nameof(HandleUSBData), "called.");
-            Logger.LogInfo(nameof(MainActivity), nameof(HandleUSBData), "direction is: " + direction.ToString());
+            Logger.LogInfo(nameof(MainActivity), nameof(HandleUSBData), nameof(command) + " is: " + command.ToString());
 
             try
             {
@@ -125,13 +129,13 @@ namespace SeniorenApp.Activities
 
                     _Buttons.First().RequestFocus();
                 }
-                else if (direction == FocusSearchDirection.Forward)
+                else if (command == USBCommand.ok)
                 {
                     currentlyFocusedButton.CallOnClick();
                 }
                 else
                 {
-                    FindViewById<Button>(NextItemToFocus(currentlyFocusedButton, direction)).RequestFocus();
+                    FindViewById<Button>(NextItemToFocus(currentlyFocusedButton, command)).RequestFocus();
                 }
             }
             catch (Java.Lang.Exception ex)

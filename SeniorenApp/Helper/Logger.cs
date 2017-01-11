@@ -4,6 +4,10 @@ using System;
 
 namespace SeniorenApp.Helper
 {
+    /// <summary>
+    /// Logs given errors or general messages to the android logcat.
+    /// Accessed via adb (e.g. "adb logcat -d "Accessory" *:S).
+    /// </summary>
     internal static class Logger
     {
         public static void LogInfo(string classname, string functionname, string msg)

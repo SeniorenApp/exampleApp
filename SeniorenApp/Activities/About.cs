@@ -10,6 +10,11 @@ using SeniorenApp.Helper;
 
 namespace SeniorenApp.Activities
 {
+    /// <summary>
+    /// About activity was added to show which version is currently running and
+    /// for given credit to the icon creators (as neccessary according to their website).
+    /// For detecting an new intent while this activity is active (USB device plugged in) LaunchMode has been set to SingleTop.
+    /// </summary>
     [Activity(Label = Constants.AboutActivityLabel, MainLauncher = false, Icon = "@drawable/icon", LaunchMode = Android.Content.PM.LaunchMode.SingleTop)]
     public class About : ActivityBase
     {
@@ -54,14 +59,14 @@ namespace SeniorenApp.Activities
             Finish();
         }
 
-        private void HandleUSBData(FocusSearchDirection direction)
+        private void HandleUSBData(USBCommand command)
         {
             Logger.LogInfo(nameof(About), nameof(HandleUSBData), "called.");
-            Logger.LogInfo(nameof(About), nameof(HandleUSBData), nameof(FocusSearchDirection) + " is: " + direction.ToString());
+            Logger.LogInfo(nameof(About), nameof(HandleUSBData), nameof(command) + " is: " + command.ToString());
 
             try
             {
-                if (direction == FocusSearchDirection.Forward)
+                if (command == USBCommand.ok)
                 {
                     _Back.CallOnClick();
                 }

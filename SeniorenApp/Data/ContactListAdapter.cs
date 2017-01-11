@@ -6,6 +6,9 @@ using System.Linq;
 
 namespace SeniorenApp.Data
 {
+    /// <summary>
+    /// Contactlistadapter is used for getting the contacts from the database.
+    /// </summary>
     internal class ContactListAdapter : ArrayAdapter<ContactListItem>
     {
         private Context _Context;

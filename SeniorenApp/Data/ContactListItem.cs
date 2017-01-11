@@ -14,6 +14,9 @@ namespace SeniorenApp.Data
             set;
         }
 
+        /// <summary>
+        /// Explicit operator for converting the object returned from the view to a ContactListItem.
+        /// </summary>
         public static explicit operator ContactListItem(Java.Lang.Object obj)
         {
             var propInfo = obj.GetType().GetProperty("Instance");
